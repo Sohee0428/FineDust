@@ -126,10 +126,11 @@ class MainActivity : AppCompatActivity() {
                 val longitude = currentLatLng.longitude
                 Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
 
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+                val api = KakaoAPI.create()
+                api.getNavigate(longitude, latitude).enqueue(object : Callback<Test>{
+                    override fun onResponse(call: Call<Test>, response: Response<Test>) {
+                        Log.d("jsh", response.body().toString())
+                    }
 
                     override fun onFailure(call: Call<Test>, t: Throwable) {
                     }
