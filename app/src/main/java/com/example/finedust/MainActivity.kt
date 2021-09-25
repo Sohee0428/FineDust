@@ -15,7 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.finedust.API.KakaoAPI
-import com.example.finedust.data.Test
+import com.example.finedust.API.NearbyParadidymisAPI
+import com.example.finedust.data.Kakao.Test
+import com.example.finedust.data.Paradidymis.Paradidymis
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,10 +73,10 @@ class MainActivity : AppCompatActivity() {
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (isGranted) {
-                    Log.d("jsh","test3")
+                    Log.d("jsh", "test3")
                     getLocation()
                 } else {
-                    Log.d("jsh","test4")
+                    Log.d("jsh", "test4")
                     // Explain to the user that the feature is unavailable because the
                     // features requires a permission that the user has denied. At the
                     // same time, respect the user's decision. Don't link to system
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d("jsh","test1")
+                Log.d("jsh", "test1")
                 getLocation()
 
 
@@ -95,9 +97,10 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 // You can directly ask for the permission.
                 // The registered ActivityResultCallback gets the result of this request.
-                Log.d("jsh","test2")
+                Log.d("jsh", "test2")
                 requestPermissionLauncher.launch(
-                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
             }
         }
 //        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -108,12 +111,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun getLocation() {
         try {
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
             val locationProvider = LocationManager.GPS_PROVIDER
-            val locationListener = LocationListener {  }
+            val locationListener = LocationListener { }
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 3000L,
@@ -126,23 +130,41 @@ class MainActivity : AppCompatActivity() {
                 val longitude = currentLatLng.longitude
                 Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
 
-                val api = KakaoAPI.create()
-                api.getNavigate(longitude, latitude).enqueue(object : Callback<Test>{
+                val api1 = KakaoAPI.create()
+                api1.getNavigate(longitude, latitude).enqueue(object : Callback<Test> {
                     override fun onResponse(call: Call<Test>, response: Response<Test>) {
                         Log.d("jsh", response.body().toString())
-                    }
 
+                        val xValue = response.body()?.documents?.get(0)?.x
+                        Log.d("xValue", xValue.toString())
+                        val yValue = response.body()?.documents?.get(0)?.y
+                        Log.d("yValue", yValue.toString())
+
+
+                        val api2 = NearbyParadidymisAPI.create()
+                        api2.getParadidymis(xValue, yValue, NearbyParadidymisAPI.SERVICE_KEY)
+                            .enqueue(object : Callback<Paradidymis> {
+                                override fun onResponse(
+                                    call: Call<Paradidymis>,
+                                    response: Response<Paradidymis>
+                                ) {
+                                    Log.d("paradidymis", response.body().toString())
+                                }
+
+                                override fun onFailure(call: Call<Paradidymis>, t: Throwable) {
+                                }
+
+                            }
+                            )
+                    }
                     override fun onFailure(call: Call<Test>, t: Throwable) {
                     }
-
-                })
-
+                }
+                )
             } else {
                 Log.d("CheckCurrentLocation", "내 위치 실패12")
             }
         } catch (e: SecurityException) {
         }
     }
-
-
 }

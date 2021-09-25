@@ -1,4 +1,4 @@
-package com.example.finedust.data
+package com.example.finedust.data.Kakao
 
 data class Test(
     val documents: List<DocumentX>,
