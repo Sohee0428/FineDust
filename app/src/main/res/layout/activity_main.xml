@@ -24,19 +24,10 @@
         android:textColor="@color/black"
         android:textSize="35sp" />
 
-    <TextView
-        android:id="@+id/alertLevel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:text="경보 단계"
-        android:textColor="@color/black"
-        android:textSize="35sp" />
-
     <ImageView
         android:id="@+id/stateImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:padding="10dp"
         android:src="@mipmap/ic_launcher" />
 
@@ -52,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="미세먼지 농도 : "
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/fineConcentration"
@@ -60,7 +51,7 @@
             android:layout_height="wrap_content"
             android:text=" 농도"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
     </LinearLayout>
 
@@ -75,7 +66,7 @@
             android:layout_height="wrap_content"
             android:text="미세먼지 단계 : "
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/fineLevel"
@@ -83,54 +74,9 @@
             android:layout_height="wrap_content"
             android:text=" 단계"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="초미세먼지 농도 : "
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/ultrafineConcentration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" 농도"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="초미세먼지 단계 : "
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/ultrafineLevel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" 단계"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-    </LinearLayout>
 
 </LinearLayout>
