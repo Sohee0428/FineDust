@@ -14,10 +14,13 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.finedust.API.AirConditionerAPI
 import com.example.finedust.API.KakaoAPI
 import com.example.finedust.API.NearbyParadidymisAPI
+import com.example.finedust.data.Air.AirConditionerInfo
 import com.example.finedust.data.Kakao.Test
 import com.example.finedust.data.Paradidymis.Paradidymis
+import com.google.android.gms.location.LocationServices
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,10 +37,6 @@ class MainActivity : AppCompatActivity() {
         findViewById(R.id.location)
     }
 
-    private val alertLevel: TextView by lazy {
-        findViewById(R.id.alertLevel)
-    }
-
     private val stateImage: ImageView by lazy {
         findViewById(R.id.stateImage)
     }
@@ -48,14 +47,6 @@ class MainActivity : AppCompatActivity() {
 
     private val fineLevel: TextView by lazy {
         findViewById(R.id.fineLevel)
-    }
-
-    private val ultrafineConcentration: TextView by lazy {
-        findViewById(R.id.ultrafineConcentration)
-    }
-
-    private val ultrafineLevel: TextView by lazy {
-        findViewById(R.id.ultrafineLevel)
     }
 
     private val retrofit = Retrofit.Builder()
@@ -130,6 +121,10 @@ class MainActivity : AppCompatActivity() {
                 val longitude = currentLatLng.longitude
                 Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
 
+                val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                fusedLocationClient.lastLocation.addOnSuccessListener {
+                }
+
                 val api1 = KakaoAPI.create()
                 api1.getNavigate(longitude, latitude).enqueue(object : Callback<Test> {
                     override fun onResponse(call: Call<Test>, response: Response<Test>) {
@@ -140,7 +135,6 @@ class MainActivity : AppCompatActivity() {
                         val yValue = response.body()?.documents?.get(0)?.y
                         Log.d("yValue", yValue.toString())
 
-
                         val api2 = NearbyParadidymisAPI.create()
                         api2.getParadidymis(xValue, yValue, NearbyParadidymisAPI.SERVICE_KEY)
                             .enqueue(object : Callback<Paradidymis> {
@@ -149,14 +143,73 @@ class MainActivity : AppCompatActivity() {
                                     response: Response<Paradidymis>
                                 ) {
                                     Log.d("paradidymis", response.body().toString())
+
+                                    val nearbyParadidymis =
+                                        response.body()?.response?.body?.items?.get(0)?.stationName
+                                    Log.d("nearbyParadidymis", nearbyParadidymis.toString())
+
+                                    val api3 = AirConditionerAPI.create()
+                                    api3.getAirConditioner(
+                                        nearbyParadidymis,
+                                        NearbyParadidymisAPI.SERVICE_KEY
+                                    )
+                                        .enqueue(object : Callback<AirConditionerInfo> {
+                                            override fun onResponse(
+                                                call: Call<AirConditionerInfo>,
+                                                response: Response<AirConditionerInfo>
+                                            ) {
+                                                Log.d("KSH", response.body().toString())
+
+                                                val pm10Grade =
+                                                    response.body()?.response?.body?.items?.get(0)?.pm10Grade.toString()
+
+                                                data.text =
+                                                    response.body()?.response?.body?.items?.get(0)?.dataTime
+                                                fineConcentration.text =
+                                                    response.body()?.response?.body?.items?.get(0)?.pm10Value + "㎍/㎥"
+                                                fineLevel.text = when (pm10Grade) {
+                                                    "1" -> {
+                                                        "좋음"
+                                                    }
+                                                    "2" -> {
+                                                        "보통"
+                                                    }
+                                                    "3" -> {
+                                                        "나쁨"
+                                                    }
+                                                    else -> {
+                                                        "매우 나쁨"
+                                                    }
+                                                }
+
+                                                when (pm10Grade) {
+                                                    "1" -> stateImage.setImageResource(R.drawable.ic_baseline_mood_24)
+                                                    "2" -> stateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
+                                                    "3" -> stateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
+                                                    "4" -> stateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
+
+                                                }
+
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<AirConditionerInfo>,
+                                                t: Throwable
+                                            ) {
+                                            }
+                                        }
+                                        )
                                 }
 
-                                override fun onFailure(call: Call<Paradidymis>, t: Throwable) {
+                                override fun onFailure(
+                                    call: Call<Paradidymis>,
+                                    t: Throwable
+                                ) {
                                 }
-
                             }
                             )
                     }
+
                     override fun onFailure(call: Call<Test>, t: Throwable) {
                     }
                 }
