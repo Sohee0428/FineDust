@@ -33,7 +33,6 @@ interface NearbyParadidymisAPI {
             val headerInterceptor = Interceptor {
                 val request = it.request()
                     .newBuilder()
-                    .addHeader("SERVICE_KEY", SERVICE_KEY)
                     .build()
                 return@Interceptor it.proceed(request)
             }
