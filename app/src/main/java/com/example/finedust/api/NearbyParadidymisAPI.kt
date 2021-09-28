@@ -1,6 +1,6 @@
-package com.example.finedust.API
+package com.example.finedust.api
 
-import com.example.finedust.data.Paradidymis.Paradidymis
+import com.example.finedust.data.paradidymis.Paradidymis
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

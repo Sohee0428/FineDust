@@ -1,4 +1,4 @@
-package com.example.finedust.data.Air
+package com.example.finedust.data.air
 
 data class Body(
     val items: List<Item>,
