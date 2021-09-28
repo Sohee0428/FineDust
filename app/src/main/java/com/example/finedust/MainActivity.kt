@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         activityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        activityDataBinding.activity = this
 
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -170,14 +169,10 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     Log.d("KSH", response.body().toString())
 
+                    activityDataBinding.dataItem = response.body()?.response?.body?.items?.get(0)
+
                     val pm10Grade =
                         response.body()?.response?.body?.items?.get(0)?.pm10Grade.toString()
-
-                    activityDataBinding.date.text =
-                        response.body()?.response?.body?.items?.get(0)?.dataTime
-
-                    activityDataBinding.fineConcentration.text =
-                        response.body()?.response?.body?.items?.get(0)?.pm10Value + "㎍/㎥"
 
                     fineDustGrade(pm10Grade)
                     fineDustGradeImage(pm10Grade)
