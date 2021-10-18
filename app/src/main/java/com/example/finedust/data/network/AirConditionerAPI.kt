@@ -1,6 +1,6 @@
-package com.example.finedust.api
+package com.example.finedust.data.network
 
-import com.example.finedust.data.air.AirConditionerInfo
+import com.example.finedust.data.response.air.AirConditionerInfo
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

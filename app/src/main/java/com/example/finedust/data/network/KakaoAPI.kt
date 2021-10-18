@@ -1,6 +1,6 @@
-package com.example.finedust.api
+package com.example.finedust.data.network
 
-import com.example.finedust.data.paradidymis.Paradidymis
+import com.example.finedust.data.response.kakao.KakaoResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,21 +10,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NearbyParadidymisAPI {
-    @GET("/B552584/MsrstnInfoInqireSvc/getNearbyMsrstnList?returnType=json")
-    fun getParadidymis(
-        @Query("tmX") tmX: Double?,
-        @Query("tmY") tmY: Double?,
-        @Query("serviceKey", encoded = true) key: String
-    ): Call<Paradidymis>
+interface KakaoAPI {
+    @GET("/v2/local/geo/transcoord.json?input_coord=WGS84&output_coord=TM")
+    fun getNavigate(
+        @Query("x") x: Double,
+        @Query("y") y: Double
+    ): Call<KakaoResponse>
 
     companion object {
-        private const val BASE_URL_PARADIDYMIS_API =
-            "http://apis.data.go.kr"
-        val SERVICE_KEY =
-            "M66ovFn84Is25oHoO6tQEVwPVD83anrxkIon8fsxQytUaSNJ2nRQPOMs5MJh8Cb1GfXYVi8L3t87tz1j%2FpncMQ%3D%3D"
+        private const val BASE_URL_KAKAO_API =
+            "https://dapi.kakao.com"
+        private const val REST_API_KEY = "0a352b947957bcb5250fb9211226fc92"
 
-        fun create(): NearbyParadidymisAPI {
+        fun create(): KakaoAPI {
 //            데이터를 넘겨받아 어떤 데이터를 받았는지 검색
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -33,6 +31,7 @@ interface NearbyParadidymisAPI {
             val headerInterceptor = Interceptor {
                 val request = it.request()
                     .newBuilder()
+                    .addHeader("Authorization", "KakaoAK $REST_API_KEY")
                     .build()
                 return@Interceptor it.proceed(request)
             }
@@ -43,11 +42,11 @@ interface NearbyParadidymisAPI {
                 .build()
 
             return Retrofit.Builder()
-                .baseUrl(BASE_URL_PARADIDYMIS_API)
+                .baseUrl(BASE_URL_KAKAO_API)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(NearbyParadidymisAPI::class.java)
+                .create(KakaoAPI::class.java)
 
         }
     }

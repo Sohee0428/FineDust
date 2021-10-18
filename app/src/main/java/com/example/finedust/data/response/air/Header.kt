@@ -1,4 +1,4 @@
-package com.example.finedust.data.air
+package com.example.finedust.data.response.air
 
 data class Header(
     val resultCode: String,

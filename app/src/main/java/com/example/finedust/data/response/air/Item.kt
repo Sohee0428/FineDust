@@ -1,4 +1,4 @@
-package com.example.finedust.data.air
+package com.example.finedust.data.response.air
 
 data class Item(
     val coFlag: Any,

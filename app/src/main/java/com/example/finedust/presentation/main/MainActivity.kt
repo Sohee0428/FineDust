@@ -1,4 +1,4 @@
-package com.example.finedust
+package com.example.finedust.presentation.main
 
 import android.Manifest
 import android.content.Context
@@ -12,12 +12,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.example.finedust.api.AirConditionerAPI
-import com.example.finedust.api.KakaoAPI
-import com.example.finedust.api.NearbyParadidymisAPI
-import com.example.finedust.data.air.AirConditionerInfo
-import com.example.finedust.data.kakao.Test
-import com.example.finedust.data.paradidymis.Paradidymis
+import com.example.finedust.R
+import com.example.finedust.data.network.AirConditionerAPI
+import com.example.finedust.data.network.KakaoAPI
+import com.example.finedust.data.network.NearbyParadidymisAPI
+import com.example.finedust.data.response.air.AirConditionerInfo
+import com.example.finedust.data.response.kakao.KakaoResponse
+import com.example.finedust.data.response.paradidymis.Paradidymis
 import com.example.finedust.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -111,8 +112,8 @@ class MainActivity : AppCompatActivity() {
 
     fun navigateAPI(latitude: Double, longitude: Double) {
 
-        api1.getNavigate(longitude, latitude).enqueue(object : Callback<Test> {
-            override fun onResponse(call: Call<Test>, response: Response<Test>) {
+        api1.getNavigate(longitude, latitude).enqueue(object : Callback<KakaoResponse> {
+            override fun onResponse(call: Call<KakaoResponse>, response: Response<KakaoResponse>) {
                 Log.d("jsh", response.body().toString())
 
                 val xValue = response.body()?.documents?.get(0)?.x
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 nearbyParadidymis(xValue, yValue)
             }
 
-            override fun onFailure(call: Call<Test>, t: Throwable) {
+            override fun onFailure(call: Call<KakaoResponse>, t: Throwable) {
             }
         }
         )
@@ -169,11 +170,12 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     Log.d("KSH", response.body().toString())
 
-                    activityDataBinding.dataItem = response.body()?.response?.body?.items?.get(0)
+                    val pm10Value = response.body()?.airResponse?.body?.items?.get(0)?.pm10Value.toString()
 
                     val pm10Grade =
-                        response.body()?.response?.body?.items?.get(0)?.pm10Grade.toString()
+                        response.body()?.airResponse?.body?.items?.get(0)?.pm10Grade.toString()
 
+                    activityDataBinding.fineConcentration.text = pm10Value
                     fineDustGrade(pm10Grade)
                     fineDustGradeImage(pm10Grade)
                 }
@@ -201,7 +203,7 @@ class MainActivity : AppCompatActivity() {
             "1" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_mood_24)
             "2" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
             "3" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
-            "4" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
+            else -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
         }
     }
 }

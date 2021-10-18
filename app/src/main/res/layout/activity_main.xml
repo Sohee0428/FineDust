@@ -5,10 +5,8 @@
     <data>
         <variable
             name="activity"
-            type="com.example.finedust.MainActivity" />
-        <variable
-            name="dataItem"
-            type="com.example.finedust.data.air.Item" />
+            type="com.example.finedust.presentation.main.MainActivity" />
+
     </data>
 
     <LinearLayout
@@ -17,14 +15,13 @@
         android:gravity="center|top"
         android:orientation="vertical"
         android:padding="20dp"
-        tools:context=".MainActivity">
+        tools:context=".presentation.main.MainActivity">
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="날짜"
-            android:text="@{dataItem.dataTime}"
             android:textColor="@color/black"
             android:textSize="35sp" />
 
@@ -62,7 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="농도"
-                android:text="@{dataItem.pm10Value}"
                 android:textColor="@color/black"
                 android:textSize="30sp" />
 

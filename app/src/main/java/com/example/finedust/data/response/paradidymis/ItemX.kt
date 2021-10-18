@@ -1,4 +1,4 @@
-package com.example.finedust.data.paradidymis
+package com.example.finedust.data.response.paradidymis
 
 data class ItemX(
     val addr: String,
