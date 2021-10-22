@@ -194,7 +194,8 @@ class MainActivity : AppCompatActivity() {
             "1" -> "좋음"
             "2" -> "보통"
             "3" -> "나쁨"
-            else -> "매우 나쁨"
+            "4" -> "매우 나쁨"
+            else -> "오류"
         }
     }
 
@@ -203,7 +204,8 @@ class MainActivity : AppCompatActivity() {
             "1" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_mood_24)
             "2" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
             "3" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
-            else -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
+            "4" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
+            else -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_error_24)
         }
     }
 }
