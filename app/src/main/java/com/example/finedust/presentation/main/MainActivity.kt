@@ -15,8 +15,10 @@ import androidx.databinding.DataBindingUtil
 import com.example.finedust.R
 import com.example.finedust.data.network.AirConditionerAPI
 import com.example.finedust.data.network.KakaoAPI
+import com.example.finedust.data.network.KakaoAddressAPI
 import com.example.finedust.data.network.NearbyParadidymisAPI
-import com.example.finedust.data.response.air.AirConditionerInfo
+import com.example.finedust.data.response.address.AddressResponse
+import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
 import com.example.finedust.data.response.paradidymis.Paradidymis
 import com.example.finedust.databinding.ActivityMainBinding
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     val api1 = KakaoAPI.create()
     val api2 = NearbyParadidymisAPI.create()
+    val api4 = KakaoAddressAPI.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +106,8 @@ class MainActivity : AppCompatActivity() {
 
                 navigateAPI(latitude, longitude)
 
+                addressAPI(latitude, longitude)
+
             } else {
                 Log.d("CheckCurrentLocation", "내 위치 실패12")
             }
@@ -125,6 +130,25 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<KakaoResponse>, t: Throwable) {
+            }
+        }
+        )
+    }
+
+    fun addressAPI(latitude: Double, longitude: Double) {
+
+        api4.getNavigate(longitude, latitude).enqueue(object : Callback<AddressResponse> {
+            override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
+                Log.d("address", response.body().toString())
+
+                val addressName = response.body()?.documents?.get(0)?.road_address?.address_name
+                Log.d("addressName", addressName.toString())
+
+                activityDataBinding.location.text = addressName
+
+            }
+
+            override fun onFailure(call: Call<AddressResponse>, t: Throwable) {
             }
         }
         )
