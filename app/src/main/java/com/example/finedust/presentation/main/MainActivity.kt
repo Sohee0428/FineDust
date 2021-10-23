@@ -187,17 +187,16 @@ class MainActivity : AppCompatActivity() {
             nearbyParadidymis,
             NearbyParadidymisAPI.SERVICE_KEY
         )
-            .enqueue(object : Callback<AirConditionerInfo> {
+            .enqueue(object : Callback<AirResponse> {
                 override fun onResponse(
-                    call: Call<AirConditionerInfo>,
-                    response: Response<AirConditionerInfo>
+                    call: Call<AirResponse>,
+                    response: Response<AirResponse>
                 ) {
-                    Log.d("KSH", response.body().toString())
+                    Log.d("airconditioner", response.body().toString())
 
-                    val pm10Value = response.body()?.airResponse?.body?.items?.get(0)?.pm10Value.toString()
-
+                    val pm10Value = response.body()?.response?.body?.items?.get(0)?.pm10Value
                     val pm10Grade =
-                        response.body()?.airResponse?.body?.items?.get(0)?.pm10Grade.toString()
+                        response.body()?.response?.body?.items?.get(0)?.pm10Grade.toString()
 
                     activityDataBinding.fineConcentration.text = pm10Value
                     fineDustGrade(pm10Grade)
@@ -205,7 +204,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(
-                    call: Call<AirConditionerInfo>,
+                    call: Call<AirResponse>,
                     t: Throwable
                 ) {
                 }
