@@ -6,25 +6,26 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object KakaoAddressCreator {
+object KakaoCreator {
 
     private const val BASE_URL_KAKAO_API =
         "https://dapi.kakao.com"
     private const val REST_API_KEY = "0a352b947957bcb5250fb9211226fc92"
 
-    fun create(): KakaoAddressAPI {
+    fun create(): KakaoAPI {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL_KAKAO_API)
-            .client(getClint())
+            .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(KakaoAddressAPI::class.java)
+            .create(KakaoAPI::class.java)
+
     }
 
-    private fun getClint(): OkHttpClient {
+    private fun getClient(): OkHttpClient {
 
-//            데이터를 넘겨받아 어떤 데이터를 받았는지 검색
+        //            데이터를 넘겨받아 어떤 데이터를 받았는지 검색
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
@@ -32,7 +33,6 @@ object KakaoAddressCreator {
             .addInterceptor(getInterceptor())
             .addInterceptor(httpLoggingInterceptor)
             .build()
-
     }
 
     private fun getInterceptor(): Interceptor {
@@ -46,6 +46,3 @@ object KakaoAddressCreator {
         }
     }
 }
-
-
-
