@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -28,6 +29,11 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private val mainViewModel: MainViewModel by viewModels()
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+
     lateinit var activityDataBinding: ActivityMainBinding
 
     val api1 = KakaoAPI.create()
@@ -38,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         activityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        activityDataBinding.viewModel = mainViewModel
 
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -77,11 +84,41 @@ class MainActivity : AppCompatActivity() {
 ////            권한이 있는 경우
 //                    ActivityCompat.requestPermissions(this, Array<String>)
 //            } else if (shouldShowRequestPermissionRationale)
+
+        Log.d("주소",mainViewModel.address.toString())
+
+        mainViewModel.address.observe(this) {
+            activityDataBinding.location.text = it.address_name
+        }
+
+        mainViewModel.airConditionerItems.observe(this) {
+            Log.d("미세먼지", it.pm10Value)
+            val pm10Grade = it.pm10Grade
+            fineDustGrade(pm10Grade)
+            fineDustGradeImage(pm10Grade)
+        }
     }
 //    onCreate 함수 외부 ▽
 
     private fun getLocation() {
         try {
+
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+
+            }
+
+            fun createLocationRequest() {
+                val locationRequest = LocationRequest.create()?.apply {
+                    interval = 10000
+                    fastestInterval = 5000
+                    priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                }
+            }
+
+            val builder = LocationSettingsRequest.Builder().addAllLocationRequests(locationre)
+
+
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val locationProvider = LocationManager.GPS_PROVIDER
             val locationListener = LocationListener {
@@ -104,10 +141,7 @@ class MainActivity : AppCompatActivity() {
 //                fusedLocationClient.lastLocation.addOnSuccessListener {
 //                }
 
-                navigateAPI(latitude, longitude)
-
-                addressAPI(latitude, longitude)
-
+                mainViewModel.navigate(latitude, longitude)
             } else {
                 Log.d("CheckCurrentLocation", "내 위치 실패12")
             }
