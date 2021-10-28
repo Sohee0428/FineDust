@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.airConditionerItems.observe(this) {
             Log.d("미세먼지", it.pm10Value)
+            activityDataBinding.fineConcentration.text = it?.pm10Value
             val pm10Grade = it.pm10Grade
             fineDustGrade(pm10Grade)
             fineDustGradeImage(pm10Grade)
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 //                fusedLocationClient.lastLocation.addOnSuccessListener {
 //                }
 
+                mainViewModel.address(latitude, longitude)
                 mainViewModel.navigate(latitude, longitude)
             } else {
                 Log.d("CheckCurrentLocation", "내 위치 실패12")
