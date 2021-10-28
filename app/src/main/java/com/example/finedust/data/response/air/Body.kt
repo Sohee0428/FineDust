@@ -1,6 +1,6 @@
 package com.example.finedust.data.response.air
 
-data class BodyX(
-    val items: List<ItemX>,
+data class Body(
+    val items: List<Item>,
     val totalCount: Int
 )

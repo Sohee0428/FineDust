@@ -1,12 +1,13 @@
 package com.example.finedust.data.response.air
 
-data class ItemX(
+data class Item(
     val coFlag: Any,
     val coGrade: String,
     val coValue: String,
     val dataTime: String,
     val khaiGrade: String,
     val khaiValue: String,
+    val mangName: String,
     val no2Flag: Any,
     val no2Grade: String,
     val no2Value: String,
@@ -15,7 +16,14 @@ data class ItemX(
     val o3Value: String,
     val pm10Flag: Any,
     val pm10Grade: String,
+    val pm10Grade1h: String,
     val pm10Value: String,
+    val pm10Value24: String,
+    val pm25Flag: Any,
+    val pm25Grade: String,
+    val pm25Grade1h: String,
+    val pm25Value: String,
+    val pm25Value24: String,
     val so2Flag: Any,
     val so2Grade: String,
     val so2Value: String

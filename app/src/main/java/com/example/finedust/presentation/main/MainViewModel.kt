@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.finedust.data.repository.MainRepository
 import com.example.finedust.data.repository.MainRepositoryImpl
+import com.example.finedust.data.response.address.Address
 import com.example.finedust.data.response.address.AddressResponse
-import com.example.finedust.data.response.address.RoadAddress
 import com.example.finedust.data.response.air.AirResponse
-import com.example.finedust.data.response.air.ItemX
+import com.example.finedust.data.response.air.Item
 import com.example.finedust.data.response.kakao.KakaoResponse
 import com.example.finedust.data.response.paradidymis.Paradidymis
 import retrofit2.Call
@@ -19,12 +19,12 @@ class MainViewModel() : ViewModel() {
 
     private val repository: MainRepository = MainRepositoryImpl()
 
-    private val _airConditionerItems: MutableLiveData<ItemX> = MutableLiveData()
-    val airConditionerItems: LiveData<ItemX>
+    private val _airConditionerItems: MutableLiveData<Item> = MutableLiveData()
+    val airConditionerItems: LiveData<Item>
         get() = _airConditionerItems
 
-    private val _address: MutableLiveData<RoadAddress> = MutableLiveData()
-    val address: LiveData<RoadAddress>
+    private val _address: MutableLiveData<Address> = MutableLiveData()
+    val address: LiveData<Address>
         get() = _address
 
     fun navigate(latitude: Double, longitude: Double) {
@@ -50,7 +50,7 @@ class MainViewModel() : ViewModel() {
                 call: Call<AddressResponse>,
                 response: Response<AddressResponse>
             ) {
-                _address.value = response.body()!!.documents[0].road_address
+                _address.value = response.body()!!.documents[0].address
             }
             override fun onFailure(call: Call<AddressResponse>, t: Throwable) {
             }
