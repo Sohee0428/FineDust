@@ -16,13 +16,13 @@ object KakaoAddressCreator {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL_KAKAO_API)
-            .client(getClint())
+            .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(KakaoAddressAPI::class.java)
     }
 
-    private fun getClint(): OkHttpClient {
+    private fun getClient(): OkHttpClient {
 
 //            데이터를 넘겨받아 어떤 데이터를 받았는지 검색
         val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -32,7 +32,6 @@ object KakaoAddressCreator {
             .addInterceptor(getInterceptor())
             .addInterceptor(httpLoggingInterceptor)
             .build()
-
     }
 
     private fun getInterceptor(): Interceptor {

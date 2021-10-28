@@ -20,7 +20,7 @@ class MainRepositoryImpl : MainRepository {
         remoteDataSource.getAddress(latitude, longitude, callback)
     }
 
-    override fun getKakaoItems(
+    override fun getKakaoLatLon(
         latitude: Double,
         longitude: Double,
         callback: Callback<KakaoResponse>

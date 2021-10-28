@@ -9,7 +9,7 @@ import retrofit2.Callback
 interface MainRepository {
 
     fun getAddress(latitude: Double, longitude: Double, callback: Callback<AddressResponse>)
-    fun getKakaoItems(latitude: Double, longitude: Double, callback: Callback<KakaoResponse>)
+    fun getKakaoLatLon(latitude: Double, longitude: Double, callback: Callback<KakaoResponse>)
     fun getParadidymisItems(xValue: Double, yValue: Double, callback: Callback<Paradidymis>)
     fun getAirConditionerItems(nearbyParadidymis: String, callback: Callback<AirResponse>)
 

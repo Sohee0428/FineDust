@@ -22,7 +22,7 @@ class RemoteDataSourceImpl() : RemoteDataSource {
         longitude: Double,
         callback: Callback<AddressResponse>
     ) {
-        addressService.getNavigate(latitude, longitude).enqueue(callback)
+        addressService.getAddress(longitude, latitude).enqueue(callback)
     }
 
     override fun getKakaoItems(

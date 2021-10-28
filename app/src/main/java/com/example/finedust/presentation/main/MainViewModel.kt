@@ -40,7 +40,7 @@ class MainViewModel() : ViewModel() {
             override fun onFailure(call: Call<KakaoResponse>, t: Throwable) {
             }
         }
-        repository.getKakaoItems(latitude, longitude, callback)
+        repository.getKakaoLatLon(latitude, longitude, callback)
     }
 
     fun address(latitude: Double, longitude: Double) {

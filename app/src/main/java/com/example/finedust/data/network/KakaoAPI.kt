@@ -18,7 +18,7 @@ interface KakaoAPI {
 interface KakaoAddressAPI {
 
     @GET("/v2/local/geo/coord2address.json?")
-    fun getNavigate(
+    fun getAddress(
         @Query("x") x: Double,
         @Query("y") y: Double
     ): Call<AddressResponse>
