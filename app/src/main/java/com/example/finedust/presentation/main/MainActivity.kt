@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity() {
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (isGranted) {
-                    Log.d("jsh", "test3")
+                    Log.d("위치 허가", "requestPermission Success")
                     getLocation()
                 } else {
-                    Log.d("jsh", "test4")
+                    Log.d("위치 허가", "requestPermission Fail")
                     // Explain to the user that the feature is unavailable because the
                     // features requires a permission that the user has denied. At the
                     // same time, respect the user's decision. Don't link to system
@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("주소",mainViewModel.address.toString())
 
         mainViewModel.address.observe(this) {
+            Log.d("구주소", it.address_name)
             activityDataBinding.location.text = it.address_name
         }
 

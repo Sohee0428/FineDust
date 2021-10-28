@@ -1,5 +1,6 @@
 package com.example.finedust.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,6 +35,7 @@ class MainViewModel() : ViewModel() {
                 val xValue = response.body()!!.documents[0].x
                 val yValue = response.body()!!.documents[0].y
 
+                Log.d("tm 주소", "$xValue, $yValue")
                 nearbyParadidymis(xValue, yValue)
             }
 
@@ -63,6 +65,7 @@ class MainViewModel() : ViewModel() {
         val callback = object : Callback<Paradidymis> {
             override fun onResponse(call: Call<Paradidymis>, response: Response<Paradidymis>) {
                 val stationName = response.body()!!.response.body.items[0].stationName
+                Log.d("관측소", stationName)
                 airConditioner(stationName)
             }
             override fun onFailure(call: Call<Paradidymis>, t: Throwable) {
