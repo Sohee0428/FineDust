@@ -15,14 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.finedust.R
 import com.example.finedust.databinding.ActivityMainBinding
-import com.google.android.gms.location.LocationServices
 
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
 
     lateinit var activityDataBinding: ActivityMainBinding
 
@@ -89,26 +85,9 @@ class MainActivity : AppCompatActivity() {
     private fun getLocation() {
         try {
 
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
-
-            }
-
-            fun createLocationRequest() {
-                val locationRequest = LocationRequest.create()?.apply {
-                    interval = 10000
-                    fastestInterval = 5000
-                    priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                }
-            }
-
-            val builder = LocationSettingsRequest.Builder().addAllLocationRequests(locationre)
-
-
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val locationProvider = LocationManager.GPS_PROVIDER
             val locationListener = LocationListener {
-
             }
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,

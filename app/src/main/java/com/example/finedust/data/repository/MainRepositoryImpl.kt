@@ -1,6 +1,5 @@
 package com.example.finedust.data.repository
 
-import android.util.Log
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
