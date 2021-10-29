@@ -115,6 +115,9 @@ class MainActivity : AppCompatActivity() {
 
                 mainViewModel.address(latitude, longitude)
                 mainViewModel.navigate(latitude, longitude)
+
+                getAddressData()
+                getAirConditionData()
             } else {
                 Log.d("CheckCurrentLocation", "내 위치 실패12")
             }
