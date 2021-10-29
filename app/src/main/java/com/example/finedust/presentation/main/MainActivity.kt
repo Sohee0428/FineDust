@@ -15,6 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.finedust.R
 import com.example.finedust.databinding.ActivityMainBinding
+import com.gun0912.tedpermission.PermissionListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         activityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         activityDataBinding.viewModel = mainViewModel
+
+        date()
 
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -171,6 +176,15 @@ class MainActivity : AppCompatActivity() {
             "4" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
             else -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_error_24)
         }
+    }
+
+    fun date() {
+        val long_now = System.currentTimeMillis()
+        val t_date = Date(long_now)
+        val t_dateFormat = SimpleDateFormat("yyyy-mm-dd kk:mm E", Locale("ko", "KR"))
+        val str_date = t_dateFormat.format(t_date)
+
+        activityDataBinding.date.text = str_date
     }
 
     fun getAddressData() {
