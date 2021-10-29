@@ -14,10 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.finedust.R
+import com.example.finedust.data.date.LocalDate
 import com.example.finedust.databinding.ActivityMainBinding
 import com.gun0912.tedpermission.PermissionListener
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,8 +30,18 @@ class MainActivity : AppCompatActivity() {
         activityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         activityDataBinding.viewModel = mainViewModel
 
-        date()
+        activityDataBinding.date.text = LocalDate().str_date
 
+        val permissionSuccessListener = object : PermissionListener {
+            override fun onPermissionGranted() {
+                getLocation()
+            }
+            override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                onDestroy()
+            }
+        }
+
+//        이거 사용하는 이유? -> TedPermission 이용함
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
@@ -74,17 +83,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("주소",mainViewModel.address.toString())
 
-        mainViewModel.address.observe(this) {
-            Log.d("구주소", it.address_name)
-            activityDataBinding.location.text = it.address_name
-        }
-
-        mainViewModel.airConditionerItems.observe(this) {
-            Log.d("미세먼지", it.pm10Value)
-            activityDataBinding.fineConcentration.text = it?.pm10Value
-            val pm10Grade = it.pm10Grade
-            fineDustGrade(pm10Grade)
-            fineDustGradeImage(pm10Grade)
+        activityDataBinding.locationUpdateImg.setOnClickListener {
+            getLocation()
         }
     }
 //    onCreate 함수 외부 ▽
