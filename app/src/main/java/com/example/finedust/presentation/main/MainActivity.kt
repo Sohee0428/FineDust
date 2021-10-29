@@ -117,8 +117,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun fineDustGrade(pm10Grade: String) {
-        activityDataBinding.fineLevel.text = when (pm10Grade) {
+    fun getAirConditionData(){
+        mainViewModel.airConditionerItems.observe(this) {
+            Log.d("미세먼지", "미세먼지 = ${it.pm10Value}, 초미세먼지 = ${it.pm25Value}")
+            activityDataBinding.pm10Value.text = it?.pm10Value
+            activityDataBinding.pm25Value.text = it?.pm25Value
+            val pm10Grade = it.pm10Grade
+            val pm25Grade = it.pm25Grade
+
+            pm10Grade(pm10Grade)
+            pm10GradeImage(pm10Grade)
+
+            pm25Grade(pm25Grade)
+            pm25GradeImage(pm25Grade)
+        }
+    }
+
+    fun pm10Grade(pm10Grade: String) {
+        activityDataBinding.pm10Grade.text = when (pm10Grade) {
             "1" -> "좋음"
             "2" -> "보통"
             "3" -> "나쁨"
@@ -127,13 +143,49 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun fineDustGradeImage(pm10Grade: String) {
+    fun pm25Grade(pm25Grade: String) {
+        activityDataBinding.pm25Grade.text = when (pm25Grade) {
+            "1" -> "좋음"
+            "2" -> "보통"
+            "3" -> "나쁨"
+            "4" -> "매우 나쁨"
+            else -> "오류"
+        }
+    }
+
+    fun pm10GradeImage(pm10Grade: String) {
         when (pm10Grade) {
-            "1" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_mood_24)
-            "2" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
-            "3" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
-            "4" -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
-            else -> activityDataBinding.stateImage.setImageResource(R.drawable.ic_baseline_error_24)
+            "1" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_mood_24)
+            "2" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
+            "3" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
+            "4" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
+            else -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_error_24)
+        }
+    }
+
+    fun pm25GradeImage(pm25Grade: String) {
+        when (pm25Grade) {
+            "1" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_mood_24)
+            "2" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
+            "3" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
+            "4" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
+            else -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_error_24)
+        }
+    }
+
+    fun getAddressData() {
+        mainViewModel.preAddress.observe(this) {
+            activityDataBinding.locationData.text = it.address_name
+//            if (it.road_address.address_name!!.isNullOrEmpty()) {
+//                Log.d("주소", "신 주소 = ${it.road_address.address_name}")
+//                activityDataBinding.location.text = it.road_address.address_name
+//            }
+//            if (it.road_address.address_name.isNullOrEmpty() && it.address.address_name!!.isNullOrEmpty()){
+//                Log.d("주소", "구 주소 = ${it.address.address_name}")
+//                activityDataBinding.location.text = it.address.address_name
+//            } else {
+//                Toast.makeText(this, "주소를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }
