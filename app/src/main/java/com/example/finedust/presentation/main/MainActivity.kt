@@ -181,15 +181,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun date() {
-        val long_now = System.currentTimeMillis()
-        val t_date = Date(long_now)
-        val t_dateFormat = SimpleDateFormat("yyyy-mm-dd kk:mm E", Locale("ko", "KR"))
-        val str_date = t_dateFormat.format(t_date)
-
-        activityDataBinding.date.text = str_date
-    }
-
     fun getAddressData() {
         mainViewModel.preAddress.observe(this) {
             activityDataBinding.locationData.text = it.address_name
