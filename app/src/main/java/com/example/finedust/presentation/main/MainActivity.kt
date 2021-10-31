@@ -50,12 +50,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("위치 허가", "requestPermission Success")
                     getLocation()
                 } else {
-                    Log.d("위치 허가", "requestPermission Fail")
-                    // Explain to the user that the feature is unavailable because the
-                    // features requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
+                    Log.d("위치 불허", "requestPermission Fail")
                 }
             }
 
@@ -64,34 +59,31 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d("jsh", "test1")
+                Log.d("checkSelfPermission", "checkPermission Success")
                 getLocation()
             }
             else -> {
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
-                Log.d("jsh", "test2")
+                Log.d("checkSelfPermission", "checkPermission Fail")
                 requestPermissionLauncher.launch(
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
+//                TedPermission.create()
+//                    .setPermissionListener(permissionSuccessListener)
+//                    .setDeniedMessage("권한이 거절되어 사용할 수 없습니다. [설정]으로 이동하여 권한을 허가해주어야 합니다.")
+//                    .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+//                    .check()
             }
         }
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-////            권한이 있는 경우
-//                    ActivityCompat.requestPermissions(this, Array<String>)
-//            } else if (shouldShowRequestPermissionRationale)
-
-        Log.d("주소",mainViewModel.address.toString())
 
         activityDataBinding.locationUpdateImg.setOnClickListener {
             getLocation()
         }
     }
+
 //    onCreate 함수 외부 ▽
 
     private fun getLocation() {
         try {
-
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val locationProvider = LocationManager.GPS_PROVIDER
             val locationListener = LocationListener {
@@ -118,10 +110,12 @@ class MainActivity : AppCompatActivity() {
 
                 getAddressData()
                 getAirConditionData()
+
             } else {
-                Log.d("CheckCurrentLocation", "내 위치 실패12")
+                Log.d("CheckCurrentLocation", "현 위치 실패")
             }
         } catch (e: SecurityException) {
+            Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
         }
     }
 
@@ -184,6 +178,7 @@ class MainActivity : AppCompatActivity() {
     fun getAddressData() {
         mainViewModel.preAddress.observe(this) {
             activityDataBinding.locationData.text = it.address_name
+
 //            if (it.road_address.address_name!!.isNullOrEmpty()) {
 //                Log.d("주소", "신 주소 = ${it.road_address.address_name}")
 //                activityDataBinding.location.text = it.road_address.address_name
@@ -194,6 +189,7 @@ class MainActivity : AppCompatActivity() {
 //            } else {
 //                Toast.makeText(this, "주소를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
 //            }
+
         }
     }
 }
