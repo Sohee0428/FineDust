@@ -8,6 +8,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -176,20 +177,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getAddressData() {
+        mainViewModel.newAddress.observe(this) {
+         Log.d("신주소", it.address_name)
+                activityDataBinding.locationData.text = it.address_name
+        }
         mainViewModel.preAddress.observe(this) {
+            Log.d("구주소", it.address_name)
             activityDataBinding.locationData.text = it.address_name
-
-//            if (it.road_address.address_name!!.isNullOrEmpty()) {
-//                Log.d("주소", "신 주소 = ${it.road_address.address_name}")
-//                activityDataBinding.location.text = it.road_address.address_name
-//            }
-//            if (it.road_address.address_name.isNullOrEmpty() && it.address.address_name!!.isNullOrEmpty()){
-//                Log.d("주소", "구 주소 = ${it.address.address_name}")
-//                activityDataBinding.location.text = it.address.address_name
-//            } else {
-//                Toast.makeText(this, "주소를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
-//            }
-
+        }
+        mainViewModel.addressNull.observe(this) {
+            Log.d("주소", "주소 값을 불러오지 못함.")
+            Toast.makeText(this, "주소를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

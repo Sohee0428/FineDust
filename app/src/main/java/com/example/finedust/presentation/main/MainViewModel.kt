@@ -62,7 +62,16 @@ class MainViewModel() : ViewModel() {
                 call: Call<AddressResponse>,
                 response: Response<AddressResponse>
             ) {
-                _address.value = response.body()!!.documents[0].address
+                 Log.d("주소", "신주소 : ${response.body()!!.documents[0].road_address}," +
+                         "구주소 : ${response.body()!!.documents[0].address}")
+                if (response.body()!!.documents[0].road_address != null) {
+                    _newAddress.value = response.body()!!.documents[0].road_address
+                } else if (response.body()!!.documents[0].address != null) {
+                    _preAddress.value = response.body()!!.documents[0].address
+                } else {
+                    _addressNull.value = Unit
+                }
+
             }
             override fun onFailure(call: Call<AddressResponse>, t: Throwable) {
                 Log.e("addressResponse", "에러 발생")
