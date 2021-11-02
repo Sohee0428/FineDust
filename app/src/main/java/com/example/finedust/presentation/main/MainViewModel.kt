@@ -8,6 +8,7 @@ import com.example.finedust.data.repository.MainRepository
 import com.example.finedust.data.repository.MainRepositoryImpl
 import com.example.finedust.data.response.address.Address
 import com.example.finedust.data.response.address.AddressResponse
+import com.example.finedust.data.response.address.RoadAddress
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.air.Item
 import com.example.finedust.data.response.kakao.KakaoResponse
@@ -24,9 +25,17 @@ class MainViewModel() : ViewModel() {
     val airConditionerItems: LiveData<Item>
         get() = _airConditionerItems
 
-    private val _address: MutableLiveData<Address> = MutableLiveData()
-    val address: LiveData<Address>
-        get() = _address
+    private val _preAddress: MutableLiveData<Address> = MutableLiveData()
+    val preAddress: LiveData<Address>
+        get() = _preAddress
+
+    private val _newAddress: MutableLiveData<RoadAddress> = MutableLiveData()
+    val newAddress: LiveData<RoadAddress>
+        get() = _newAddress
+
+    private val _addressNull: MutableLiveData<Unit> = MutableLiveData()
+    val addressNull: LiveData<Unit>
+        get() = _addressNull
 
     fun navigate(latitude: Double, longitude: Double) {
 
@@ -35,11 +44,12 @@ class MainViewModel() : ViewModel() {
                 val xValue = response.body()!!.documents[0].x
                 val yValue = response.body()!!.documents[0].y
 
-                Log.d("tm 주소", "$xValue, $yValue")
+                Log.d("TMAddressResponse", "$xValue, $yValue")
                 nearbyParadidymis(xValue, yValue)
             }
 
             override fun onFailure(call: Call<KakaoResponse>, t: Throwable) {
+                Log.e("TMAddressResponse", "에러 발생")
             }
         }
         repository.getKakaoLatLon(latitude, longitude, callback)
@@ -55,6 +65,7 @@ class MainViewModel() : ViewModel() {
                 _address.value = response.body()!!.documents[0].address
             }
             override fun onFailure(call: Call<AddressResponse>, t: Throwable) {
+                Log.e("addressResponse", "에러 발생")
             }
         }
         repository.getAddress(latitude, longitude, callback)
@@ -65,10 +76,12 @@ class MainViewModel() : ViewModel() {
         val callback = object : Callback<Paradidymis> {
             override fun onResponse(call: Call<Paradidymis>, response: Response<Paradidymis>) {
                 val stationName = response.body()!!.response.body.items[0].stationName
-                Log.d("관측소", stationName)
+                Log.d("paradidymisReponse", stationName)
                 airConditioner(stationName)
             }
+
             override fun onFailure(call: Call<Paradidymis>, t: Throwable) {
+                Log.e("paradidymisReponse", "에러 발생")
             }
         }
         repository.getParadidymisItems(xValue, yValue, callback)
@@ -80,7 +93,9 @@ class MainViewModel() : ViewModel() {
             override fun onResponse(call: Call<AirResponse>, response: Response<AirResponse>) {
                 _airConditionerItems.value = response.body()!!.response.body.items[0]
             }
+
             override fun onFailure(call: Call<AirResponse>, t: Throwable) {
+                Log.e("airConditionResponse", "에러 발생")
             }
         }
         repository.getAirConditionerItems(nearbyParadidymis, callback)
