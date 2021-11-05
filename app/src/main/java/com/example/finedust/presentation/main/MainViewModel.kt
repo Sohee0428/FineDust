@@ -25,6 +25,10 @@ class MainViewModel() : ViewModel() {
     val airConditionerItems: LiveData<Item>
         get() = _airConditionerItems
 
+    private val _airConditionerItemsNull: MutableLiveData<Unit> = MutableLiveData()
+    val airConditionerItemsNull: LiveData<Unit>
+        get() = _airConditionerItemsNull
+
     private val _preAddress: MutableLiveData<Address> = MutableLiveData()
     val preAddress: LiveData<Address>
         get() = _preAddress
@@ -100,7 +104,11 @@ class MainViewModel() : ViewModel() {
 
         val callback = object : Callback<AirResponse> {
             override fun onResponse(call: Call<AirResponse>, response: Response<AirResponse>) {
-                _airConditionerItems.value = response.body()!!.response.body.items[0]
+                if (response.body()!!.response.body.items[0] != null) {
+                    _airConditionerItems.value = response.body()!!.response.body.items[0]
+                } else {
+                    _airConditionerItemsNull.value = Unit
+                }
             }
 
             override fun onFailure(call: Call<AirResponse>, t: Throwable) {
