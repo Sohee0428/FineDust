@@ -25,6 +25,13 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var activityDataBinding: ActivityMainBinding
 
+    var address = arrayListOf<AddressResponse>()
+    val adapter: FinedustAdapter by lazy {
+        FinedustAdapter(this, address)
+    }
+
+    val data = mutableListOf<FinedustDao>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,15 +39,14 @@ class MainActivity : AppCompatActivity() {
         activityDataBinding.viewModel = mainViewModel
 
         activityDataBinding.date.text = LocalDate().str_date
+        activityDataBinding.recyclerView.adapter = adapter
 
-        val permissionSuccessListener = object : PermissionListener {
-            override fun onPermissionGranted() {
-                getLocation()
-            }
-            override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                onDestroy()
-            }
-        }
+        val layoutManager = LinearLayoutManager(this)
+
+//            리사이클러뷰에 아이템을 배치 후 더이상 보이지 않을 때 재사용성을 결정하는 것
+//            불필요한 findViewById를 수행하지 않음
+        activityDataBinding.recyclerView.layoutManager = layoutManager
+        activityDataBinding.recyclerView.setHasFixedSize(true)
 
 //        이거 사용하는 이유? -> TedPermission 이용함
         val requestPermissionLauncher =
