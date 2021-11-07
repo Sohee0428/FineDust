@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.finedust.data.AddressAndFineDustData
 import com.example.finedust.data.repository.MainRepository
 import com.example.finedust.data.repository.MainRepositoryImpl
 import com.example.finedust.data.response.address.Address
@@ -75,6 +76,8 @@ class MainViewModel() : ViewModel() {
                 } else {
                     _addressNull.value = Unit
                 }
+
+                navigate(latitude, longitude)
 
             }
             override fun onFailure(call: Call<AddressResponse>, t: Throwable) {

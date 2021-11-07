@@ -139,8 +139,8 @@ class MainActivity : AppCompatActivity() {
             val list = mutableListOf(data)
             adapter.addList(list)
             Log.d("미세먼지", "미세먼지 = ${it.pm10Value}, 초미세먼지 = ${it.pm25Value}")
-            activityDataBinding.pm10Value.text = it?.pm10Value
-            activityDataBinding.pm25Value.text = it?.pm25Value
+            FinedustListItemBinding.bind(View(this)).pm10Value.text = it?.pm10Value
+            FinedustListItemBinding.bind(View(this)).pm25Value.text = it?.pm25Value
             val pm10Grade = it.pm10Grade
             val pm25Grade = it.pm25Grade
 
@@ -174,11 +174,11 @@ class MainActivity : AppCompatActivity() {
 
     fun pm10GradeImage(pm10Grade: String) {
         when (pm10Grade) {
-            "1" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_mood_24)
-            "2" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
-            "3" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
-            "4" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
-            else -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.ic_baseline_error_24)
+            "1" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.perfect)
+            "2" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.soso)
+            "3" -> FinedustListItemBinding.bind(View(this)).pm10StateImage.setImageResource(R.drawable.bad)
+            "4" -> FinedustListItemBinding.bind(View(this)).pm10StateImage.setImageResource(R.drawable.verybad)
+            else -> FinedustListItemBinding.bind(View(this)).pm10StateImage.setImageResource(R.drawable.ic_baseline_error_24)
         }
     }
 
