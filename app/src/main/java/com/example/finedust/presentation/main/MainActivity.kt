@@ -128,6 +128,16 @@ class MainActivity : AppCompatActivity() {
 
     fun getAirConditionData(){
         mainViewModel.airConditionerItems.observe(this) {
+            val address = FinedustListItemBinding.bind(View(this)).locationData.text.toString()
+            val data = AddressAndFineDustData(
+                address = address,
+                pm10Value = it.pm10Value,
+                pm10Grade = it.pm10Grade,
+                pm25Value = it.pm25Value,
+                pm25Grade = it.pm25Grade
+            )
+            val list = mutableListOf(data)
+            adapter.addList(list)
             Log.d("미세먼지", "미세먼지 = ${it.pm10Value}, 초미세먼지 = ${it.pm25Value}")
             activityDataBinding.pm10Value.text = it?.pm10Value
             activityDataBinding.pm25Value.text = it?.pm25Value
