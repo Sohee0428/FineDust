@@ -23,7 +23,27 @@ class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
 
-    lateinit var activityDataBinding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
+
+    lateinit var pagerAdapter: ViewPagerAdapter
+
+    //    fragmentStateAdapter 초기화
+//    val pagerAdapter = ViewPagerAdapter(this).apply {
+//        addFragment()
+//    }
+
+//    viewPager2의 Adapter 설정
+//    val viewPager: ViewPager2 = binding.viewPager.apply {
+//        adapter = pagerAdapter
+//        registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//            }
+//        })
+//    }
+
+//   TabLayout과 Viewpager 연결
+
 
     var address = arrayListOf<AddressResponse>()
     val adapter: FinedustAdapter by lazy {
@@ -35,11 +55,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        activityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        activityDataBinding.viewModel = mainViewModel
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewModel = mainViewModel
 
-        activityDataBinding.date.text = LocalDate().str_date
-        activityDataBinding.recyclerView.adapter = adapter
+        binding.date.text = LocalDate().str_date
+        pagerAdapter = ViewPagerAdapter(this)
+        binding.viewPager.adapter = pagerAdapter
+
+        pagerAdapter.addFragment(TestFragment())
+        pagerAdapter.addFragment(TestF2ragment())
 
         val layoutManager = LinearLayoutManager(this)
 
