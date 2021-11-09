@@ -1,11 +1,7 @@
 package com.example.finedust.presentation.main
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -25,24 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
-    lateinit var pagerAdapter: ViewPagerAdapter
-
-    //    fragmentStateAdapter 초기화
-//    val pagerAdapter = ViewPagerAdapter(this).apply {
-//        addFragment()
-//    }
-
-//    viewPager2의 Adapter 설정
-//    val viewPager: ViewPager2 = binding.viewPager.apply {
-//        adapter = pagerAdapter
-//        registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//            }
-//        })
-//    }
-
-//   TabLayout과 Viewpager 연결
+    lateinit var pagerAdapter: FragmentAdapter
 
 
     var address = arrayListOf<AddressResponse>()
@@ -62,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         pagerAdapter = ViewPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
 
-        pagerAdapter.addFragment(TestFragment())
-        pagerAdapter.addFragment(TestF2ragment())
 
         val layoutManager = LinearLayoutManager(this)
 
@@ -98,121 +75,7 @@ class MainActivity : AppCompatActivity() {
                 requestPermissionLauncher.launch(
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
-//                TedPermission.create()
-//                    .setPermissionListener(permissionSuccessListener)
-//                    .setDeniedMessage("권한이 거절되어 사용할 수 없습니다. [설정]으로 이동하여 권한을 허가해주어야 합니다.")
-//                    .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-//                    .check()
             }
-        }
-
-        activityDataBinding.locationUpdateImg.setOnClickListener {
-            getLocation()
-        }
-    }
-
-//    onCreate 함수 외부 ▽
-
-    private fun getLocation() {
-        try {
-            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val locationProvider = LocationManager.GPS_PROVIDER
-            val locationListener = LocationListener {
-            }
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                3000L,
-                30F,
-                locationListener
-            )
-            val currentLatLng: Location? = locationManager.getLastKnownLocation(locationProvider)
-            if (currentLatLng != null) {
-                val latitude = currentLatLng.latitude
-                val longitude = currentLatLng.longitude
-                Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
-
-//                Google Play service 위치 API
-//                val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//                fusedLocationClient.lastLocation.addOnSuccessListener {
-//                }
-
-                mainViewModel.address(latitude, longitude)
-                mainViewModel.navigate(latitude, longitude)
-
-                getAddressData()
-                getAirConditionData()
-
-            } else {
-                Log.d("CheckCurrentLocation", "현 위치 실패")
-            }
-        } catch (e: SecurityException) {
-            Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
-        }
-    }
-
-    fun getAirConditionData(){
-        mainViewModel.airConditionerItems.observe(this) {
-            val address = FinedustListItemBinding.bind(View(this)).locationData.text.toString()
-            val data = AddressAndFineDustData(
-                address = address,
-                pm10Value = it.pm10Value,
-                pm10Grade = it.pm10Grade,
-                pm25Value = it.pm25Value,
-                pm25Grade = it.pm25Grade
-            )
-            val list = mutableListOf(data)
-            adapter.addList(list)
-            Log.d("미세먼지", "미세먼지 = ${it.pm10Value}, 초미세먼지 = ${it.pm25Value}")
-            FinedustListItemBinding.bind(View(this)).pm10Value.text = it?.pm10Value
-            FinedustListItemBinding.bind(View(this)).pm25Value.text = it?.pm25Value
-            val pm10Grade = it.pm10Grade
-            val pm25Grade = it.pm25Grade
-
-            pm10Grade(pm10Grade)
-            pm10GradeImage(pm10Grade)
-
-            pm25Grade(pm25Grade)
-            pm25GradeImage(pm25Grade)
-        }
-    }
-
-    fun pm10Grade(pm10Grade: String) {
-        activityDataBinding.pm10Grade.text = when (pm10Grade) {
-            "1" -> "좋음"
-            "2" -> "보통"
-            "3" -> "나쁨"
-            "4" -> "매우 나쁨"
-            else -> "오류"
-        }
-    }
-
-    fun pm25Grade(pm25Grade: String) {
-        activityDataBinding.pm25Grade.text = when (pm25Grade) {
-            "1" -> "좋음"
-            "2" -> "보통"
-            "3" -> "나쁨"
-            "4" -> "매우 나쁨"
-            else -> "오류"
-        }
-    }
-
-    fun pm10GradeImage(pm10Grade: String) {
-        when (pm10Grade) {
-            "1" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.perfect)
-            "2" -> activityDataBinding.pm10StateImage.setImageResource(R.drawable.soso)
-            "3" -> FinedustListItemBinding.bind(View(this)).pm10StateImage.setImageResource(R.drawable.bad)
-            "4" -> FinedustListItemBinding.bind(View(this)).pm10StateImage.setImageResource(R.drawable.verybad)
-            else -> FinedustListItemBinding.bind(View(this)).pm10StateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun pm25GradeImage(pm25Grade: String) {
-        when (pm25Grade) {
-            "1" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_mood_24)
-            "2" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_satisfied_alt_24)
-            "3" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_dissatisfied_24)
-            "4" -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_sentiment_very_dissatisfied_24)
-            else -> activityDataBinding.pm25StateImage.setImageResource(R.drawable.ic_baseline_error_24)
         }
     }
 
