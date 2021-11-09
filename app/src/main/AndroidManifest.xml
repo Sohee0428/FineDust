@@ -3,7 +3,7 @@
     package="com.example.finedust">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,13 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FineDust"
         android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.main.MainActivity">
+        <activity android:name=".presentation.detail.DetailActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+        <activity
+            android:name=".presentation.SplashActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.main.MainActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
