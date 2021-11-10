@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var pagerAdapter: FragmentAdapter
 
+    private val MIN_SCALE = 0.85f
+    private val MIN_ALPHA = 0.5f
 
     var address = arrayListOf<AddressResponse>()
     val adapter: FinedustAdapter by lazy {
@@ -40,16 +42,57 @@ class MainActivity : AppCompatActivity() {
         binding.date.text = LocalDate().str_date
         pagerAdapter = ViewPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.setPageTransformer(ZoomOutPageTransformer())
+
+        finedustFragment = FinedustFragment()
+        pagerAdapter.addFragment(finedustFragment)
 
 
-        val layoutManager = LinearLayoutManager(this)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            val text = position + 1
+            tab.text = "$text"
+        }.attach()
+    }
 
-//            리사이클러뷰에 아이템을 배치 후 더이상 보이지 않을 때 재사용성을 결정하는 것
-//            불필요한 findViewById를 수행하지 않음
-        activityDataBinding.recyclerView.layoutManager = layoutManager
-        activityDataBinding.recyclerView.setHasFixedSize(true)
+    inner class ZoomOutPageTransformer : ViewPager2.PageTransformer {
+        override fun transformPage(view: View, position: Float) {
+            view.apply {
+                val pageWidth = width
+                val pageHeight = height
+                when {
+                    position < -1 -> { // [-Infinity,-1)
+                        // This page is way off-screen to the left.
+                        alpha = 0f
+                    }
+                    position <= 1 -> { // [-1,1]
+                        // Modify the default slide transition to shrink the page as well
+                        val scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position))
+                        val vertMargin = pageHeight * (1 - scaleFactor) / 2
+                        val horzMargin = pageWidth * (1 - scaleFactor) / 2
+                        translationX = if (position < 0) {
+                            horzMargin - vertMargin / 2
+                        } else {
+                            horzMargin + vertMargin / 2
+                        }
 
-//        이거 사용하는 이유? -> TedPermission 이용함
+                        // Scale the page down (between MIN_SCALE and 1)
+                        scaleX = scaleFactor
+                        scaleY = scaleFactor
+
+                        // Fade the page relative to its size.
+                        alpha = (MIN_ALPHA +
+                                (((scaleFactor - MIN_SCALE) / (1 - MIN_SCALE)) * (1 - MIN_ALPHA)))
+                    }
+                    else -> { // (1,+Infinity]
+                        // This page is way off-screen to the right.
+                        alpha = 0f
+                    }
+                }
+            }
+        }
+    }
+
+    fun permission() {
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
