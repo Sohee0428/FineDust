@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="vm"
+            type="com.example.finedust.presentation.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,6 +99,7 @@
                         android:padding="10dp"
                         android:scaleType="fitXY"
                         android:src="@mipmap/ic_launcher"
+                        app:setImageForGrade="@{vm.airConditionerItems.khaiGrade}"
                         app:layout_constraintLeft_toLeftOf="@id/khaiData"
                         app:layout_constraintTop_toBottomOf="@id/khai" />
 
