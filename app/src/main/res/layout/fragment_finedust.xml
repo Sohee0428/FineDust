@@ -13,8 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/background"
@@ -88,7 +87,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/khaiData"
                         app:layout_constraintTop_toTopOf="@id/khaiData" />
 
@@ -157,7 +156,6 @@
                         android:layout_marginTop="10dp"
                         android:orientation="vertical"
                         app:layout_constraintLeft_toLeftOf="@id/finedustData"
-                        app:layout_constraintRight_toLeftOf="@id/barrier2"
                         app:layout_constraintTop_toTopOf="@id/finedustData">
 
                         <TextView
@@ -166,6 +164,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text=" 미세먼지 "
+                            android:textStyle="bold"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
 
@@ -182,7 +181,7 @@
                                 android:padding="10dp"
                                 android:paddingRight="10dp"
                                 android:scaleType="fitXY"
-                                android:src="@mipmap/ic_launcher"
+                                android:src="@drawable/loading"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/pm10Const" />
 
@@ -191,7 +190,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginLeft="10dp"
                                 android:orientation="horizontal"
                                 app:layout_constraintBottom_toTopOf="@id/pm10Grade"
                                 app:layout_constraintLeft_toRightOf="@id/pm10StateImage"
@@ -254,6 +253,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="초미세먼지"
+                            android:textStyle="bold"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
 
@@ -269,7 +269,7 @@
                                 android:layout_height="70dp"
                                 android:padding="10dp"
                                 android:scaleType="fitXY"
-                                android:src="@mipmap/ic_launcher"
+                                android:src="@drawable/loading"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/pm25Const" />
 
@@ -278,7 +278,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginLeft="10dp"
                                 android:orientation="horizontal"
                                 app:layout_constraintBottom_toTopOf="@id/pm25Grade"
                                 app:layout_constraintLeft_toRightOf="@id/pm25StateImage"

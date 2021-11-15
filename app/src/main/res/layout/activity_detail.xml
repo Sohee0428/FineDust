@@ -98,7 +98,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:setImageForGrade="@{vm.airConditionerItems.khaiGrade}"
                         app:layout_constraintLeft_toLeftOf="@id/khaiData"
                         app:layout_constraintTop_toBottomOf="@id/khai" />
@@ -190,7 +190,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/pm10Data"
                         app:layout_constraintTop_toBottomOf="@id/pm10" />
 
@@ -297,7 +297,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/pm25Data"
                         app:layout_constraintTop_toBottomOf="@id/pm25" />
 
@@ -400,7 +400,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/o3Data"
                         app:layout_constraintTop_toBottomOf="@id/o3" />
 
@@ -503,7 +503,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/so2Data"
                         app:layout_constraintTop_toBottomOf="@id/so2" />
 
@@ -606,7 +606,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/coData"
                         app:layout_constraintTop_toBottomOf="@id/co" />
 
@@ -709,7 +709,7 @@
                         android:layout_marginLeft="15dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@drawable/loading"
                         app:layout_constraintLeft_toLeftOf="@id/no2Data"
                         app:layout_constraintTop_toBottomOf="@id/no2" />
 
