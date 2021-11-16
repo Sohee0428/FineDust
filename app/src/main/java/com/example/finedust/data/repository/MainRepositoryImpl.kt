@@ -4,6 +4,7 @@ import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
 import com.example.finedust.data.response.paradidymis.Paradidymis
+import com.example.finedust.data.response.search.SearchAddressResponse
 import retrofit2.Callback
 
 class MainRepositoryImpl : MainRepository {
@@ -40,5 +41,9 @@ class MainRepositoryImpl : MainRepository {
         callback: Callback<AirResponse>
     ) {
         remoteDataSource.getAirCondition(nearbyParadidymis, callback)
+    }
+
+    override fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>) {
+        remoteDataSource.getSearchLocation(query, callback)
     }
 }

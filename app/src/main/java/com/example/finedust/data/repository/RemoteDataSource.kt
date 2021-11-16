@@ -4,6 +4,7 @@ import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
 import com.example.finedust.data.response.paradidymis.Paradidymis
+import com.example.finedust.data.response.search.SearchAddressResponse
 import retrofit2.Callback
 
 interface RemoteDataSource {
@@ -12,4 +13,5 @@ interface RemoteDataSource {
     fun getKakaoItems(latitude: Double, longitude: Double, callback: Callback<KakaoResponse>)
     fun getParadidmis(xValue: Double, yValue: Double, callback: Callback<Paradidymis>)
     fun getAirCondition(nearbyParadidymis: String, callback: Callback<AirResponse>)
+    fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>)
 }

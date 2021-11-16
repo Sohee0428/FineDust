@@ -2,6 +2,7 @@ package com.example.finedust.data.network
 
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
+import com.example.finedust.data.response.search.SearchAddressResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -22,6 +23,14 @@ interface KakaoAddressAPI {
         @Query("x") x: Double,
         @Query("y") y: Double
     ): Call<AddressResponse>
+}
+
+interface SearchAddressAPI {
+
+    @GET("/v2/local/search/address.json")
+    fun getLocation(
+        @Query("query") query: String
+    ): Call<SearchAddressResponse>
 }
 
 

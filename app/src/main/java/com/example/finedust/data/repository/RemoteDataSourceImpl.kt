@@ -1,13 +1,11 @@
 package com.example.finedust.data.repository
 
-import com.example.finedust.data.network.AirConditionerCreator
-import com.example.finedust.data.network.KakaoAddressCreator
-import com.example.finedust.data.network.KakaoCreator
-import com.example.finedust.data.network.NearbyParadidymisCreator
+import com.example.finedust.data.network.*
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
 import com.example.finedust.data.response.paradidymis.Paradidymis
+import com.example.finedust.data.response.search.SearchAddressResponse
 import retrofit2.Callback
 
 class RemoteDataSourceImpl() : RemoteDataSource {
@@ -16,6 +14,7 @@ class RemoteDataSourceImpl() : RemoteDataSource {
     private val kakaoService = KakaoCreator.create()
     private val nearbyParadidymisService = NearbyParadidymisCreator.create()
     private val airConditionService = AirConditionerCreator.create()
+    private val searchAddressService = SearchAddressCreator.create()
 
     override fun getAddress(
         latitude: Double,
@@ -45,6 +44,12 @@ class RemoteDataSourceImpl() : RemoteDataSource {
         airConditionService.getAirConditioner(
             nearbyParadidymis,
             NearbyParadidymisCreator.SERVICE_KEY
+        ).enqueue(callback)
+    }
+
+    override fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>) {
+        searchAddressService.getLocation(
+            query
         ).enqueue(callback)
     }
 }
