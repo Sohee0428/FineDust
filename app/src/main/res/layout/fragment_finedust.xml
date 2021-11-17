@@ -33,26 +33,28 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/locationUpdateImg"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/ic_baseline_my_location_24"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
                     android:id="@+id/locationStr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
                     android:text="위치"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toRightOf="@id/locationUpdateImg"
                     app:layout_constraintTop_toTopOf="@id/locationUpdateImg" />
+
+
+                <ImageView
+                    android:id="@+id/locationUpdateImg"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_baseline_replay_24"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
 
@@ -82,9 +84,10 @@
 
                     <ImageView
                         android:id="@+id/khaiStateImage"
+                        setImageForGradeFragment="@{viewModel.airConditionerItems.khaiGrade}"
                         android:layout_width="170dp"
                         android:layout_height="170dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="16dp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/loading"
@@ -164,9 +167,9 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text=" 미세먼지 "
-                            android:textStyle="bold"
                             android:textColor="@color/black"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/pm10Const"
@@ -183,7 +186,8 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/loading"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/pm10Const" />
+                                app:layout_constraintTop_toTopOf="@id/pm10Const"
+                                setImageForGradeFragment="@{viewModel.airConditionerItems.pm10Grade}"/>
 
                             <LinearLayout
                                 android:id="@+id/pm10Linear"
@@ -253,9 +257,9 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="초미세먼지"
-                            android:textStyle="bold"
                             android:textColor="@color/black"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/pm25Const"
@@ -271,7 +275,8 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/loading"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/pm25Const" />
+                                app:layout_constraintTop_toTopOf="@id/pm25Const"
+                                setImageForGradeFragment="@{viewModel.airConditionerItems.pm25Grade}"/>
 
                             <LinearLayout
                                 android:id="@+id/pm25Linear"
