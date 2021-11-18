@@ -1,11 +1,10 @@
-package com.example.finedust.presentation.finedust
+package com.example.finedust.presentation.fragment
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment){
+class FragmentAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
 
     private var fragmentItem: ArrayList<Fragment> = ArrayList()
 
@@ -14,9 +13,6 @@ class ViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragme
     }
 
     override fun createFragment(position: Int): Fragment {
-//        val fragment = FinedustFragment()
-//        fragment.arguments = Bundle().apply {
-//        }
         return fragmentItem[position]
     }
 
@@ -29,6 +25,5 @@ class ViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragme
         fragmentItem.removeAt(fragmentItem.size - 1)
         notifyItemInserted(fragmentItem.size)
     }
-
 
 }
