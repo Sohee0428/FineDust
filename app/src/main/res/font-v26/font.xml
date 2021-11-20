@@ -3,7 +3,7 @@
     xmlns:xmls="http://schemas.android.com/apk/res-auto">
 
     <font
-        android:font="@font/barunpen"
+        android:font="@font/newfont"
         android:fontStyle="normal"
         android:fontWeight="400"/>
 

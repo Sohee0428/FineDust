@@ -18,12 +18,13 @@
     </style>
 
     <style name="fontTextView" parent="Widget.AppCompat.TextView">
-        <item name="fontFamily">@font/barunpen</item>
+        <item name="fontFamily">@font/newfont</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="fontEdit" parent="Widget.AppCompat.EditText">
-        <item name="fontFamily">@font/barunpen</item>
+        <item name="fontFamily">@font/newfont</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
 </resources>

@@ -5,10 +5,10 @@
     app:ignore="NamespaceTypo">
 
     <font
-        android:font="@font/barunpen"
+        android:font="@font/newfont"
         android:fontStyle="normal"
         android:fontWeight="600"
-        app:font="@font/barunpen"
+        app:font="@font/newfont"
         app:fontStyle="normal"/>
 
 </font-family>
