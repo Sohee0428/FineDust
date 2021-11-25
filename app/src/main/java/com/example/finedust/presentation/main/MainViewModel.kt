@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.finedust.data.AddressAndFineDustData
+import com.example.finedust.data.DetailAddress
+import com.example.finedust.data.DetailDust
+import com.example.finedust.data.entity.FinedustEntity
 import com.example.finedust.data.repository.MainRepository
 import com.example.finedust.data.repository.MainRepositoryImpl
 import com.example.finedust.data.response.address.Address
@@ -13,6 +15,7 @@ import com.example.finedust.data.response.address.RoadAddress
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.air.Item
 import com.example.finedust.data.response.kakao.KakaoResponse
+import com.example.finedust.data.response.paradidymis.ItemX
 import com.example.finedust.data.response.paradidymis.Paradidymis
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,14 +24,6 @@ import retrofit2.Response
 class MainViewModel() : ViewModel() {
 
     private val repository: MainRepository = MainRepositoryImpl()
-
-    private val _airConditionerItems: MutableLiveData<Item> = MutableLiveData()
-    val airConditionerItems: LiveData<Item>
-        get() = _airConditionerItems
-
-    private val _airConditionerItemsNull: MutableLiveData<Unit> = MutableLiveData()
-    val airConditionerItemsNull: LiveData<Unit>
-        get() = _airConditionerItemsNull
 
     private val _preAddress: MutableLiveData<Address> = MutableLiveData()
     val preAddress: LiveData<Address>
@@ -41,6 +36,15 @@ class MainViewModel() : ViewModel() {
     private val _addressNull: MutableLiveData<Unit> = MutableLiveData()
     val addressNull: LiveData<Unit>
         get() = _addressNull
+
+    private val _airConditionerItems: MutableLiveData<Item> = MutableLiveData()
+    val airConditionerItems: LiveData<Item>
+        get() = _airConditionerItems
+
+    private val _airConditionerItemsNull: MutableLiveData<Unit> = MutableLiveData()
+    val airConditionerItemsNull: LiveData<Unit>
+        get() = _airConditionerItemsNull
+
 
     fun navigate(latitude: Double, longitude: Double) {
 
@@ -67,8 +71,10 @@ class MainViewModel() : ViewModel() {
                 call: Call<AddressResponse>,
                 response: Response<AddressResponse>
             ) {
-                 Log.d("주소", "신주소 : ${response.body()!!.documents[0].road_address}," +
-                         "구주소 : ${response.body()!!.documents[0].address}")
+                Log.d(
+                    "주소", "신주소 : ${response.body()!!.documents[0].road_address}," +
+                            "구주소 : ${response.body()!!.documents[0].address}"
+                )
                 if (response.body()!!.documents[0].road_address != null) {
                     _newAddress.value = response.body()!!.documents[0].road_address
                 } else if (response.body()!!.documents[0].address != null) {
@@ -77,9 +83,8 @@ class MainViewModel() : ViewModel() {
                     _addressNull.value = Unit
                 }
 
-                navigate(latitude, longitude)
-
             }
+
             override fun onFailure(call: Call<AddressResponse>, t: Throwable) {
                 Log.e("addressResponse", "에러 발생")
             }
@@ -108,6 +113,7 @@ class MainViewModel() : ViewModel() {
         val callback = object : Callback<AirResponse> {
             override fun onResponse(call: Call<AirResponse>, response: Response<AirResponse>) {
                 if (response.body()!!.response.body.items[0] != null) {
+                    Log.d("airConditioner", "${response.body()!!.response.body.items[0]}")
                     _airConditionerItems.value = response.body()!!.response.body.items[0]
                 } else {
                     _airConditionerItemsNull.value = Unit
