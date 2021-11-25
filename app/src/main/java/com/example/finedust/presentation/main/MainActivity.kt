@@ -27,6 +27,7 @@ import com.example.finedust.data.date.LocalDate
 import com.example.finedust.data.entity.FinedustEntity
 import com.example.finedust.databinding.ActivityMainBinding
 import com.example.finedust.presentation.AppDescriptionActivity
+import com.example.finedust.presentation.FavoriteAdapter
 import com.example.finedust.presentation.detail.DetailActivity
 import com.example.finedust.presentation.location.LocationActivity
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mainViewModel
-
+        binding.lifecycleOwner = this
         binding.date.text = LocalDate().str_date
 
         binding.favoriteList.adapter = adapter
