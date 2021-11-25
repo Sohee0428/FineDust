@@ -14,24 +14,15 @@ interface KakaoAPI {
         @Query("x") x: Double,
         @Query("y") y: Double
     ): Call<KakaoResponse>
-}
-
-interface KakaoAddressAPI {
 
     @GET("/v2/local/geo/coord2address.json?input_coord=WGS84")
     fun getAddress(
         @Query("x") x: Double,
         @Query("y") y: Double
     ): Call<AddressResponse>
-}
-
-interface SearchAddressAPI {
 
     @GET("/v2/local/search/address.json")
     fun getLocation(
         @Query("query") query: String
     ): Call<SearchAddressResponse>
 }
-
-
-

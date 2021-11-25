@@ -14,7 +14,6 @@ object AirConditionerCreator {
         "M66ovFn84Is25oHoO6tQEVwPVD83anrxkIon8fsxQytUaSNJ2nRQPOMs5MJh8Cb1GfXYVi8L3t87tz1j%2FpncMQ%3D%3D"
 
     fun create(): AirConditionerAPI {
-
         return Retrofit.Builder()
             .baseUrl(BASE_URL_PARADIDYMIS_API)
             .client(getClient())
@@ -24,9 +23,8 @@ object AirConditionerCreator {
     }
 
     private fun getClient(): OkHttpClient {
-
-//            데이터를 넘겨받아 어떤 데이터를 받았는지 검색
         val httpLoggingInterceptor = HttpLoggingInterceptor()
+
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
@@ -36,12 +34,12 @@ object AirConditionerCreator {
     }
 
     private fun getInterceptor(): Interceptor {
-
         return Interceptor {
             val request = it.request()
                 .newBuilder()
                 .addHeader("SERVICE_KEY", SERVICE_KEY)
                 .build()
+
             return@Interceptor it.proceed(request)
         }
     }
