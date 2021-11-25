@@ -11,8 +11,8 @@
 
     <color name="skyBlue">#C5F1FA</color>
     <color name="light_green">#D2FFA9</color>
-    <color name="light_yellow">#CFC677</color>
-    <color name="light_red">#C56262</color>
+    <color name="light_yellow">#EFE588</color>
+    <color name="light_red">#F37878</color>
 
     <color name="redTxt">#710202</color>
     <color name="blueTxt">#0000BC</color>
