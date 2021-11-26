@@ -122,8 +122,11 @@ class DetailActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.detailRecyclerview.layoutManager = layoutManager
 
-            binding.coGrade.text = pmGrade(coGrade)
-            coGradeImage(coGrade)
+        val dustData = intent.getSerializableExtra("data") as List<DetailDust>
+        val location = intent.getStringExtra("location")
+        binding.locationStr.text = location
+        Log.d("어댑터 데이터 넘기기", "$dustData")
+        adapter.addDustList(dustData)
 
         binding.exit.setOnClickListener {
             finish()

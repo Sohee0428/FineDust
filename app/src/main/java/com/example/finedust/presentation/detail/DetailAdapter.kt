@@ -28,7 +28,12 @@ class DetailAdapter(val context: Context, val detailList: ArrayList<DetailDust>)
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindItem(item: DetailDust) {
-
+            binding.item = item
+            binding.measure.text = item.measure
+            binding.dataName.text = item.dustName
+            binding.description.text = item.description
+            binding.dataValue.text = item.value.first
+            binding.dataGrade.text = item.value.second
         }
     }
 
