@@ -1,24 +1,21 @@
 package com.example.finedust.presentation.detail
 
-import android.content.Context
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.finedust.R
+import com.example.finedust.data.DetailDust
 import com.example.finedust.databinding.ActivityDetailBinding
-import com.example.finedust.presentation.MainViewModel
 
 class DetailActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
-
     lateinit var binding: ActivityDetailBinding
+    var detailList = arrayListOf<DetailDust>()
+    val adapter: DetailAdapter by lazy {
+        DetailAdapter(this, detailList)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,100 +118,15 @@ class DetailActivity : AppCompatActivity() {
             binding.o3Grade.text = pmGrade(o3Grade)
             o3GradeImage(o3Grade)
 
-            binding.so2Grade.text = pmGrade(so2Grade)
-            so2GradeImage(so2Grade)
+        binding.detailRecyclerview.adapter = adapter
+        val layoutManager = LinearLayoutManager(this)
+        binding.detailRecyclerview.layoutManager = layoutManager
 
             binding.coGrade.text = pmGrade(coGrade)
             coGradeImage(coGrade)
 
-            binding.no2Grade.text = pmGrade(no2Grade)
-            no2GradeImage(no2Grade)
-        }
-        viewModel.airConditionerItemsNull.observe(this) {
-            Toast.makeText(this, "정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+        binding.exit.setOnClickListener {
+            finish()
         }
     }
-
-    fun pmGrade(str: String?): String {
-        return when (str) {
-            "1" -> "좋음"
-            "2" -> "보통"
-            "3" -> "나쁨"
-            "4" -> "매우 나쁨"
-            else -> "오류"
-        }
-    }
-
-    fun khaiGradeImage(str: String?) {
-
-        when (str) {
-            "1" -> binding.khaiStateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.khaiStateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.khaiStateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.khaiStateImage.setImageResource(R.drawable.badbear)
-            else -> binding.khaiStateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun pm10GradeImage(str: String?) {
-        when (str) {
-            "1" -> binding.pm10StateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.pm10StateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.pm10StateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.pm10StateImage.setImageResource(R.drawable.badbear)
-            else -> binding.pm10StateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun pm25GradeImage(str: String?) {
-        when (str) {
-            "1" -> binding.pm25StateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.pm25StateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.pm25StateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.pm25StateImage.setImageResource(R.drawable.badbear)
-            else -> binding.pm25StateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun o3GradeImage(str: String?) {
-        when (str) {
-            "1" -> binding.o3StateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.o3StateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.o3StateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.o3StateImage.setImageResource(R.drawable.badbear)
-            else -> binding.o3StateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun so2GradeImage(str: String?) {
-        when (str) {
-            "1" -> binding.so2StateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.so2StateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.so2StateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.so2StateImage.setImageResource(R.drawable.badbear)
-            else -> binding.so2StateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun coGradeImage(str: String?) {
-        when (str) {
-            "1" -> binding.coStateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.coStateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.coStateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.coStateImage.setImageResource(R.drawable.badbear)
-            else -> binding.coStateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-    fun no2GradeImage(str: String?) {
-        when (str) {
-            "1" -> binding.no2StateImage.setImageResource(R.drawable.perfectbear)
-            "2" -> binding.no2StateImage.setImageResource(R.drawable.goodbear)
-            "3" -> binding.no2StateImage.setImageResource(R.drawable.sosobear)
-            "4" -> binding.no2StateImage.setImageResource(R.drawable.badbear)
-            else -> binding.no2StateImage.setImageResource(R.drawable.ic_baseline_error_24)
-        }
-    }
-
-
 }
