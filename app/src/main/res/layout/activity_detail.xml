@@ -3,777 +3,126 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="vm"
-            type="com.example.finedust.presentation.MainViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
+        android:layout_margin="20dp"
         tools:context=".presentation.detail.DetailActivity">
 
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/background"
+            <LinearLayout
+                android:id="@+id/locationData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/locationData"
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="위치 이름"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  :  "
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/locationStr"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_weight="1"
+                    android:text="위치"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/location"
-                        android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/exit"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_cancel_24" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/barrier"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                app:layout_constraintTop_toBottomOf="@id/locationData" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                app:layout_constraintTop_toBottomOf="@id/barrier"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/detailRecyclerview"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="현 위치 : "
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintTop_toTopOf="@id/barrier" />
 
-                    <TextView
-                        android:id="@+id/locationStr"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/observatoryLinear"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="위치"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintLeft_toRightOf="@id/locationUpdateImg"
-                        app:layout_constraintTop_toTopOf="@id/locationUpdateImg" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/detailRecyclerview">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="관측소 : "
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="관측소 명"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/dateLinear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/observatoryLinear">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="측정 시간 : "
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="측정 시간"
+                            android:textSize="18sp" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/barrier"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/locationData" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/khaiData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/barrier">
-
-                    <TextView
-                        android:id="@+id/khai"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="통합대기환경지수 (CAI)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/khaiData" />
-
-                    <TextView
-                        android:id="@+id/descriptionkhai"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cai_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/khaiStateImage" />
-
-                    <ImageView
-                        android:id="@+id/khaiStateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:setImageForGrade="@{vm.airConditionerItems.khaiGrade}"
-                        app:layout_constraintLeft_toLeftOf="@id/khaiData"
-                        app:layout_constraintTop_toBottomOf="@id/khai" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:weightSum="1"
-                        app:layout_constraintBottom_toTopOf="@id/descriptionkhai"
-                        app:layout_constraintLeft_toRightOf="@id/khaiStateImage"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/khaiStateImage">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/khaiValue"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="농도" />
-
-                            <TextView
-                                android:id="@+id/khaiGrade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/barrier2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/khaiData" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/pm10Data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/barrier2">
-
-                    <TextView
-                        android:id="@+id/pm10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="미세먼지 (PM10)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/pm10Data" />
-
-                    <TextView
-                        android:id="@+id/descriptionpm10"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pm10_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/pm10StateImage" />
-
-                    <ImageView
-                        android:id="@+id/pm10StateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:layout_constraintLeft_toLeftOf="@id/pm10Data"
-                        app:layout_constraintTop_toBottomOf="@id/pm10" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/descriptionpm10"
-                        app:layout_constraintLeft_toRightOf="@id/pm10StateImage"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/pm10StateImage"
-                        app:layout_constraintVertical_weight="1">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/pm10Value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-
-                                    tools:text="농도" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" ㎍/㎥"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintLeft_toRightOf="@id/pm10Value"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/pm10Grade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/barrier3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/pm10Data" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/pm25Data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/barrier3">
-
-                    <TextView
-                        android:id="@+id/pm25"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="초미세먼지 (PM25)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/pm25Data" />
-
-                    <TextView
-                        android:id="@+id/descriptionpm25"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pm25_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/pm25StateImage" />
-
-                    <ImageView
-                        android:id="@+id/pm25StateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:layout_constraintLeft_toLeftOf="@id/pm25Data"
-                        app:layout_constraintTop_toBottomOf="@id/pm25" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/descriptionpm25"
-                        app:layout_constraintLeft_toRightOf="@id/pm25StateImage"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/pm25StateImage"
-                        app:layout_constraintHorizontal_weight="1">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/pm25Value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-                                    tools:text="농도" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" ㎍/㎥"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/pm25Grade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/barrier4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/pm25Data" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/o3Data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/barrier4">
-
-                    <TextView
-                        android:id="@+id/o3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="오존 (O3)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/o3Data" />
-
-                    <TextView
-                        android:id="@+id/descriptiono3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/o3_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/o3StateImage" />
-
-                    <ImageView
-                        android:id="@+id/o3StateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:layout_constraintLeft_toLeftOf="@id/o3Data"
-                        app:layout_constraintTop_toBottomOf="@id/o3" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/descriptiono3"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toRightOf="@id/o3StateImage"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/o3StateImage">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/o3Value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-                                    tools:text="농도" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" ppm"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/o3Grade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/barrier5"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/o3Data" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/so2Data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/barrier5">
-
-                    <TextView
-                        android:id="@+id/so2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="아황산가스 (SO2)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/so2Data" />
-
-                    <TextView
-                        android:id="@+id/descriptionso2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/so2_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/so2StateImage" />
-
-                    <ImageView
-                        android:id="@+id/so2StateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:layout_constraintLeft_toLeftOf="@id/so2Data"
-                        app:layout_constraintTop_toBottomOf="@id/so2" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/descriptionso2"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toRightOf="@id/so2StateImage"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/so2StateImage">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/so2Value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-                                    tools:text="농도" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" ppm"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/so2Grade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/barrier6"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/so2Data" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/coData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/barrier6">
-
-                    <TextView
-                        android:id="@+id/co"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="일산화탄소 (CO)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/coData" />
-
-                    <TextView
-                        android:id="@+id/descriptionco"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/co_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/coStateImage" />
-
-                    <ImageView
-                        android:id="@+id/coStateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:layout_constraintLeft_toLeftOf="@id/coData"
-                        app:layout_constraintTop_toBottomOf="@id/co" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/descriptionco"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toRightOf="@id/coStateImage"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/coStateImage">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/coValue"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-                                    tools:text="농도" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" ppm"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/coGrade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/barrier7"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@id/coData" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/no2Data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/barrier7">
-
-                    <TextView
-                        android:id="@+id/no2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="이산화질소 (NO2)"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/no2Data" />
-
-                    <TextView
-                        android:id="@+id/descriptionno2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/no2_description"
-                        android:textSize="10sp"
-                        app:layout_constraintTop_toBottomOf="@id/no2StateImage" />
-
-                    <ImageView
-                        android:id="@+id/no2StateImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
-                        android:padding="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/loading"
-                        app:layout_constraintLeft_toLeftOf="@id/no2Data"
-                        app:layout_constraintTop_toBottomOf="@id/no2" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/descriptionno2"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/no2StateImage"
-                        app:layout_constraintTop_toTopOf="@id/no2StateImage">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/no2Value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp"
-                                    tools:text="농도" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" ppm"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/no2Grade"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginRight="100dp"
-                                tools:text="단계" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
-
+            </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
