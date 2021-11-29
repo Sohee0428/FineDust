@@ -33,28 +33,28 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/whiteperfectbear" />
+            android:src="@drawable/perfect_bearflower" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/whitegoodbear" />
+            android:src="@drawable/good_bearflower" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/whitesosobear" />
+            android:src="@drawable/soso_bearflower" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/whitebadbear" />
+            android:src="@drawable/bad_bearflower" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
         android:gravity="center_horizontal"
         android:padding="30dp"
         android:text="미  세  곰  곰"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/bear"
         app:layout_constraintTop_toBottomOf="@id/bearFlower" />
@@ -96,28 +96,28 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/perfectbear" />
+            android:src="@drawable/perfect_bear" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/goodbear" />
+            android:src="@drawable/good_bear" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/sosobear" />
+            android:src="@drawable/soso_bear" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/badbear" />
+            android:src="@drawable/bad_bear" />
 
         <TextView
             android:layout_width="wrap_content"
