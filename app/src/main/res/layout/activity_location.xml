@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="locationActivity"
+            type="com.example.finedust.presentation.location.LocationActivity" />
+
+        <variable
+            name="viewModel"
+            type="com.example.finedust.presentation.location.LocationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/locationSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="검색어를 입력해주세요."
+            android:textSize="28sp"
+            android:singleLine="true"
+            android:text="@{viewModel.searchText}"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/searchImg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/searchImg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_baseline_search_24"
+            app:layout_constraintBottom_toBottomOf="@id/locationSearch"
+            app:layout_constraintLeft_toRightOf="@id/locationSearch"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/locationSearch" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/locationRecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/locationSearch"
+            app:layout_constraintTop_toBottomOf="@id/locationSearch" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
