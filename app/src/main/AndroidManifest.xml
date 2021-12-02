@@ -13,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.FineDust"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.detail.DetailActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+        android:name=".App"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
+        <activity android:name=".presentation.detail.DetailActivity" />
         <activity
             android:name=".presentation.SplashActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar">

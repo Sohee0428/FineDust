@@ -39,9 +39,14 @@
                     android:src="@drawable/ic_baseline_menu_24" />
 
                 <TextView
+                    android:id="@+id/date"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    tools:text="날짜" />
 
                 <ImageView
                     android:id="@+id/search"
@@ -53,22 +58,25 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/situation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:paddingTop="5dp"
                 android:textColor="@color/black"
-                android:textSize="35sp"
+                android:textSize="27sp"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fineDustConst"
                 app:layout_constraintTop_toBottomOf="@id/Toolbar"
-                tools:text="날짜" />
+                tools:text= "@string/null_air"
+                situationAlert="@{viewModel.airConditionerItems.khaiGrade}"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fineDustConst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date">
+                app:layout_constraintTop_toBottomOf="@id/situation">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/background"
@@ -100,6 +108,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
+                        android:paddingTop="15dp"
                         android:paddingBottom="15dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"

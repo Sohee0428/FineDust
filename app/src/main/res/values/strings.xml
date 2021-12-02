@@ -12,5 +12,10 @@
     <string name="app_description3">◎ 관측소의 경우에는 현 주소에서 가장 가까운 관측소를 기준으로 측정하여 실제 대기농도 수치와 다소 차이가 있을 수 있습니다.</string>
     <string name="bear_table_text"><![CDATA[<곰돌이 이미지 별 단계>]]></string>
     <string name="finedust_table_text"><![CDATA[<대기 농도 수치 별 단계>]]></string>
+    <string name="perfect_air">날이 좋으니 30분씩 3번 이상 환기하기!</string>
+    <string name="good_air">날이 적당하니 30분씩 3번 합시다.</string>
+    <string name="soso_air">환기 하면 안되지만, 하고싶더라도 잠깐만</string>
+    <string name="bad_air">환기하면 안돼요!</string>
     <string name="waning"><![CDATA[<주의 사항>]]></string>
+    <string name="null_air">정보를 불러오지 못했습니다.</string>
 </resources>
