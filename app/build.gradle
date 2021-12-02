@@ -8,11 +8,6 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-//    buildFeatures {
-//        viewBinding = true
-//        dataBinding = true
-//    }
-
     defaultConfig {
         applicationId "com.example.finedust"
         minSdkVersion 21

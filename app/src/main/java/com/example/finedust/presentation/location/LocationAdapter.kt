@@ -8,10 +8,13 @@ import com.example.finedust.databinding.LocationItemBinding
 
 class LocationAdapter(val listener: (DetailAddress) -> Unit) :
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
+
     private val detailAddressList = mutableListOf<DetailAddress>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             LocationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
         return ViewHolder(binding)
     }
 
@@ -34,7 +37,6 @@ class LocationAdapter(val listener: (DetailAddress) -> Unit) :
 
         fun bindItem(item: DetailAddress) {
             binding.titleLocation.text = item.address
-
         }
     }
 
