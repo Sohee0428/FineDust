@@ -95,7 +95,14 @@ class MainActivity : AppCompatActivity() {
             menuClose()
             getLocation()
         }
+        binding.appDescription.setOnClickListener {
+            menuClose()
+            appDescription()
+        }
+
     }
+
+//    onCreate 함수 외부 ▽
 
     fun permission() {
         val requestPermissionLauncher =

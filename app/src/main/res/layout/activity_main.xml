@@ -442,25 +442,26 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/youAreHere"
+                    android:id="@+id/appDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:paddingTop="10dp"
                     android:paddingBottom="10dp">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:paddingRight="10dp"
-                        android:src="@drawable/ic_baseline_my_location_24" />
+                        android:src="@drawable/question_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="현위치"
+                        android:text="어플 설명"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>

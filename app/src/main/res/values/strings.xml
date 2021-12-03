@@ -8,8 +8,9 @@
     <string name="pm10_description">미세먼지는 직경에 따라 미세먼지와 초미세먼지 등으로 구분하며, 미세먼지는 1000분의 10mm보다 작은 먼지입니다. 미세먼지는 공기 중 고체상태와 액체상태의 입자의 혼합물로 배출되며 화학반응 또는 자연적으로 생성됩니다.</string>
     <string name="cai_description">통합대기환경지수(CAI, Comprehensive air-quality index)는 대기오염도 측정치를 국민이 쉽게 알 수 있도록하고 대기 오염으로부터 피해를 예방하기 위한 행동 지침을 국민에게 제기하기 위하여 대기오염도에 따른 인체 영향 및 체감 오염도를 고려하여 개발된 표현 방식입니다. 6개의 대기오염물질별로 통합대기환경지수 점수를 산정하여여 가장 높은 점수를 통합 지수 값으로 사용하합니다.</string>
     <string name="app_description1">◎ 본 자료는 한국환경공단(에어코리아)에서 제공하는 실시간 관측 자료입니다.</string>
-    <string name="app_description2">◎ 대기 농도 수치는 1시간 기준으로 측정되어 현 시간의 대기농도 수치와 다를 수 있습니다.</string>
+    <string name="app_description2">◎ 대기 농도 수치는 1시간 마다 측정되어 현 시간의 대기농도 수치와 다를 수 있습니다.</string>
     <string name="app_description3">◎ 관측소의 경우에는 현 주소에서 가장 가까운 관측소를 기준으로 측정하여 실제 대기농도 수치와 다소 차이가 있을 수 있습니다.</string>
+    <string name="app_description4">◎ 관측소에서 정비 및 수리할 경우에는 정보를 불러오지 못하여 오류가 발생합니다.</string>
     <string name="bear_table_text"><![CDATA[<곰돌이 이미지 별 단계>]]></string>
     <string name="finedust_table_text"><![CDATA[<대기 농도 수치 별 단계>]]></string>
     <string name="perfect_air">날이 좋으니 30분씩 3번 이상 환기하기!</string>
