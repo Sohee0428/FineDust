@@ -1,5 +1,6 @@
 package com.example.finedust.data.repository
 
+import com.example.finedust.data.entity.FinedustEntity
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
@@ -45,5 +46,29 @@ class MainRepositoryImpl : MainRepository {
 
     override fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>) {
         remoteDataSource.getSearchLocation(query, callback)
+    }
+
+    override suspend fun getRecyclerviewList(): List<FinedustEntity> {
+        return localDataSource.getRecyclerviewList()
+    }
+
+    override suspend fun getItem(id: Int): FinedustEntity? {
+        return localDataSource.getItem(id)
+    }
+
+    override suspend fun insertItem(finedustItem: FinedustEntity): Long {
+        return localDataSource.insertItem(finedustItem)
+    }
+
+    override suspend fun updateItem(finedustItem: FinedustEntity) {
+        localDataSource.updateItem(finedustItem)
+    }
+
+    override suspend fun deleteAll() {
+        localDataSource.deleteAll()
+    }
+
+    override suspend fun deleteItem(finedustItem: FinedustEntity) {
+        localDataSource.deleteItem(finedustItem)
     }
 }

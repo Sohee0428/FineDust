@@ -1,5 +1,6 @@
 package com.example.finedust.data.repository
 
+import com.example.finedust.data.entity.FinedustEntity
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
@@ -14,4 +15,11 @@ interface MainRepository {
     fun getParadidymisItems(xValue: Double, yValue: Double, callback: Callback<Paradidymis>)
     fun getAirConditionerItems(nearbyParadidymis: String, callback: Callback<AirResponse>)
     fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>)
+
+    suspend fun getRecyclerviewList(): List<FinedustEntity>
+    suspend fun getItem(id: Int): FinedustEntity?
+    suspend fun insertItem(finedustItem: FinedustEntity): Long
+    suspend fun updateItem(finedustItem: FinedustEntity)
+    suspend fun deleteAll()
+    suspend fun deleteItem(finedustItem: FinedustEntity)
 }
