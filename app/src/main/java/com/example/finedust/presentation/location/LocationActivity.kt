@@ -39,6 +39,7 @@ class LocationActivity : AppCompatActivity() {
         binding.locationSearch.doOnTextChanged { text, _, _, _ ->
             searchText = text.toString()
         }
+
         binding.searchImg.setOnClickListener {
             if (searchText.isBlank()) {
                 Toast.makeText(this, "주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -56,9 +57,6 @@ class LocationActivity : AppCompatActivity() {
         viewModel.detailAddressListNull.observe(this) {
             Toast.makeText(this, "주소를 불러오지 못했습니다. 다시 입력해주시기 바랍니다.", Toast.LENGTH_SHORT).show()
         }
-        viewModel.searchText.observe(this) {
-            Log.d("검색", it)
-        }
     }
 
     fun searchLocation() {
@@ -72,5 +70,6 @@ class LocationActivity : AppCompatActivity() {
         }
         setResult(RESULT_OK, result)
         if (!isFinishing) finish()
+
     }
 }

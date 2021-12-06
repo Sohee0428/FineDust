@@ -24,10 +24,6 @@ class LocationViewModel() : ViewModel() {
     val detailAddressListNull: LiveData<Unit>
         get() = _detailAddressListNull
 
-    private val _searchText: MutableLiveData<String> = MutableLiveData("")
-    val searchText: LiveData<String>
-        get() = _searchText
-
     fun location(query: String) {
         val callback = object : Callback<SearchAddressResponse> {
             override fun onResponse(

@@ -41,6 +41,7 @@ class LocationAdapter(val listener: (DetailAddress) -> Unit) :
     }
 
     fun addLocationList(list: List<DetailAddress>) {
+        detailAddressList.clear()
         detailAddressList.addAll(list)
         notifyDataSetChanged()
     }
