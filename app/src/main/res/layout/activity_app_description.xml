@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,108 +12,129 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="어플 설명"
-            android:textColor="@color/black"
-            android:textSize="35sp"
-            android:layout_marginStart="30dp"
-            android:textStyle="bold"
-            android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="어플 설명"
+                android:textColor="@color/black"
+                android:textSize="35sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/cancelImage"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_baseline_cancel_24"/>
+                android:src="@drawable/ic_baseline_cancel_24" />
 
         </LinearLayout>
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="30dp"
-            android:paddingBottom="5dp"
-            android:textColor="@color/black"
-            android:text="@string/bear_table_text"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:src="@drawable/table_bear" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"
-            android:text="@string/finedust_table_text"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="40dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/bear_table_text"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="187dp"
-            android:src="@drawable/table_finedust" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:src="@drawable/table_bear" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:textColor="@color/black"
-            android:paddingBottom="5dp"
-            android:text="@string/waning"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/finedust_table_text"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="@string/app_description1"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="187dp"
+                    android:src="@drawable/table_finedust" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="@string/app_description2"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/waning"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="@string/app_description3"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/app_description1"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="@string/app_description4"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/app_description2"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/app_description3"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/app_description4"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/app_description5"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>
