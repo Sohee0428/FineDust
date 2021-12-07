@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Theme.FineDust" parent="Theme.Design.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
@@ -11,20 +12,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/fontTextView</item>
         <item name="editTextStyle">@style/fontEdit</item>
     </style>
-
-    <style name="fontTextView" parent="Widget.AppCompat.TextView">
-        <item name="fontFamily">@font/newfont</item>
-        <item name="android:includeFontPadding">false</item>
-    </style>
-
-    <style name="fontEdit" parent="Widget.AppCompat.EditText">
-        <item name="fontFamily">@font/newfont</item>
-        <item name="android:includeFontPadding">false</item>
-    </style>
-
 </resources>
