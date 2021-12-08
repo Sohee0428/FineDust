@@ -473,29 +473,30 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-
                     android:background="@color/gray" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/preparationPlan"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="clickPreparationPlanIntent"
                     android:orientation="horizontal"
                     android:paddingTop="10dp"
-                    android:paddingBottom="15dp">
+                    android:paddingBottom="10dp">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:paddingRight="10dp"
-                        android:src="@drawable/ic_baseline_star_24" />
+                        android:src="@drawable/ic_baseline_favorite_24" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="즐겨찾기 목록"
+                        android:text="미세먼지 행동요령"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>

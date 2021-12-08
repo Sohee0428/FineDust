@@ -286,4 +286,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun clickPreparationPlanIntent() {
+        val intent = Intent(this, PreparationActivity::class.java)
+        startActivity(intent)
+    }
+
+
 }
