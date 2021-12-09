@@ -252,7 +252,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun locationIntent() {
+    private fun addLocation() {
+        CoroutineScope(Dispatchers.IO).launch {
+            mainViewModel.insertDB()
+        }
+//        위 io 쓰레드 사용하는 것을 수동으로 만들 경우의 코드
+//        val thread = Thread {
+//            try {
+//                fineDustList = db?.finedustDao()?.getAll()!!
+//            } catch (e: Exception) {
+//
+//            }
+//        }
+//        thread.start()
+    }
+
+
         val intent = Intent(this, LocationActivity::class.java)
         getLocationResult.launch(intent)
     }
