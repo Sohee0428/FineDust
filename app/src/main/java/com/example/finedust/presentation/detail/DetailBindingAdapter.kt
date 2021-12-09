@@ -10,6 +10,7 @@ object DetailBindingAdapter {
     @JvmStatic
     fun setImageForGradeDetail(view: ImageView, grade: String?) {
         when (grade) {
+            "01" -> view.setImageResource(R.drawable.loading)
             "1" -> view.setImageResource(R.drawable.perfect_bear)
             "2" -> view.setImageResource(R.drawable.good_bear)
             "3" -> view.setImageResource(R.drawable.soso_bear)
@@ -22,6 +23,7 @@ object DetailBindingAdapter {
     @JvmStatic
     fun setCircleForGradeDetail(view: ImageView, grade: String?) {
         when (grade) {
+            "01" -> view.setImageResource(R.drawable.loading)
             "1" -> view.setImageResource(R.drawable.perfect_circle_24)
             "2" -> view.setImageResource(R.drawable.good_circle_24)
             "3" -> view.setImageResource(R.drawable.soso_circle_24)
