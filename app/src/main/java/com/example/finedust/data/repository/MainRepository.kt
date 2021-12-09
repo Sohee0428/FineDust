@@ -17,9 +17,7 @@ interface MainRepository {
     fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>)
 
     suspend fun getRecyclerviewList(): List<FinedustEntity>
-    suspend fun getItem(id: Int): FinedustEntity?
     suspend fun insertItem(finedustItem: FinedustEntity): Long
-    suspend fun updateItem(finedustItem: FinedustEntity)
     suspend fun deleteAll()
-    suspend fun deleteItem(finedustItem: FinedustEntity)
+    suspend fun deleteItem(address: String)
 }

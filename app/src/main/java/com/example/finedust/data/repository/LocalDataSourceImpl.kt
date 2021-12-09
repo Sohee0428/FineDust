@@ -13,23 +13,15 @@ class LocalDataSourceImpl : LocalDataSource {
         return finedustDao.getAll()
     }
 
-    override suspend fun getItem(id: Int): FinedustEntity? {
-        return finedustDao.getById(id)
-    }
-
     override suspend fun insertItem(finedustItem: FinedustEntity): Long {
         return finedustDao.insert(finedustItem)
-    }
-
-    override suspend fun updateItem(finedustItem: FinedustEntity) {
-        finedustDao.update(finedustItem)
     }
 
     override suspend fun deleteAll() {
         finedustDao.deleteAll()
     }
 
-    override suspend fun deleteItem(finedustItem: FinedustEntity) {
-        finedustDao.delete(finedustItem)
+    override suspend fun deleteItem(address: String) {
+        finedustDao.delete(address)
     }
 }

@@ -52,23 +52,15 @@ class MainRepositoryImpl : MainRepository {
         return localDataSource.getRecyclerviewList()
     }
 
-    override suspend fun getItem(id: Int): FinedustEntity? {
-        return localDataSource.getItem(id)
-    }
-
     override suspend fun insertItem(finedustItem: FinedustEntity): Long {
         return localDataSource.insertItem(finedustItem)
-    }
-
-    override suspend fun updateItem(finedustItem: FinedustEntity) {
-        localDataSource.updateItem(finedustItem)
     }
 
     override suspend fun deleteAll() {
         localDataSource.deleteAll()
     }
 
-    override suspend fun deleteItem(finedustItem: FinedustEntity) {
-        localDataSource.deleteItem(finedustItem)
+    override suspend fun deleteItem(address: String) {
+        localDataSource.deleteItem(address)
     }
 }
