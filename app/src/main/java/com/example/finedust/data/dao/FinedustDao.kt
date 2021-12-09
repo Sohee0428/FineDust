@@ -9,18 +9,12 @@ interface FinedustDao {
     @Query("SELECT * FROM FinedustEntity")
     fun getAll(): List<FinedustEntity>
 
-    @Query("SELECT * FROM FinedustEntity WHERE id=:id")
-    suspend fun getById(id: Int): FinedustEntity?
-
     @Insert
     suspend fun insert(toDoEntity: FinedustEntity): Long
 
-    @Delete
-    suspend fun delete(toDoEntity: FinedustEntity)
+    @Query("DELETE FROM FinedustEntity WHERE address=:address")
+    suspend fun delete(address: String)
 
     @Query("DELETE FROM FinedustEntity")
     suspend fun deleteAll()
-
-    @Update
-    suspend fun update(toDoEntity: FinedustEntity)
 }
