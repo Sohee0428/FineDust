@@ -118,21 +118,44 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
+        val forgroundPermission = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (forgroundPermission) {
+//            val backgroundPermission = ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//
+//            if (backgroundPermission) {
+//            } else {
+//            }
+            Log.d("checkSelfPermission", "checkPermission Success")
+            getLocation()
+        } else {
+            Log.d("checkSelfPermission", "checkPermission Fail")
+            requestPermissionLauncher.launch(
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d("checkSelfPermission", "checkPermission Success")
-                getLocation()
-            }
-            else -> {
-                Log.d("checkSelfPermission", "checkPermission Fail")
-                requestPermissionLauncher.launch(
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            }
+            )
         }
+
+//        when {
+//            ContextCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED -> {
+//                Log.d("checkSelfPermission", "checkPermission Success")
+//                getLocation()
+//            }
+//            else -> {
+//                Log.d("checkSelfPermission", "checkPermission Fail")
+//                requestPermissionLauncher.launch(
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                )
+//            }
+//        }
     }
 
     private fun getLocation() {
