@@ -36,17 +36,20 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var getLocationResultData: ActivityResultLauncher<Intent>
     private val mainViewModel: MainViewModel by viewModels()
-    lateinit var binding: ActivityMainBinding
-    private var fineDustList = listOf<FinedustEntity>()
-    private lateinit var getLocationResult: ActivityResultLauncher<Intent>
-    lateinit var getAddressList: MutableList<DetailAddress>
-    var db: FineDustDataBase? = null
-    val adapter: FavoriteAdapter by lazy {
-        FavoriteAdapter(this, getAddressList as ArrayList<FinedustEntity>)
-        //            CoroutineScope(Dispatchers.IO).async {
-//                viewModel.insertDB(it)
-//            }
+    private val adapter: FavoriteAdapter by lazy {
+        FavoriteAdapter({
+            mainViewModel.mainAddress = DetailAddress(it.address, it.x, it.y, true)
+            changeLocation()
+            isCheckFavoriteImage(true)
+            menuClose()
+        },
+            {
+                deleteFavoriteItem(it)
+                menuClose()
+            })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,21 +60,12 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.date.text = LocalDate().str_date
 
-        binding.favoriteList.adapter = adapter
-        val layoutManager = LinearLayoutManager(this)
-        binding.favoriteList.layoutManager = layoutManager
-
+        initContactFavoriteAdapter()
+        initFavoriteList()
         permission()
         getAddressData()
         getAirConditionData()
-
-        getLocationResult = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == RESULT_OK) {
-                val data = it.data?.getSerializableExtra("searchLocation") as DetailAddress
-                Log.d("data", "${it.data}")
-                changeLocation(data.x.toDouble(), data.y.toDouble())
+        getLocationResult()
 
                 getAddressList.clear()
                 getAddressList.add(data)
@@ -102,20 +96,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    onCreate 함수 외부 ▽
-
-    fun permission() {
+    private fun permission() {
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (isGranted) {
                     Log.d("위치 허가", "requestPermission Success")
+                    Toast.makeText(
+                        this,
+                        "위젯을 사용할 시에는 [설정]으로 이동하여 권한을 항상 허용으로 해주어야 합니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     getLocation()
                 } else {
                     Log.d("위치 불허", "requestPermission Fail")
                     finish()
                     Toast.makeText(
                         this,
-                        "위치 권한이 거절되어 사용할 수 없습니다.     [설정]으로 이동하여 권한을 허가해주어야 합니다.",
+                        "위치 권한이 거절되어 사용할 수 없습니다.     [설정]으로 이동하여 권한 허용을 해주어야 합니다.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -138,13 +135,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getLocation() {
+    private fun getLocation() {
         try {
             val locationManager =
                 this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val locationProvider = LocationManager.GPS_PROVIDER
-            val locationListener = LocationListener {
-            }
+            val locationListener = LocationListener { }
+            val currentLatLng: Location? = locationManager.getLastKnownLocation(locationProvider)
 
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
@@ -153,19 +150,19 @@ class MainActivity : AppCompatActivity() {
                 locationListener
             )
 
-            val currentLatLng: Location? = locationManager.getLastKnownLocation(locationProvider)
-
             if (currentLatLng != null) {
                 val latitude = currentLatLng.latitude
                 val longitude = currentLatLng.longitude
-
                 Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
 
                 binding.locationName.text = "현위치"
+                binding.locationName.visibility = View.VISIBLE
+                binding.favoriteImage.visibility = View.GONE
 
                 mainViewModel.navigate(latitude, longitude)
                 mainViewModel.address(latitude, longitude)
             } else {
+                Toast.makeText(this, "현위치를 불러오지 못하였습니다.", Toast.LENGTH_SHORT).show()
                 Log.d("CheckCurrentLocation", "현 위치 실패")
             }
         } catch (e: SecurityException) {
@@ -173,12 +170,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun changeLocation(x: Double, y: Double) {
-        mainViewModel.navigate(y, x)
-        mainViewModel.address(y, x)
-    }
-
-    fun getAddressData() {
+    private fun getAddressData() {
         mainViewModel.newAddress.observe(this) {
             Log.d("신주소", it.address_name)
             binding.locationStr.text = it.address_name
@@ -193,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getAirConditionData() {
+    private fun getAirConditionData() {
         mainViewModel.airConditionerItems.observe(this) {
             Log.d("미세먼지", "통합 = ${it.khaiValue}, 미세먼지 = ${it.pm10Value}, 초미세먼지 = ${it.pm25Value}")
 
@@ -204,8 +196,10 @@ class MainActivity : AppCompatActivity() {
             val khaiGrade = it?.khaiGrade
             val pm10Grade = pm10Grade(it?.pm10Value)
             val pm25Grade = pm25Grade(it?.pm25Value)
-
             Log.d("미세먼지 단계", "통합 = $khaiGrade, 미세먼지 = $pm10Grade, 초미세먼지 = $pm25Grade")
+
+            binding.pm10Grade.text = pmGrade(pm10Grade)
+            binding.pm25Grade.text = pmGrade(pm25Grade)
 
             val itemList = mutableListOf(
                 it.khaiValue to it.khaiGrade,
@@ -217,19 +211,19 @@ class MainActivity : AppCompatActivity() {
                 it.no2Value to it.no2Grade
             )
 
-            binding.pm10Grade.text = pmGrade(pm10Grade)
-            binding.pm25Grade.text = pmGrade(pm25Grade)
-
             mainViewModel.detailDustList.clear()
             mainViewModel.detailDustList.addAll(DetailDust.getDetailDustList(itemList))
         }
         mainViewModel.airConditionerItemsNull.observe(this) {
             Toast.makeText(this, "정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
         }
+        mainViewModel.favoriteList.observe(this) {
+            adapter.addList(it)
+        }
     }
 
     private fun pm10Grade(str: String?): String {
-        return when (str?.toInt()) {
+        return when (str?.toIntOrNull()) {
             in 0..30 -> "1"
             in 31..50 -> "2"
             in 51..100 -> "3"
@@ -239,7 +233,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun pm25Grade(str: String?): String {
-        return when (str?.toInt()) {
+        return when (str?.toIntOrNull()) {
             in 0..15 -> "1"
             in 16..25 -> "2"
             in 26..50 -> "3"

@@ -14,8 +14,8 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainLayout"
@@ -42,8 +42,8 @@
                 <TextView
                     android:id="@+id/date"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:textColor="@color/black"
                     android:textSize="30sp"
@@ -67,10 +67,8 @@
                 android:textColor="@color/black"
                 android:textSize="27sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fineDustConst"
                 app:layout_constraintTop_toBottomOf="@id/Toolbar"
-                tools:text= "@string/null_air"
-                situationAlert="@{viewModel.airConditionerItems.khaiGrade}"/>
+                tools:text="@string/null_air" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fineDustConst"
@@ -85,6 +83,8 @@
                     setBackgroundForGradeMain="@{viewModel.airConditionerItems.khaiGrade}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/background"
                     android:padding="15dp"
                     android:layout_marginStart="10dp"

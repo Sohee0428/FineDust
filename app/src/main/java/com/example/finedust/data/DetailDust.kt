@@ -40,7 +40,14 @@ data class DetailDust(
             val detailDustList = mutableListOf<DetailDust>()
 
             dustNameList.forEachIndexed { index, name ->
-                detailDustList.add(DetailDust(name, item[index], measureList[index], descriptionList[index]))
+                detailDustList.add(
+                    DetailDust(
+                        name,
+                        item[index],
+                        measureList[index],
+                        descriptionList[index]
+                    )
+                )
             }
             return detailDustList
         }

@@ -6,21 +6,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object NearbyParadidymisCreator {
+object NearbyObservatoryCreator {
 
-    private const val BASE_URL_PARADIDYMIS_API =
+    private const val BASE_URL_OBSERVATORY_API =
         "http://apis.data.go.kr"
-
     val SERVICE_KEY =
         "M66ovFn84Is25oHoO6tQEVwPVD83anrxkIon8fsxQytUaSNJ2nRQPOMs5MJh8Cb1GfXYVi8L3t87tz1j%2FpncMQ%3D%3D"
 
-    fun create(): NearbyParadidymisAPI {
+    fun create(): NearbyObservatoryAPI {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL_PARADIDYMIS_API)
+            .baseUrl(BASE_URL_OBSERVATORY_API)
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(NearbyParadidymisAPI::class.java)
+            .create(NearbyObservatoryAPI::class.java)
     }
 
     private fun getClient(): OkHttpClient {

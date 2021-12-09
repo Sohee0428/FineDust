@@ -1,4 +1,4 @@
-package com.example.finedust.data.response.paradidymis
+package com.example.finedust.data.response.observatory
 
 data class BodyX(
     val items: List<ItemX>,

@@ -35,7 +35,7 @@
             setImageForGradeDetail="@{item.value.second}"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:padding="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/loading"
@@ -60,7 +60,7 @@
                     android:id="@+id/dataValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/black"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -72,12 +72,13 @@
                     android:id="@+id/measure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
                     android:textColor="@color/black"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/dataValue"
                     app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SmallSp"
                     tools:text="단위" />
 
                 <TextView
@@ -85,7 +86,7 @@
                     changeGradeToString="@{item.value.second}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="150dp"
+                    android:layout_marginEnd="150dp"
                     android:textColor="@color/black"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -97,14 +98,13 @@
                     setCircleForGradeDetail="@{item.value.second}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:src="@drawable/perfect_circle_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/dataGrade"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
 
         <TextView

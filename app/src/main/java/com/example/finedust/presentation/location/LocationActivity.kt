@@ -16,9 +16,10 @@ import com.example.finedust.data.DetailAddress
 import com.example.finedust.databinding.ActivityLocationBinding
 
 class LocationActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityLocationBinding
     private val viewModel: LocationViewModel by viewModels()
-    lateinit var binding: ActivityLocationBinding
-    val adapter: LocationAdapter by lazy {
+    private val adapter: LocationAdapter by lazy {
         LocationAdapter {
             mainIntent(it)
         }
@@ -33,23 +34,39 @@ class LocationActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        initContactAdapter()
+        searchText()
+        getDetailAddress()
+
+//        binding.locationSearch.setOnEditorActionListener { _, actionId, _ ->
+//            return@setOnEditorActionListener when (actionId) {
+//                EditorInfo.IME_ACTION_SEND -> {
+//                    getDetailAddress()
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
+    }
+
+    private fun initContactAdapter() {
+        binding.locationRecyclerview.adapter = adapter
         val layoutManager = LinearLayoutManager(this)
         binding.locationRecyclerview.layoutManager = layoutManager
+    }
 
+    private fun searchLocation() {
+        Log.d("주소 검색어", searchText)
+        viewModel.location(searchText)
+    }
+
+    private fun searchText() {
         binding.locationSearch.doOnTextChanged { text, _, _, _ ->
             searchText = text.toString()
         }
+    }
 
-        binding.searchImg.setOnClickListener {
-            if (searchText.isBlank()) {
-                Toast.makeText(this, "주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
-            } else {
-                searchLocation()
-            }
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.locationSearch.windowToken, 0)
-        }
-
+    private fun getDetailAddress() {
         viewModel.detailAddressList.observe(this) {
             adapter.addLocationList(it)
             Log.d("주소 검색 리스트", "$it")
@@ -59,17 +76,13 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
-    fun searchLocation() {
-        Log.d("주소 검색어", searchText)
-        viewModel.location(searchText)
-    }
-
-    fun mainIntent(data: DetailAddress) {
+    private fun mainIntent(data: DetailAddress) {
         val result = Intent().apply {
             putExtra("searchLocation", data)
         }
         setResult(RESULT_OK, result)
         if (!isFinishing) finish()
+    }
 
     }
 }

@@ -117,6 +117,7 @@
                         android:layout_height="wrap_content"
                         android:text="측정 시간"
                         android:textSize="18sp" />
+
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

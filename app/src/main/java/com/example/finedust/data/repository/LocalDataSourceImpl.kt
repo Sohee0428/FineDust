@@ -4,9 +4,8 @@ import com.example.finedust.App
 import com.example.finedust.data.FineDustDataBase
 import com.example.finedust.data.entity.FinedustEntity
 
-class LocalDataSourceImpl(
+class LocalDataSourceImpl : LocalDataSource {
 
-) : LocalDataSource {
     private val db = FineDustDataBase.getInstance(App.instance)
     private val finedustDao = db!!.finedustDao()
 

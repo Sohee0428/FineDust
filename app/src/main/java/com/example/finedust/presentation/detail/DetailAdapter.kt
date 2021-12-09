@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.finedust.data.DetailDust
 import com.example.finedust.databinding.DetailItemBinding
 
-class DetailAdapter(val context: Context, val detailList: ArrayList<DetailDust>) :
+class DetailAdapter(val context: Context, private val detailList: ArrayList<DetailDust>) :
     RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             DetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 

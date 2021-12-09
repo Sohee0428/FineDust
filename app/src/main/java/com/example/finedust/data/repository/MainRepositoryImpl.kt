@@ -4,7 +4,7 @@ import com.example.finedust.data.entity.FinedustEntity
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
-import com.example.finedust.data.response.paradidymis.Paradidymis
+import com.example.finedust.data.response.observatory.Observatory
 import com.example.finedust.data.response.search.SearchAddressResponse
 import retrofit2.Callback
 
@@ -29,19 +29,19 @@ class MainRepositoryImpl : MainRepository {
         remoteDataSource.getKakaoItems(latitude, longitude, callback)
     }
 
-    override fun getParadidymisItems(
+    override fun getObservatoryItems(
         xValue: Double,
         yValue: Double,
-        callback: Callback<Paradidymis>
+        callback: Callback<Observatory>
     ) {
-        remoteDataSource.getParadidmis(xValue, yValue, callback)
+        remoteDataSource.getObservatory(xValue, yValue, callback)
     }
 
     override fun getAirConditionerItems(
-        nearbyParadidymis: String,
+        nearbyObservatory: String,
         callback: Callback<AirResponse>
     ) {
-        remoteDataSource.getAirCondition(nearbyParadidymis, callback)
+        remoteDataSource.getAirCondition(nearbyObservatory, callback)
     }
 
     override fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>) {

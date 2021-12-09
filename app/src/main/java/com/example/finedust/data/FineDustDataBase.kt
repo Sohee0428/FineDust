@@ -9,10 +9,10 @@ import com.example.finedust.data.entity.FinedustEntity
 
 @Database(entities = [FinedustEntity::class], version = 1, exportSchema = false)
 abstract class FineDustDataBase : RoomDatabase() {
+
     abstract fun finedustDao(): FinedustDao
 
     companion object {
-//        싱글톤으로 구현하지 않을경우 호출 부분에서 사용하면 됨?
         private var INSTANCE: FineDustDataBase? = null
 
         @Synchronized

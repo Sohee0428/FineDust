@@ -8,8 +8,9 @@ data class DetailAddress(
     val x: String,
     val y: String,
     val isFavorite: Boolean = false
-) :Serializable {
+) : Serializable {
     companion object {
+
         fun convertDetailAddress(input: List<Document>): List<DetailAddress> {
             val addressList = mutableListOf<DetailAddress>()
 

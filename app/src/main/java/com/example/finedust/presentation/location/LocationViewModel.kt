@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LocationViewModel() : ViewModel() {
+class LocationViewModel : ViewModel() {
 
     private val repository: MainRepository = MainRepositoryImpl()
 
@@ -30,7 +30,6 @@ class LocationViewModel() : ViewModel() {
                 call: Call<SearchAddressResponse>,
                 response: Response<SearchAddressResponse>
             ) {
-
                 Log.d("위치 검색", response.toString())
                 Log.d("검색어", query)
 
@@ -43,7 +42,6 @@ class LocationViewModel() : ViewModel() {
                     _detailAddressList.value = addressList
                 }
             }
-
             override fun onFailure(call: Call<SearchAddressResponse>, t: Throwable) {
                 Log.e("airConditionResponse", "에러 발생")
             }

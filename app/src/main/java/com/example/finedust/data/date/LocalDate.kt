@@ -12,6 +12,5 @@ class LocalDate {
 
 fun main() {
     val date = LocalDate().str_date
-
     println("현재 날짜 :$date")
 }

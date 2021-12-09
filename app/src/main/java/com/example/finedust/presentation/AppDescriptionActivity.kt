@@ -8,12 +8,13 @@ import com.example.finedust.databinding.ActivityAppDescriptionBinding
 
 class AppDescriptionActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityAppDescriptionBinding
+    private lateinit var binding: ActivityAppDescriptionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_description)
+    }
 
         binding.cancelImage.setOnClickListener {
             finish()

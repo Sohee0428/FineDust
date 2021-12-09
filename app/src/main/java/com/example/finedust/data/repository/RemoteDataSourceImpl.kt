@@ -4,15 +4,15 @@ import com.example.finedust.data.network.*
 import com.example.finedust.data.response.address.AddressResponse
 import com.example.finedust.data.response.air.AirResponse
 import com.example.finedust.data.response.kakao.KakaoResponse
-import com.example.finedust.data.response.paradidymis.Paradidymis
+import com.example.finedust.data.response.observatory.Observatory
 import com.example.finedust.data.response.search.SearchAddressResponse
 import retrofit2.Callback
 
-class RemoteDataSourceImpl() : RemoteDataSource {
+class RemoteDataSourceImpl : RemoteDataSource {
 
     private val addressService = KakaoAddressCreator.create()
     private val kakaoService = KakaoCreator.create()
-    private val nearbyParadidymisService = NearbyParadidymisCreator.create()
+    private val nearbyObservatoryService = NearbyObservatoryCreator.create()
     private val airConditionService = AirConditionerCreator.create()
     private val searchAddressService = SearchAddressCreator.create()
 
@@ -32,18 +32,18 @@ class RemoteDataSourceImpl() : RemoteDataSource {
         kakaoService.getNavigate(longitude, latitude).enqueue(callback)
     }
 
-    override fun getParadidmis(xValue: Double, yValue: Double, callback: Callback<Paradidymis>) {
-        nearbyParadidymisService.getParadidymis(
+    override fun getObservatory(xValue: Double, yValue: Double, callback: Callback<Observatory>) {
+        nearbyObservatoryService.getObservatory(
             xValue,
             yValue,
-            NearbyParadidymisCreator.SERVICE_KEY
+            NearbyObservatoryCreator.SERVICE_KEY
         ).enqueue(callback)
     }
 
-    override fun getAirCondition(nearbyParadidymis: String, callback: Callback<AirResponse>) {
+    override fun getAirCondition(nearbyObservatory: String, callback: Callback<AirResponse>) {
         airConditionService.getAirConditioner(
-            nearbyParadidymis,
-            NearbyParadidymisCreator.SERVICE_KEY
+            nearbyObservatory,
+            NearbyObservatoryCreator.SERVICE_KEY
         ).enqueue(callback)
     }
 
