@@ -23,7 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel() : ViewModel() {
+class MainViewModel : ViewModel() {
 
     lateinit var mainAddress: DetailAddress
     lateinit var detailObservatory: String
@@ -140,5 +140,35 @@ class MainViewModel() : ViewModel() {
             }
         }
         repository.getAirConditionerItems(nearbyObservatory, callback)
+    }
+
+    suspend fun insertDB() {
+        val finedustEntity =
+            FinedustEntity(x = mainAddress.x, y = mainAddress.y, address = mainAddress.address)
+        repository.insertItem(finedustEntity)
+    }
+
+    suspend fun getFavoriteAddressList() {
+        CoroutineScope(Main).launch {
+            _favoriteList.value = repository.getRecyclerviewList()
+        }
+    }
+
+    suspend fun deleteAllFavoriteList() {
+        repository.deleteAll()
+    }
+
+    suspend fun deleteFavoriteItem(data: String) {
+        repository.deleteItem(data)
+    }
+
+    fun favoriteListCheck(address: String): Boolean {
+        var isFavorite = false
+        _favoriteList.value!!.forEach {
+            if (it.address == address) {
+                isFavorite = true
+            }
+        }
+        return isFavorite
     }
 }
