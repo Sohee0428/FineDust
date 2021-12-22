@@ -69,26 +69,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.search.setOnClickListener {
-            locationIntent()
-        }
-        binding.locationUpdateImg.setOnClickListener {
-            getLocation()
-            Toast.makeText(this, "위치를 업데이트 했습니다.", Toast.LENGTH_SHORT).show()
-        }
-        binding.background.setOnClickListener {
-            detailIntent()
-        }
-        binding.menu.setOnClickListener {
-            menuIntent()
-        }
-        binding.youAreHere.setOnClickListener {
-            menuClose()
-            getLocation()
-        }
-        binding.appDescription.setOnClickListener {
-            menuClose()
-            appDescription()
+    private fun initContactFavoriteAdapter() {
+        binding.favoriteList.adapter = adapter
+        val layoutManager = LinearLayoutManager(this)
+        binding.favoriteList.layoutManager = layoutManager
+    }
+
+    private fun initFavoriteList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            mainViewModel.getFavoriteAddressList()
         }
 
     }
@@ -287,6 +276,20 @@ class MainActivity : AppCompatActivity() {
 //        thread.start()
     }
 
+    private fun alertToDeleteFavoriteList() {
+        val addLocationDust = AlertDialog.Builder(this)
+        addLocationDust.setTitle("즐겨찾기 목록 삭제")
+            .setMessage("즐겨찾기 목록에 추가된 장소를 모두 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { _, _ ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    mainViewModel.deleteAllFavoriteList()
+                }
+                menuClose()
+                Toast.makeText(this, "즐겨찾기 목록이 모두 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
 
         val intent = Intent(this, LocationActivity::class.java)
         getLocationResult.launch(intent)
