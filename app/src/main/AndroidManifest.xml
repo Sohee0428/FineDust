@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.finedust">
+    package="com.sohee.finedust">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -28,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.main.MainActivity" />
-        <activity android:name=".presentation.location.LocationActivity" />
-        <activity android:name=".presentation.AppDescriptionActivity" />
+        <activity android:name="com.sohee.finedust.presentation.main.MainActivity" />
+        <activity android:name="com.sohee.finedust.presentation.location.LocationActivity" />
+        <activity android:name="com.sohee.finedust.presentation.AppDescriptionActivity" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

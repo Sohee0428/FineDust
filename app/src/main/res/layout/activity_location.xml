@@ -9,11 +9,11 @@
 
         <variable
             name="locationActivity"
-            type="com.example.finedust.presentation.location.LocationActivity" />
+            type="com.sohee.finedust.presentation.location.LocationActivity" />
 
         <variable
             name="viewModel"
-            type="com.example.finedust.presentation.location.LocationViewModel" />
+            type="com.sohee.finedust.presentation.location.LocationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

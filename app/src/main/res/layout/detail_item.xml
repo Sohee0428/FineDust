@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.example.finedust.data.DetailDust" />
+            type="com.sohee.finedust.data.DetailDust" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

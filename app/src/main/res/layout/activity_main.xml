@@ -7,7 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.finedust.presentation.main.MainViewModel" />
+            type="com.sohee.finedust.presentation.main.MainViewModel" />
+
+        <variable
+            name="mainActivity"
+            type="com.sohee.finedust.presentation.main.MainActivity" />
 
     </data>
 
