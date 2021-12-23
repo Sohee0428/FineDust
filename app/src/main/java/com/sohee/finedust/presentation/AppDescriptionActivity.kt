@@ -1,6 +1,7 @@
 package com.sohee.finedust.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.sohee.finedust.R
@@ -16,8 +17,7 @@ class AppDescriptionActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_description)
     }
 
-        binding.cancelImage.setOnClickListener {
-            finish()
-        }
+    fun close(view: View) {
+        finish()
     }
 }

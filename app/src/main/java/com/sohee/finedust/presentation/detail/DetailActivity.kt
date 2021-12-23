@@ -2,7 +2,7 @@ package com.sohee.finedust.presentation.detail
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,8 +48,7 @@ class DetailActivity : AppCompatActivity() {
         adapter.addDustList(dustData)
     }
 
-        binding.exit.setOnClickListener {
-            finish()
-        }
+    fun close(view: View) {
+        finish()
     }
 }

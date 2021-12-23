@@ -22,7 +22,7 @@
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="위치 이름"
+                android:text="위치"
                 android:textSize="15sp" />
 
             <TextView
@@ -44,7 +44,9 @@
                 android:id="@+id/exit"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_baseline_cancel_24" />
+                android:onClick="close"
+                android:src="@drawable/ic_baseline_cancel_24"
+                tools:ignore="UsingOnClickInXml" />
 
         </LinearLayout>
 
