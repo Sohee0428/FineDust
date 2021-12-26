@@ -12,7 +12,7 @@ object BindingAdapter {
     @JvmStatic
     fun changeGradeToString(view: TextView, grade: String?) {
         when (grade) {
-            "01" -> view.text = "..."
+            null -> view.text = "로딩 중"
             "1" -> view.text = "좋음"
             "2" -> view.text = "보통"
             "3" -> view.text = "나쁨"
@@ -25,7 +25,7 @@ object BindingAdapter {
     @JvmStatic
     fun setImageForCAIGrade(view: ImageView, grade: String?) {
         when (grade) {
-            "01" -> view.setImageResource(R.drawable.loading)
+            null -> view.setImageResource(R.drawable.loading)
             "1" -> view.setImageResource(R.drawable.perfect_bearflower)
             "2" -> view.setImageResource(R.drawable.good_bearflower)
             "3" -> view.setImageResource(R.drawable.soso_bearflower)
