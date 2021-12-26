@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             mainViewModel.getFavoriteAddressList()
         }
-
     }
 
     private fun permission() {

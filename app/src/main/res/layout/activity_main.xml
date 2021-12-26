@@ -70,6 +70,7 @@
                 android:paddingTop="5dp"
                 android:textColor="@color/black"
                 android:textSize="27sp"
+                app:layout_constraintBottom_toTopOf="@id/fineDustConst"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/Toolbar"
                 tools:text="@string/null_air" />
@@ -467,12 +468,15 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/question_icon" />
+                        android:paddingEnd="10dp"
+                        android:src="@drawable/question_icon"
+                        tools:ignore="RtlSymmetry" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:paddingBottom="3dp"
                         android:text="어플 설명"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -498,12 +502,15 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_baseline_my_location_24" />
+                        android:paddingEnd="10dp"
+                        android:src="@drawable/ic_baseline_my_location_24"
+                        tools:ignore="RtlSymmetry" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:paddingBottom="3dp"
                         android:text="현위치"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -519,6 +526,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp">
@@ -526,13 +534,16 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_baseline_star_24" />
+                        android:paddingEnd="10dp"
+                        android:src="@drawable/ic_baseline_star_24"
+                        tools:ignore="RtlSymmetry" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+                        android:paddingBottom="3dp"
                         android:text="즐겨찾기 목록"
                         android:textColor="@color/black"
                         android:textSize="20sp"

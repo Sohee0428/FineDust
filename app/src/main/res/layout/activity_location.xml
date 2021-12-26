@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="검색어를 입력해주세요."
-            android:imeOptions="actionSend"
+            android:imeOptions="actionSearch"
             android:singleLine="true"
             android:textSize="28sp"
             app:layout_constraintHorizontal_weight="1"
