@@ -35,15 +35,15 @@ https://play.google.com/store/apps/details?id=com.sohee.finedust
 - Gps를 이용하여 위치를 가져올 때 사용자가 업데이트 버튼을 누를 경우 에러 발생
 
    → 실시간 업데이트가 아닌 사용자가 원할 경우에만 위치를 가져와야 하는 경우에는 getLstKnownLocation을 이용
-- API 호출 시 response의 값 중에서 null 처리 미적용
+- 가끔씩 앱을 열자마자 크래시 나는 케이스 확인
 
-   → 필요한 response를 찾아 null 값 적용
+   → 디버깅 및 크래시리포트를 확인하여 API를 통해 받아오는 reponse에 사용하는 데이터가 null 로 내려오는것을 확인 및 null 체크 로직 추가 적용
 - Gps 값을 불렀으나 미세먼지 관측소 에서는 변형된 값을 필요로 한 경우
 
    → Kakao API를 이용 Gps 값을 변형하여 적용
-- 위치 검색 실패
+- GPS 허용함에도 불구하고 위치 검색이 안되는 경우
 
-   → LocationListener 사용 시 불필요한 메소드이지만 구현해야만 위치 검색 가능
+   → LocationListener 사용 시 불필요한 메소드이지만 구현해야만 위치 검색 가능 - 버전에 따른 LocationListener 처리를 다르게 해야한다는 것을 확인
 - Activity 파일에 방대한 코드
 
    → onClick과 BindingAdapter, DataBinding을 이용하여 정리
