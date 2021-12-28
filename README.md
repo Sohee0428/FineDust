@@ -44,6 +44,9 @@ https://play.google.com/store/apps/details?id=com.sohee.finedust
 - GPS 허용함에도 불구하고 위치 검색이 안되는 경우
 
    → LocationListener 사용 시 불필요한 메소드이지만 구현해야만 위치 검색 가능 - 버전에 따른 LocationListener 처리를 다르게 해야한다는 것을 확인
+- 즐겨찾기 기능을 추가 데이터를 저장할 DB를 사용해야함
+
+   → 위도, 경도, 주소를 저장해야 하기 때문에 sharedPreferences를 사용할 수 없음. 저장, 삭제 등의 기능을 사용하기 위해 SQLite를 이용하는 것이 좋음. 하지만 SQLite는 수동적이여서 이를 자동으로 도와주는 라이브러리인 Room을 선택.
 - Activity 파일에 방대한 코드
 
    → onClick과 BindingAdapter, DataBinding을 이용하여 정리
