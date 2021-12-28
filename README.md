@@ -34,7 +34,7 @@ https://play.google.com/store/apps/details?id=com.sohee.finedust
 앱을 제작하며 맞닥뜨린 문제들을 고민하고 해결했던 과정입니다.
 - Gps를 이용하여 위치를 가져올 때 사용자가 업데이트 버튼을 누를 경우 에러 발생
 
-   → 실시간 업데이트가 아닌 사용자가 원할 경우에만 위치를 가져와야 하는 경우에는 getLstKnownLocation을 이용
+   → 실시간 업데이트가 아닌 사용자가 원할 경우에만 위치를 가져와야 하는 경우에는 getLastKnownLocation을 이용
 - 가끔씩 앱을 열자마자 크래시 나는 케이스 확인
 
    → 디버깅 및 크래시리포트를 확인하여 API를 통해 받아오는 reponse에 사용하는 데이터가 null 로 내려오는것을 확인 및 null 체크 로직 추가 적용
