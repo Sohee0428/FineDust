@@ -1,6 +1,5 @@
 package com.sohee.finedust.data.network
 
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,23 +23,11 @@ object NearbyObservatoryCreator {
 
     private fun getClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
-            .addInterceptor(getInterceptor())
             .addInterceptor(httpLoggingInterceptor)
             .build()
-    }
-
-    private fun getInterceptor(): Interceptor {
-        return Interceptor {
-            val request = it.request()
-                .newBuilder()
-                .build()
-
-            return@Interceptor it.proceed(request)
-        }
     }
 }
 
