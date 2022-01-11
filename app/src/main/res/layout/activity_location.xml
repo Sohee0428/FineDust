@@ -39,6 +39,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/ic_baseline_search_24"
+            android:onClick="clickSearchLocation"
             app:layout_constraintBottom_toBottomOf="@id/locationSearch"
             app:layout_constraintLeft_toRightOf="@id/locationSearch"
             app:layout_constraintRight_toRightOf="parent"

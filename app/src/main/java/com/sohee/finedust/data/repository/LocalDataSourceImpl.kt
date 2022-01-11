@@ -1,12 +1,11 @@
 package com.sohee.finedust.data.repository
 
-import com.sohee.finedust.App
 import com.sohee.finedust.data.FineDustDataBase
 import com.sohee.finedust.data.entity.FinedustEntity
 
 class LocalDataSourceImpl : LocalDataSource {
 
-    private val db = FineDustDataBase.getInstance(App.instance)
+    private val db = FineDustDataBase.getInstance()
     private val finedustDao = db!!.finedustDao()
 
     override suspend fun getRecyclerviewList(): List<FinedustEntity> {
