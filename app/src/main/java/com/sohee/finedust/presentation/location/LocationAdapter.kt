@@ -3,6 +3,7 @@ package com.sohee.finedust.presentation.location
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.sohee.finedust.App
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.databinding.LocationItemBinding
 

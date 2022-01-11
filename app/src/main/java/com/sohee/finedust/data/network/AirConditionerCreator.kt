@@ -24,7 +24,6 @@ object AirConditionerCreator {
 
     private fun getClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
