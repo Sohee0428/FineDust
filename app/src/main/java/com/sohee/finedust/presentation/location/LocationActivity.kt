@@ -40,15 +40,16 @@ class LocationActivity : AppCompatActivity() {
         searchText()
         getDetailAddress()
 
-//        binding.locationSearch.setOnEditorActionListener { _, actionId, _ ->
-//            return@setOnEditorActionListener when (actionId) {
-//                EditorInfo.IME_ACTION_SEND -> {
-//                    getDetailAddress()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
+        binding.locationSearch.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    searchLocation()
+                    getDetailAddress()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun initContactAdapter() {
