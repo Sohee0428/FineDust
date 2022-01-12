@@ -5,6 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sohee.finedust.R
 import com.sohee.finedust.presentation.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,11 +19,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun delayActivity() {
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 1500)
+        }
     }
 }
