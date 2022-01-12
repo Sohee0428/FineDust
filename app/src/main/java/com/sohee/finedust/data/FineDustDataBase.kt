@@ -1,9 +1,9 @@
 package com.sohee.finedust.data
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sohee.finedust.App
 import com.sohee.finedust.data.dao.FinedustDao
 import com.sohee.finedust.data.entity.FinedustEntity
 
@@ -16,11 +16,11 @@ abstract class FineDustDataBase : RoomDatabase() {
         private var INSTANCE: FineDustDataBase? = null
 
         @Synchronized
-        fun getInstance(context: Context): FineDustDataBase? {
+        fun getInstance(): FineDustDataBase? {
             if (INSTANCE == null) {
                 synchronized(FineDustDataBase::class) {
                     INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
+                        App.instance,
                         FineDustDataBase::class.java, "database"
                     )
                         .allowMainThreadQueries()
