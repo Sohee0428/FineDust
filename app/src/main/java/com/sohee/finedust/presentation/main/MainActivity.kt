@@ -1,4 +1,4 @@
-package com.example.finedust.presentation.main
+package com.sohee.finedust.presentation.main
 
 import android.Manifest
 import android.content.Context
@@ -9,6 +9,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +24,7 @@ import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.DetailDust
 import com.sohee.finedust.data.date.LocalDate
+import com.sohee.finedust.data.entity.FinedustEntity
 import com.sohee.finedust.databinding.ActivityMainBinding
 import com.sohee.finedust.presentation.AppDescriptionActivity
 import com.sohee.finedust.presentation.detail.DetailActivity
@@ -35,6 +37,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var getLocationResultData: ActivityResultLauncher<Intent>
+    private var locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            val lat = location.latitude
+            val lng = location.longitude
+            Log.d("Gps", "Lat: $lat, lon: $lng")
+        }
+
+        override fun onProviderDisabled(provider: String) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    }
     private val mainViewModel: MainViewModel by viewModels()
     private val adapter: FavoriteAdapter by lazy {
         FavoriteAdapter({
@@ -44,16 +57,18 @@ class MainActivity : AppCompatActivity() {
             menuClose()
         },
             {
-                deleteFavoriteItem(it)
+                deleteFavoriteItem(it.address)
                 menuClose()
             })
     }
+    private var backWait: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mainViewModel
+        binding.mainActivity = this
         binding.lifecycleOwner = this
         binding.date.text = LocalDate().str_date
 
@@ -63,11 +78,22 @@ class MainActivity : AppCompatActivity() {
         getAddressData()
         getAirConditionData()
         getLocationResult()
+    }
 
-                getAddressList.clear()
-                getAddressList.add(data)
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawers()
+        } else {
+            if (System.currentTimeMillis() > backWait + 2500) {
+                backWait = System.currentTimeMillis()
+                Toast.makeText(this, "종료하시려면 뒤로가기를 한번 더 눌러주세요.", Toast.LENGTH_SHORT).show()
+                return
+            }
+            else if (System.currentTimeMillis() <= backWait + 2500) {
+                finishAffinity()
             }
         }
+    }
 
     private fun initContactFavoriteAdapter() {
         binding.favoriteList.adapter = adapter
@@ -76,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFavoriteList() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             mainViewModel.getFavoriteAddressList()
         }
     }
@@ -86,11 +112,6 @@ class MainActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (isGranted) {
                     Log.d("위치 허가", "requestPermission Success")
-                    Toast.makeText(
-                        this,
-                        "위젯을 사용할 시에는 [설정]으로 이동하여 권한을 항상 허용으로 해주어야 합니다.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     getLocation()
                 } else {
                     Log.d("위치 불허", "requestPermission Fail")
@@ -103,44 +124,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-        val forgroundPermission = ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-
-        if (forgroundPermission) {
-//            val backgroundPermission = ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//
-//            if (backgroundPermission) {
-//            } else {
-//            }
-            Log.d("checkSelfPermission", "checkPermission Success")
-            getLocation()
-        } else {
-            Log.d("checkSelfPermission", "checkPermission Fail")
-            requestPermissionLauncher.launch(
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            )
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                Log.d("checkSelfPermission", "checkPermission Success")
+                getLocation()
+            }
+            else -> {
+                Log.d("checkSelfPermission", "checkPermission Fail")
+                requestPermissionLauncher.launch(
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            }
         }
-
-//        when {
-//            ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED -> {
-//                Log.d("checkSelfPermission", "checkPermission Success")
-//                getLocation()
-//            }
-//            else -> {
-//                Log.d("checkSelfPermission", "checkPermission Fail")
-//                requestPermissionLauncher.launch(
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                )
-//            }
-//        }
     }
 
     private fun getLocation() {
@@ -148,7 +146,6 @@ class MainActivity : AppCompatActivity() {
             val locationManager =
                 this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val locationProvider = LocationManager.GPS_PROVIDER
-            val locationListener = LocationListener { }
             val currentLatLng: Location? = locationManager.getLastKnownLocation(locationProvider)
 
             locationManager.requestLocationUpdates(
@@ -225,6 +222,13 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.airConditionerItemsNull.observe(this) {
             Toast.makeText(this, "정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
         }
+        mainViewModel.observatoryError.observe(this) {
+            Toast.makeText(
+                this,
+                "미세먼지 정보를 불러오지 못하였습니다. 잠시후 다시 시도해주시기 바랍니다.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         mainViewModel.favoriteList.observe(this) {
             adapter.addList(it)
         }
@@ -256,23 +260,95 @@ class MainActivity : AppCompatActivity() {
             "2" -> "보통"
             "3" -> "나쁨"
             "4" -> "매우 나쁨"
+            "" -> "로딩 중"
             else -> "오류"
         }
     }
 
+    private fun changeLocation() {
+        val address = mainViewModel.mainAddress
+        mainViewModel.navigate(address.y.toDouble(), address.x.toDouble())
+        binding.locationStr.text = address.address
+        binding.locationName.visibility = View.GONE
+        binding.favoriteImage.visibility = View.VISIBLE
+        isCheckFavoriteImage(address.isFavorite)
+    }
+
     private fun addLocation() {
+        val addedFavoriteItem = mainViewModel.mainAddress.copy(isFavorite = true)
+        mainViewModel.mainAddress = addedFavoriteItem
         CoroutineScope(Dispatchers.IO).launch {
             mainViewModel.insertDB()
         }
-//        위 io 쓰레드 사용하는 것을 수동으로 만들 경우의 코드
-//        val thread = Thread {
-//            try {
-//                fineDustList = db?.finedustDao()?.getAll()!!
-//            } catch (e: Exception) {
-//
-//            }
-//        }
-//        thread.start()
+    }
+
+    private fun getLocationResult() {
+        getLocationResultData = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == RESULT_OK) {
+                val data = it.data?.getSerializableExtra("searchLocation") as DetailAddress
+                Log.d("getLocationResult", "${it.data}")
+
+                if (mainViewModel.favoriteListCheck(data.address)) {
+                    val addedFavoriteItem = data.copy(isFavorite = true)
+                    mainViewModel.mainAddress = addedFavoriteItem
+                } else {
+                    mainViewModel.mainAddress = data
+                }
+                changeLocation()
+            }
+        }
+    }
+
+    fun checkFavoriteState() {
+        if (mainViewModel.mainAddress.isFavorite) {
+            alertToDeleteLocation(mainViewModel.mainAddress.address)
+        } else {
+            alertToAddLocation()
+        }
+    }
+
+    private fun isCheckFavoriteImage(checkFavoriteList: Boolean) {
+        if (checkFavoriteList) {
+            binding.favoriteImage.setImageResource(R.drawable.ic_baseline_star_24)
+        } else {
+            binding.favoriteImage.setImageResource(R.drawable.ic_baseline_star_border_24)
+        }
+    }
+
+    private fun deleteFavoriteItem(data: String) {
+        val addedFavoriteItem = mainViewModel.mainAddress.copy(isFavorite = false)
+        mainViewModel.mainAddress = addedFavoriteItem
+        CoroutineScope(Dispatchers.IO).launch {
+            mainViewModel.deleteFavoriteItem(data)
+        }
+    }
+
+    private fun alertToAddLocation() {
+        val addLocationDust = AlertDialog.Builder(this)
+        addLocationDust.setTitle("즐겨찾기 추가")
+            .setMessage("즐겨찾기 목록에 장소를 추가하시겠습니까?")
+            .setPositiveButton("추가") { _, _ ->
+                addLocation()
+                Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                isCheckFavoriteImage(true)
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
+    private fun alertToDeleteLocation(data: String) {
+        val addLocationDust = AlertDialog.Builder(this)
+        addLocationDust.setTitle("즐겨찾기 삭제")
+            .setMessage("즐겨찾기 목록에서 장소를 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { _, _ ->
+                deleteFavoriteItem(data)
+                Toast.makeText(this, "즐겨찾기에 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                isCheckFavoriteImage(false)
+            }
+            .setNegativeButton("취소", null)
+            .show()
     }
 
     private fun alertToDeleteFavoriteList() {
@@ -290,19 +366,34 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    fun clickLocationIntent() {
         val intent = Intent(this, LocationActivity::class.java)
-        getLocationResult.launch(intent)
-    }
-
-    private fun menuIntent() {
-        binding.drawerLayout.openDrawer(GravityCompat.START)
+        getLocationResultData.launch(intent)
     }
 
     private fun menuClose() {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
-    private fun detailIntent() {
+    fun clickMenuIntent() {
+        binding.drawerLayout.openDrawer(GravityCompat.START)
+        CoroutineScope(Dispatchers.Main).launch {
+            mainViewModel.getFavoriteAddressList()
+        }
+
+    }
+
+    fun clickLocationUpdateImg() {
+        getLocation()
+        Toast.makeText(this, "위치를 업데이트 했습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    fun clickDeleteAllFavoriteImage() {
+        alertToDeleteFavoriteList()
+        menuClose()
+    }
+
+    fun clickDetailIntent() {
         Log.d("detailDate2", mainViewModel.detailDate)
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("data", mainViewModel.detailDustList)
@@ -312,15 +403,14 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun appDescription() {
+    fun clickAppDescription() {
         val intent = Intent(this, AppDescriptionActivity::class.java)
         startActivity(intent)
+        menuClose()
     }
 
-    fun clickPreparationPlanIntent() {
-        val intent = Intent(this, PreparationActivity::class.java)
-        startActivity(intent)
+    fun clickYouAreHere() {
+        menuClose()
+        getLocation()
     }
-
-
 }
