@@ -55,6 +55,10 @@ class MainViewModel : ViewModel() {
     val airConditionerItemsNull: LiveData<Unit>
         get() = _airConditionerItemsNull
 
+    private val _observatoryError: MutableLiveData<Unit> = MutableLiveData()
+    val observatoryError: LiveData<Unit>
+        get() = _observatoryError
+
     fun navigate(latitude: Double, longitude: Double) {
         val callback = object : Callback<KakaoResponse> {
             override fun onResponse(call: Call<KakaoResponse>, response: Response<KakaoResponse>) {
@@ -116,7 +120,8 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<Observatory>, t: Throwable) {
-                Log.e("observatoryReponse", "에러 발생")
+                Log.e("observatoryReponse", "에러 발생 ")
+                _observatoryError.value = Unit
             }
         }
         repository.getObservatoryItems(xValue, yValue, callback)
