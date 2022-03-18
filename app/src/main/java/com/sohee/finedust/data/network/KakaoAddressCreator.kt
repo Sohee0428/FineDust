@@ -42,6 +42,3 @@ object KakaoAddressCreator {
         }
     }
 }
-
-
-

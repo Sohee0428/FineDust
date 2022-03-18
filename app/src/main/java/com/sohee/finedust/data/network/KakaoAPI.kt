@@ -10,19 +10,19 @@ import retrofit2.http.Query
 interface KakaoAPI {
 
     @GET("/v2/local/geo/transcoord.json?input_coord=WGS84&output_coord=TM")
-    fun getNavigate(
+    suspend fun getNavigate(
         @Query("x") x: Double,
         @Query("y") y: Double
-    ): Call<KakaoResponse>
+    ): KakaoResponse
 
     @GET("/v2/local/geo/coord2address.json?input_coord=WGS84")
-    fun getAddress(
+    suspend fun getAddress(
         @Query("x") x: Double,
         @Query("y") y: Double
-    ): Call<AddressResponse>
+    ): AddressResponse
 
     @GET("/v2/local/search/address.json")
-    fun getLocation(
+    suspend fun getLocation(
         @Query("query") query: String
-    ): Call<SearchAddressResponse>
+    ): SearchAddressResponse
 }

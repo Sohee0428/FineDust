@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.DetailDust
 import com.sohee.finedust.data.entity.FinedustEntity
@@ -18,6 +19,8 @@ import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.observatory.Observatory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,120 +34,138 @@ class MainViewModel : ViewModel() {
     private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
 
+    private val _mainUiEvent = MutableStateFlow<MainUiEvents?>(null)
+    val mainUiEvent = _mainUiEvent.asStateFlow()
+
     private val _favoriteList: MutableLiveData<List<FinedustEntity>> = MutableLiveData()
     val favoriteList: LiveData<List<FinedustEntity>>
         get() = _favoriteList
 
-    private val _preAddress: MutableLiveData<Address> = MutableLiveData()
-    val preAddress: LiveData<Address>
-        get() = _preAddress
+    private val _addressName = MutableStateFlow<String?>(null)
+    val addressName = _addressName.asStateFlow()
 
-    private val _newAddress: MutableLiveData<RoadAddress> = MutableLiveData()
-    val newAddress: LiveData<RoadAddress>
-        get() = _newAddress
+    private val _airConditionerItems = MutableStateFlow<Item?>(null)
+    val airConditionerItems = _airConditionerItems.asStateFlow()
 
-    private val _addressNull: MutableLiveData<Unit> = MutableLiveData()
-    val addressNull: LiveData<Unit>
-        get() = _addressNull
+    private val _pm10Grade = MutableStateFlow<String?>(null)
+    val pm10Grade = _pm10Grade.asStateFlow()
 
-    private val _airConditionerItems: MutableLiveData<Item> = MutableLiveData()
-    val airConditionerItems: LiveData<Item>
-        get() = _airConditionerItems
-
-    private val _airConditionerItemsNull: MutableLiveData<Unit> = MutableLiveData()
-    val airConditionerItemsNull: LiveData<Unit>
-        get() = _airConditionerItemsNull
-
-    private val _observatoryError: MutableLiveData<Unit> = MutableLiveData()
-    val observatoryError: LiveData<Unit>
-        get() = _observatoryError
+    private val _pm25Grade = MutableStateFlow<String?>(null)
+    val pm25Grade = _pm25Grade.asStateFlow()
 
     fun navigate(latitude: Double, longitude: Double) {
-        val callback = object : Callback<KakaoResponse> {
-            override fun onResponse(call: Call<KakaoResponse>, response: Response<KakaoResponse>) {
-                val xValue = response.body()!!.documents[0].x
-                val yValue = response.body()!!.documents[0].y
-
-                Log.d("TMAddressResponse", "$xValue, $yValue")
-                nearbyObservatory(xValue, yValue)
-            }
-
-            override fun onFailure(call: Call<KakaoResponse>, t: Throwable) {
+        viewModelScope.launch {
+            runCatching {
+                repository.getKakaoLatLon(latitude, longitude)
+            }.onSuccess {
+                nearbyObservatory(it.documents[0].x, it.documents[0].y)
+            }.onFailure {
+                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
                 Log.e("TMAddressResponse", "에러 발생")
             }
         }
-        repository.getKakaoLatLon(latitude, longitude, callback)
     }
 
     fun address(latitude: Double, longitude: Double) {
-        val callback = object : Callback<AddressResponse> {
-            override fun onResponse(
-                call: Call<AddressResponse>,
-                response: Response<AddressResponse>
-            ) {
-                Log.d(
-                    "주소", "신주소 : ${response.body()!!.documents[0].road_address}," +
-                            "구주소 : ${response.body()!!.documents[0].address}"
-                )
+        viewModelScope.launch {
+            runCatching {
+                repository.getAddress(latitude, longitude)
+            }.onSuccess {
                 when {
-                    response.body()!!.documents[0].road_address != null -> {
-                        _newAddress.value = response.body()!!.documents[0].road_address
-                    }
-                    response.body()!!.documents[0].address != null -> {
-                        _preAddress.value = response.body()!!.documents[0].address
-                    }
-                    else -> {
-                        _addressNull.value = Unit
-                    }
+                    it.documents[0].road_address.address_name.isNotEmpty() -> _addressName.value =
+                        it.documents[0].road_address.address_name
+                    it.documents[0].address.address_name.isNotEmpty() -> _addressName.value =
+                        it.documents[0].address.address_name
+                    else -> _mainUiEvent.value =
+                        MainUiEvents.ShowErrorMessageToast("주소를 불러오지 못했습니다.")
                 }
-            }
-
-            override fun onFailure(call: Call<AddressResponse>, t: Throwable) {
-                Log.e("addressResponse", "에러 발생")
+            }.onFailure {
+                Log.e("addressResponse", "에러 발생 >> ${it.message}")
+                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
             }
         }
-        repository.getAddress(latitude, longitude, callback)
     }
 
-    fun nearbyObservatory(xValue: Double, yValue: Double) {
-        val callback = object : Callback<Observatory> {
-            override fun onResponse(call: Call<Observatory>, response: Response<Observatory>) {
-                val stationName = response.body()!!.response.body.items[0].stationName
-                if (stationName != null) {
-                    Log.d("obsercatoryReponse", stationName)
-                    detailObservatory = stationName
-                    airConditioner(stationName)
-                } else {
-                    _airConditionerItemsNull.value = Unit
-                }
-            }
-
-            override fun onFailure(call: Call<Observatory>, t: Throwable) {
+    private fun nearbyObservatory(xValue: Double, yValue: Double) {
+        viewModelScope.launch {
+            runCatching {
+                repository.getObservatoryItems(xValue, yValue)
+            }.onSuccess {
+                val stationName =  it.response.body.items[0].stationName
+                detailObservatory = stationName
+                airConditioner(stationName)
+            }.onFailure {
                 Log.e("observatoryReponse", "에러 발생 ")
-                _observatoryError.value = Unit
+                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
             }
         }
-        repository.getObservatoryItems(xValue, yValue, callback)
     }
 
-    fun airConditioner(nearbyObservatory: String) {
-        val callback = object : Callback<AirResponse> {
-            override fun onResponse(call: Call<AirResponse>, response: Response<AirResponse>) {
-                if (response.body()!!.response.body.items[0] != null) {
-                    Log.d("airConditioner", "${response.body()!!.response.body.items[0]}")
-                    _airConditionerItems.value = response.body()!!.response.body.items[0]
-                    detailDate = response.body()!!.response.body.items[0].dataTime
-                    Log.d("detailDate1", detailDate)
-                } else {
-                    _airConditionerItemsNull.value = Unit
+    private fun airConditioner(nearbyObservatory: String) {
+        viewModelScope.launch {
+            runCatching {
+                repository.getAirConditionerItems(nearbyObservatory)
+            }.onSuccess {
+                if (it.response.body.items[0] != null){
+                    _airConditionerItems.value = it.response.body.items[0]
+                    detailDate = it.response.body.items[0].dataTime
+                    setAirConditionData(it.response.body.items[0])
                 }
-            }
-
-            override fun onFailure(call: Call<AirResponse>, t: Throwable) {
+                else _mainUiEvent.value = MainUiEvents.ShowNullMessageToast("미세먼지 정보를 불러오지 못하였습니다. 잠시후 다시 시도해주시기 바랍니다.")
+            }.onFailure {
                 Log.e("airConditionResponse", "에러 발생")
+                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
             }
         }
-        repository.getAirConditionerItems(nearbyObservatory, callback)
+    }
+
+    private fun setAirConditionData(airConditionData: Item) {
+        _pm10Grade.value = pm10Grade(airConditionData.pm10Value)
+        _pm25Grade.value = pm10Grade(airConditionData.pm25Value)
+
+        val itemList = mutableListOf(
+            airConditionData.khaiValue to airConditionData.khaiGrade,
+            airConditionData.pm10Value to pm10Grade(pm10Grade.value),
+            airConditionData.pm25Value to pm25Grade(pm25Grade.value),
+            airConditionData.o3Value to airConditionData.o3Grade,
+            airConditionData.so2Value to airConditionData.so2Grade,
+            airConditionData.coValue to airConditionData.coGrade,
+            airConditionData.no2Value to airConditionData.no2Grade
+        )
+
+        detailDustList.clear()
+        detailDustList.addAll(DetailDust.getDetailDustList(itemList))
+    }
+
+    private fun pm10Grade(str: String?): String {
+        return when (str?.toIntOrNull()) {
+            in 0..30 -> "1"
+            in 31..50 -> "2"
+            in 51..100 -> "3"
+            null -> ""
+            else -> "4"
+        }
+    }
+
+    private fun pm25Grade(str: String?): String {
+        return when (str?.toIntOrNull()) {
+            in 0..15 -> "1"
+            in 16..25 -> "2"
+            in 26..50 -> "3"
+            null -> ""
+            else -> "4"
+        }
+    }
+
+    fun pmGrade(str: String?): String {
+        return when (str) {
+            "1" -> "좋음"
+            "2" -> "보통"
+            "3" -> "나쁨"
+            "4" -> "매우 나쁨"
+            "" -> "로딩 중"
+            else -> "오류"
+        }
     }
 
     suspend fun insertDB() {
@@ -175,5 +196,13 @@ class MainViewModel : ViewModel() {
             }
         }
         return isFavorite
+    }
+
+    sealed class MainUiEvents {
+        object GPSPermissionSuccess : MainUiEvents()
+        object GPSPermissionFail : MainUiEvents()
+        data class ShowErrorMessageToast(val message: String) : MainUiEvents()
+        data class ShowNullMessageToast(val message: String) : MainUiEvents()
+
     }
 }

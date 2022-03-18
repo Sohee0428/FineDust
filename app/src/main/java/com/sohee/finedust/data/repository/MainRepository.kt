@@ -10,11 +10,11 @@ import retrofit2.Callback
 
 interface MainRepository {
 
-    fun getAddress(latitude: Double, longitude: Double, callback: Callback<AddressResponse>)
-    fun getKakaoLatLon(latitude: Double, longitude: Double, callback: Callback<KakaoResponse>)
-    fun getObservatoryItems(xValue: Double, yValue: Double, callback: Callback<Observatory>)
-    fun getAirConditionerItems(nearbyObservatory: String, callback: Callback<AirResponse>)
-    fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>)
+    suspend fun getAddress(latitude: Double, longitude: Double): AddressResponse
+    suspend fun getKakaoLatLon(latitude: Double, longitude: Double): KakaoResponse
+    suspend fun getObservatoryItems(xValue: Double, yValue: Double): Observatory
+    suspend fun getAirConditionerItems(nearbyObservatory: String): AirResponse
+    suspend fun getSearchLocation(query: String): SearchAddressResponse
 
     suspend fun getRecyclerviewList(): List<FinedustEntity>
     suspend fun insertItem(finedustItem: FinedustEntity): Long

@@ -144,7 +144,8 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:layout_weight="1"
-                            android:text="위치"
+                            tools:text="위치"
+                            android:text="@{viewModel.addressName}"
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             app:layout_constraintLeft_toRightOf="@id/locationUpdateImg"
@@ -233,7 +234,7 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/black"
                                         android:textSize="30sp"
-                                        tools:text="농도" />
+                                        android:text="@{viewModel.airConditionerItems.khaiValue}" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -327,7 +328,8 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/black"
                                         android:textSize="17sp"
-                                        tools:text="농도" />
+                                        tools:text="농도"
+                                        android:text="@{viewModel.airConditionerItems.pm25Value}"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -351,7 +353,8 @@
                                     app:layout_constraintLeft_toLeftOf="@id/pm10Linear"
                                     app:layout_constraintRight_toRightOf="@id/pm10Linear"
                                     app:layout_constraintTop_toBottomOf="@id/pm10Linear"
-                                    tools:text="단계" />
+                                    tools:text="단계"
+                                    android:text="@{viewModel.pmGrade(viewModel.pm10Grade)}"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -418,7 +421,8 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/black"
                                         android:textSize="17sp"
-                                        tools:text="농도" />
+                                        tools:text="농도"
+                                        android:text="@{viewModel.airConditionerItems.pm25Value}"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -442,7 +446,8 @@
                                     app:layout_constraintLeft_toLeftOf="@id/pm25Linear"
                                     app:layout_constraintRight_toRightOf="@id/pm25Linear"
                                     app:layout_constraintTop_toBottomOf="@id/pm25Linear"
-                                    tools:text="단계" />
+                                    tools:text="단계"
+                                    android:text="@{viewModel.pmGrade(viewModel.pm25Grade)}"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>

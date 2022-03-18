@@ -6,7 +6,8 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import com.example.finedust.presentation.main.MainActivity
+import com.sohee.finedust.R
+import com.sohee.finedust.presentation.main.MainActivity
 
 class WidgetProvider: AppWidgetProvider() {
     private val MY_ACTION = "android.action.MY_ACTION"

@@ -9,9 +9,9 @@ import retrofit2.Callback
 
 interface RemoteDataSource {
 
-    fun getAddress(latitude: Double, longitude: Double, callback: Callback<AddressResponse>)
-    fun getKakaoItems(latitude: Double, longitude: Double, callback: Callback<KakaoResponse>)
-    fun getObservatory(xValue: Double, yValue: Double, callback: Callback<Observatory>)
-    fun getAirCondition(nearbyObservatory: String, callback: Callback<AirResponse>)
-    fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>)
+    suspend fun getAddress(latitude: Double, longitude: Double): AddressResponse
+    suspend fun getKakaoItems(latitude: Double, longitude: Double): KakaoResponse
+    suspend fun getObservatory(xValue: Double, yValue: Double): Observatory
+    suspend fun getAirCondition(nearbyObservatory: String): AirResponse
+    suspend fun getSearchLocation(query: String): SearchAddressResponse
 }

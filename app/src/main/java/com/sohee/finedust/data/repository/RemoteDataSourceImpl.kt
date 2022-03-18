@@ -16,40 +16,37 @@ class RemoteDataSourceImpl : RemoteDataSource {
     private val airConditionService = AirConditionerCreator.create()
     private val searchAddressService = SearchAddressCreator.create()
 
-    override fun getAddress(
+    override suspend fun getAddress(
         latitude: Double,
-        longitude: Double,
-        callback: Callback<AddressResponse>
-    ) {
-        addressService.getAddress(longitude, latitude).enqueue(callback)
-    }
+        longitude: Double
+    ): AddressResponse =
+        addressService.getAddress(longitude, latitude)
 
-    override fun getKakaoItems(
+
+    override suspend fun getKakaoItems(
         latitude: Double,
-        longitude: Double,
-        callback: Callback<KakaoResponse>
-    ) {
-        kakaoService.getNavigate(longitude, latitude).enqueue(callback)
-    }
+        longitude: Double
+    ): KakaoResponse =
+        kakaoService.getNavigate(longitude, latitude)
 
-    override fun getObservatory(xValue: Double, yValue: Double, callback: Callback<Observatory>) {
+
+    override suspend fun getObservatory(xValue: Double, yValue: Double): Observatory =
         nearbyObservatoryService.getObservatory(
             xValue,
             yValue,
             NearbyObservatoryCreator.SERVICE_KEY
-        ).enqueue(callback)
-    }
+        )
 
-    override fun getAirCondition(nearbyObservatory: String, callback: Callback<AirResponse>) {
+
+    override suspend fun getAirCondition(nearbyObservatory: String): AirResponse =
         airConditionService.getAirConditioner(
             nearbyObservatory,
             NearbyObservatoryCreator.SERVICE_KEY
-        ).enqueue(callback)
-    }
+        )
 
-    override fun getSearchLocation(query: String, callback: Callback<SearchAddressResponse>) {
+    override suspend fun getSearchLocation(query: String): SearchAddressResponse =
         searchAddressService.getLocation(
             query
-        ).enqueue(callback)
-    }
+        )
+
 }
