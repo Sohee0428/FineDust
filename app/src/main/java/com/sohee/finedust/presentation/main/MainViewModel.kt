@@ -10,21 +10,12 @@ import com.sohee.finedust.data.DetailDust
 import com.sohee.finedust.data.entity.FinedustEntity
 import com.sohee.finedust.data.repository.MainRepository
 import com.sohee.finedust.data.repository.MainRepositoryImpl
-import com.sohee.finedust.data.response.address.Address
-import com.sohee.finedust.data.response.address.AddressResponse
-import com.sohee.finedust.data.response.address.RoadAddress
-import com.sohee.finedust.data.response.air.AirResponse
 import com.sohee.finedust.data.response.air.Item
-import com.sohee.finedust.data.response.kakao.KakaoResponse
-import com.sohee.finedust.data.response.observatory.Observatory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainViewModel : ViewModel() {
 
