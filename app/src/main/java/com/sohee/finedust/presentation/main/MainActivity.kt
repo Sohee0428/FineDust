@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
@@ -29,8 +30,10 @@ import com.sohee.finedust.databinding.ActivityMainBinding
 import com.sohee.finedust.presentation.AppDescriptionActivity
 import com.sohee.finedust.presentation.detail.DetailActivity
 import com.sohee.finedust.presentation.location.LocationActivity
+import com.sohee.finedust.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -68,12 +71,12 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mainViewModel
-        binding.mainActivity = this
         binding.lifecycleOwner = this
         binding.date.text = LocalDate().str_date
 
         initContactFavoriteAdapter()
         initFavoriteList()
+        initCollector()
         permission()
         getAirConditionData()
         getLocationResult()
@@ -103,6 +106,27 @@ class MainActivity : AppCompatActivity() {
     private fun initFavoriteList() {
         CoroutineScope(Dispatchers.Main).launch {
             mainViewModel.getFavoriteAddressList()
+        }
+    }
+
+    private fun initCollector() {
+        lifecycleScope.launch {
+            mainViewModel.mainUiEvent.collect {
+                when(it) {
+                    MainViewModel.MainUiEvents.GPSPermissionFail -> TODO()
+                    MainViewModel.MainUiEvents.GPSPermissionSuccess -> TODO()
+                    is MainViewModel.MainUiEvents.ShowErrorMessageToast -> showToast(it.message)
+                    is MainViewModel.MainUiEvents.ShowNullMessageToast -> showToast(it.message)
+                    MainViewModel.MainUiEvents.CheckFavoriteState -> checkFavoriteState()
+                    MainViewModel.MainUiEvents.ClickAppDescription -> clickAppDescription()
+                    MainViewModel.MainUiEvents.ClickDeleteAllFavoriteList -> clickDeleteAllFavoriteImage()
+                    MainViewModel.MainUiEvents.ClickDetailIntent -> clickDetailIntent()
+                    MainViewModel.MainUiEvents.ClickLocationIntent -> clickLocationIntent()
+                    MainViewModel.MainUiEvents.ClickLocationUpdate -> clickLocationUpdateImg()
+                    MainViewModel.MainUiEvents.ClickMenuIntent -> clickMenuIntent()
+                    MainViewModel.MainUiEvents.ClickYouAreHere -> clickYouAreHere()
+                }
+            }
         }
     }
 

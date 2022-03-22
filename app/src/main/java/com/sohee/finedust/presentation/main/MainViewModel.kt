@@ -53,7 +53,7 @@ class MainViewModel : ViewModel() {
             }.onSuccess {
                 nearbyObservatory(it.documents[0].x, it.documents[0].y)
             }.onFailure {
-                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
                 Log.e("TMAddressResponse", "에러 발생")
             }
         }
@@ -190,11 +190,66 @@ class MainViewModel : ViewModel() {
         return isFavorite
     }
 
+    fun clickLocationUpdate() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickLocationUpdate)
+        }
+    }
+
+    fun checkFavoriteState() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.CheckFavoriteState)
+        }
+    }
+
+    fun clickDetailIntent() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickDetailIntent)
+        }
+    }
+
+    fun clickLocationIntent() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickLocationIntent)
+        }
+    }
+
+    fun clickMenuIntent() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickMenuIntent)
+        }
+    }
+
+    fun clickAppDescription() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickAppDescription)
+        }
+    }
+
+    fun clickYouAreHere() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickYouAreHere)
+        }
+    }
+
+    fun clickDeleteAllFavoriteList() {
+        viewModelScope.launch {
+            _mainUiEvent.emit(MainUiEvents.ClickDeleteAllFavoriteList)
+        }
+    }
+
     sealed class MainUiEvents {
         object GPSPermissionSuccess : MainUiEvents()
         object GPSPermissionFail : MainUiEvents()
         data class ShowErrorMessageToast(val message: String) : MainUiEvents()
         data class ShowNullMessageToast(val message: String) : MainUiEvents()
-
+        object ClickLocationUpdate : MainUiEvents()
+        object CheckFavoriteState : MainUiEvents()
+        object ClickDetailIntent : MainUiEvents()
+        object ClickLocationIntent : MainUiEvents()
+        object ClickMenuIntent : MainUiEvents()
+        object ClickAppDescription : MainUiEvents()
+        object ClickYouAreHere : MainUiEvents()
+        object ClickDeleteAllFavoriteList : MainUiEvents()
     }
 }

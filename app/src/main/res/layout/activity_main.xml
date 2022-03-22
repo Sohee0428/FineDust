@@ -8,11 +8,6 @@
         <variable
             name="viewModel"
             type="com.sohee.finedust.presentation.main.MainViewModel" />
-
-        <variable
-            name="mainActivity"
-            type="com.sohee.finedust.presentation.main.MainActivity" />
-
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -41,7 +36,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="10dp"
-                    android:onClick="@{ () -> mainActivity.clickMenuIntent()}"
+                    android:onClick="@{() -> viewModel.clickMenuIntent()}"
                     android:src="@drawable/ic_baseline_menu_24"
                     tools:ignore="UsingOnClickInXml" />
 
@@ -60,7 +55,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="10dp"
-                    android:onClick="@{ () -> mainActivity.clickLocationIntent()}"
+                    android:onClick="@{ () -> viewModel.clickLocationIntent()}"
                     android:src="@drawable/ic_baseline_search_24"
                     tools:ignore="UsingOnClickInXml" />
 
@@ -96,7 +91,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/background"
-                    android:onClick="@{ () -> mainActivity.clickDetailIntent()}"
+                    android:onClick="@{ () -> viewModel.clickDetailIntent()}"
                     android:padding="10dp"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="UsingOnClickInXml">
@@ -132,7 +127,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
-                            android:onClick="@{ () -> mainActivity.clickLocationUpdateImg()}"
+                            android:onClick="@{ () -> viewModel.clickLocationUpdate()}"
                             android:padding="5dp"
                             android:src="@drawable/ic_baseline_replay_24"
                             app:layout_constraintLeft_toLeftOf="parent" />
@@ -157,7 +152,7 @@
                             android:layout_height="25dp"
                             android:layout_marginTop="5dp"
                             android:background="@drawable/ic_baseline_star_border_24"
-                            android:onClick="@{ () -> mainActivity.checkFavoriteState()}"
+                            android:onClick="@{ () -> viewModel.checkFavoriteState()}"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -473,7 +468,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:onClick="@{ () -> mainActivity.clickAppDescription()}"
+                    android:onClick="@{ () -> viewModel.clickAppDescription()}"
                     android:orientation="horizontal"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
@@ -508,7 +503,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:onClick="@{ () -> mainActivity.clickYouAreHere()}"
+                    android:onClick="@{ () -> viewModel.clickYouAreHere()}"
                     android:orientation="horizontal"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
@@ -568,7 +563,7 @@
                         android:id="@+id/deleteAllFavoriteImage"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:onClick="@{ () -> mainActivity.clickDeleteAllFavoriteImage()}"
+                        android:onClick="@{ () -> viewModel.clickDeleteAllFavoriteList()}"
                         android:src="@drawable/ic_baseline_delete_24"
                         tools:ignore="UsingOnClickInXml" />
 
