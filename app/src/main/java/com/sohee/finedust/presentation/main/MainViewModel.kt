@@ -63,12 +63,11 @@ class MainViewModel : ViewModel() {
                 repository.getAddress(latitude, longitude)
             }.onSuccess {
                 when {
-                    it.documents[0].road_address.address_name.isNotEmpty() -> _addressName.value =
-                        it.documents[0].road_address.address_name
-                    it.documents[0].address.address_name.isNotEmpty() -> _addressName.value =
-                        it.documents[0].address.address_name
-                    else -> _mainUiEvent.value =
-                        MainUiEvents.ShowErrorMessageToast("주소를 불러오지 못했습니다.")
+                    it.documents[0].road_address != null -> _addressName.value =
+                        it.documents[0].road_address?.address_name
+                    it.documents[0].address != null -> _addressName.value =
+                        it.documents[0].address?.address_name
+                    else -> _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("주소를 불러오지 못했습니다."))
                 }
             }.onFailure {
                 Log.e("addressResponse", "에러 발생 >> ${it.message}")
