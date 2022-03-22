@@ -13,7 +13,9 @@ import com.sohee.finedust.data.repository.MainRepositoryImpl
 import com.sohee.finedust.data.response.air.Item
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -25,8 +27,8 @@ class MainViewModel : ViewModel() {
     private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
 
-    private val _mainUiEvent = MutableStateFlow<MainUiEvents?>(null)
-    val mainUiEvent = _mainUiEvent.asStateFlow()
+    private val _mainUiEvent = MutableSharedFlow<MainUiEvents>()
+    val mainUiEvent = _mainUiEvent.asSharedFlow()
 
     private val _favoriteList: MutableLiveData<List<FinedustEntity>> = MutableLiveData()
     val favoriteList: LiveData<List<FinedustEntity>>
@@ -71,7 +73,7 @@ class MainViewModel : ViewModel() {
                 }
             }.onFailure {
                 Log.e("addressResponse", "에러 발생 >> ${it.message}")
-                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
             }
         }
     }
@@ -86,7 +88,7 @@ class MainViewModel : ViewModel() {
                 airConditioner(stationName)
             }.onFailure {
                 Log.e("observatoryReponse", "에러 발생 ")
-                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
             }
         }
     }
@@ -101,10 +103,10 @@ class MainViewModel : ViewModel() {
                     detailDate = it.response.body.items[0].dataTime
                     setAirConditionData(it.response.body.items[0])
                 }
-                else _mainUiEvent.value = MainUiEvents.ShowNullMessageToast("미세먼지 정보를 불러오지 못하였습니다. 잠시후 다시 시도해주시기 바랍니다.")
+                else _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("미세먼지 정보를 불러오지 못하였습니다. 잠시후 다시 시도해주시기 바랍니다."))
             }.onFailure {
                 Log.e("airConditionResponse", "에러 발생")
-                _mainUiEvent.value = MainUiEvents.ShowErrorMessageToast(it.message.toString())
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
             }
         }
     }
