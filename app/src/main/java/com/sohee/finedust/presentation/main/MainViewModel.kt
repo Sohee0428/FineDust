@@ -226,9 +226,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun clickYouAreHere() {
+    fun clickMenuUpdateLocation() {
         viewModelScope.launch {
-            _mainUiEvent.emit(MainUiEvents.ClickYouAreHere)
+            _mainUiEvent.emit(MainUiEvents.ClickMenuUpdateLocation)
         }
     }
 
@@ -249,7 +249,7 @@ class MainViewModel : ViewModel() {
         object ClickLocationIntent : MainUiEvents()
         object ClickMenuIntent : MainUiEvents()
         object ClickAppDescription : MainUiEvents()
-        object ClickYouAreHere : MainUiEvents()
+        object ClickMenuUpdateLocation : MainUiEvents()
         object ClickDeleteAllFavoriteList : MainUiEvents()
     }
 }

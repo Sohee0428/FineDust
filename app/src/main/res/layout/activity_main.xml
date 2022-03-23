@@ -503,7 +503,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:onClick="@{ () -> viewModel.clickYouAreHere()}"
+                    android:onClick="@{ () -> viewModel.clickMenuUpdateLocation()}"
                     android:orientation="horizontal"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"

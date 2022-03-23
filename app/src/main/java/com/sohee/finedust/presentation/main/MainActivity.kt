@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -23,9 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
-import com.sohee.finedust.data.DetailDust
 import com.sohee.finedust.data.date.LocalDate
-import com.sohee.finedust.data.entity.FinedustEntity
 import com.sohee.finedust.databinding.ActivityMainBinding
 import com.sohee.finedust.presentation.AppDescriptionActivity
 import com.sohee.finedust.presentation.detail.DetailActivity
@@ -82,20 +79,6 @@ class MainActivity : AppCompatActivity() {
         getLocationResult()
     }
 
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawers()
-        } else {
-            if (System.currentTimeMillis() > backWait + 2500) {
-                backWait = System.currentTimeMillis()
-                Toast.makeText(this, "종료하시려면 뒤로가기를 한번 더 눌러주세요.", Toast.LENGTH_SHORT).show()
-                return
-            }
-            else if (System.currentTimeMillis() <= backWait + 2500) {
-                finishAffinity()
-            }
-        }
-    }
 
     private fun initContactFavoriteAdapter() {
         binding.favoriteList.adapter = adapter
@@ -124,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     MainViewModel.MainUiEvents.ClickLocationIntent -> clickLocationIntent()
                     MainViewModel.MainUiEvents.ClickLocationUpdate -> clickLocationUpdateImg()
                     MainViewModel.MainUiEvents.ClickMenuIntent -> clickMenuIntent()
-                    MainViewModel.MainUiEvents.ClickYouAreHere -> clickYouAreHere()
+                    MainViewModel.MainUiEvents.ClickMenuUpdateLocation -> clickMenuUpdateLocation()
                 }
             }
         }
@@ -137,11 +120,7 @@ class MainActivity : AppCompatActivity() {
                     getLocation()
                 } else {
                     finish()
-                    Toast.makeText(
-                        this,
-                        getString(R.string.location_permission),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(getString(R.string.location_permission))
                 }
             }
 
@@ -186,7 +165,7 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.navigate(latitude, longitude)
                 mainViewModel.address(latitude, longitude)
             } else {
-                Toast.makeText(this, "현위치를 불러오지 못하였습니다.", Toast.LENGTH_SHORT).show()
+                showToast("현위치를 불러오지 못하였습니다.")
             }
         } catch (e: SecurityException) {
             Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
@@ -265,7 +244,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage("즐겨찾기 목록에 장소를 추가하시겠습니까?")
             .setPositiveButton("추가") { _, _ ->
                 addLocation()
-                Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                showToast("즐겨찾기에 추가되었습니다.")
                 isCheckFavoriteImage(true)
             }
             .setNegativeButton("취소", null)
@@ -278,7 +257,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage("즐겨찾기 목록에서 장소를 삭제하시겠습니까?")
             .setPositiveButton("삭제") { _, _ ->
                 deleteFavoriteItem(data)
-                Toast.makeText(this, "즐겨찾기에 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                showToast("즐겨찾기에 삭제되었습니다.")
                 isCheckFavoriteImage(false)
             }
             .setNegativeButton("취소", null)
@@ -294,7 +273,7 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.deleteAllFavoriteList()
                 }
                 menuClose()
-                Toast.makeText(this, "즐겨찾기 목록이 모두 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                showToast("즐겨찾기 목록이 모두 삭제되었습니다.")
             }
             .setNegativeButton("취소", null)
             .show()
@@ -309,7 +288,7 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
-    fun clickMenuIntent() {
+    private fun clickMenuIntent() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
         CoroutineScope(Dispatchers.Main).launch {
             mainViewModel.getFavoriteAddressList()
@@ -317,17 +296,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun clickLocationUpdateImg() {
+    private fun clickLocationUpdateImg() {
         getLocation()
-        Toast.makeText(this, "위치를 업데이트 했습니다.", Toast.LENGTH_SHORT).show()
+        showToast("위치를 업데이트 했습니다.")
     }
 
-    fun clickDeleteAllFavoriteImage() {
+    private fun clickDeleteAllFavoriteImage() {
         alertToDeleteFavoriteList()
         menuClose()
     }
 
-    fun clickDetailIntent() {
+    private fun clickDetailIntent() {
         Log.d("detailDate2", mainViewModel.detailDate)
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("data", mainViewModel.detailDustList)
@@ -337,14 +316,30 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun clickAppDescription() {
+    private fun clickAppDescription() {
         val intent = Intent(this, AppDescriptionActivity::class.java)
         startActivity(intent)
         menuClose()
     }
 
-    fun clickYouAreHere() {
+    private fun clickMenuUpdateLocation() {
         menuClose()
         getLocation()
+        showToast("위치를 업데이트 했습니다.")
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawers()
+        } else {
+            if (System.currentTimeMillis() > backWait + 2500) {
+                backWait = System.currentTimeMillis()
+                showToast("종료하시려면 뒤로가기를 한번 더 눌러주세요.")
+                return
+            }
+            else if (System.currentTimeMillis() <= backWait + 2500) {
+                finishAffinity()
+            }
+        }
     }
 }

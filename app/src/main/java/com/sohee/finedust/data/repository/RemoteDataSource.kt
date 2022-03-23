@@ -5,7 +5,6 @@ import com.sohee.finedust.data.response.air.AirResponse
 import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.observatory.Observatory
 import com.sohee.finedust.data.response.search.SearchAddressResponse
-import retrofit2.Callback
 
 interface RemoteDataSource {
 
