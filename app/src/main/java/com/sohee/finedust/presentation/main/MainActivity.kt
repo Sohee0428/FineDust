@@ -1,13 +1,11 @@
 package com.sohee.finedust.presentation.main
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -20,10 +18,12 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.*
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.date.LocalDate
 import com.sohee.finedust.databinding.ActivityMainBinding
+import com.sohee.finedust.logHelper
 import com.sohee.finedust.presentation.AppDescriptionActivity
 import com.sohee.finedust.presentation.detail.DetailActivity
 import com.sohee.finedust.presentation.location.LocationActivity
@@ -37,17 +37,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var getLocationResultData: ActivityResultLauncher<Intent>
-    private var locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            val lat = location.latitude
-            val lng = location.longitude
-            Log.d("Gps", "Lat: $lat, lon: $lng")
-        }
-
-        override fun onProviderDisabled(provider: String) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-    }
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
     private val mainViewModel: MainViewModel by viewModels()
     private val adapter: FavoriteAdapter by lazy {
         FavoriteAdapter({
@@ -95,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     private fun initCollector() {
         lifecycleScope.launch {
             mainViewModel.mainUiEvent.collect {
-                when(it) {
+                when (it) {
                     MainViewModel.MainUiEvents.GPSPermissionFail -> TODO()
                     MainViewModel.MainUiEvents.GPSPermissionSuccess -> TODO()
                     is MainViewModel.MainUiEvents.ShowErrorMessageToast -> showToast(it.message)
@@ -114,10 +107,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun permission() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (isGranted) {
-                    getLocation()
+                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            latitude = location.latitude
+                            longitude = location.longitude
+                            Log.d(
+                                "Test", "GPS Location Latitude: $latitude" +
+                                        ", Longitude: $longitude"
+                            )
+                            getLocation()
+                        }
+                    }
                 } else {
                     finish()
                     showToast(getString(R.string.location_permission))
@@ -129,7 +134,17 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                getLocation()
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        latitude = location.latitude
+                        longitude = location.longitude
+                        Log.d(
+                            "Test", "GPS Location Latitude: $latitude" +
+                                    ", Longitude: $longitude"
+                        )
+                        getLocation()
+                    }
+                }
             }
             else -> {
                 requestPermissionLauncher.launch(
@@ -141,32 +156,81 @@ class MainActivity : AppCompatActivity() {
 
     private fun getLocation() {
         try {
-            val locationManager =
-                this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val locationProvider = LocationManager.GPS_PROVIDER
-            val currentLatLng: Location? = locationManager.getLastKnownLocation(locationProvider)
+            val locationRequest = LocationRequest.create()
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    if (locationResult == null) {
+                        showToast("현위치를 불러오지 못하였습니다.")
+                        return
+                    }
+                    for (location in locationResult.locations) {
+                        if (location != null) {
+                            latitude = location.latitude
+                            longitude = location.longitude
+                            Log.d(
+                                "Test111", "GPS Location changed, Latitude: $latitude" +
+                                        ", Longitude: $longitude"
+                            )
 
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                3000L,
-                30F,
-                locationListener
-            )
+                            binding.locationName.text = "현위치"
+                            binding.locationName.visibility = View.VISIBLE
+                            binding.favoriteImage.visibility = View.GONE
 
-            if (currentLatLng != null) {
-                val latitude = currentLatLng.latitude
-                val longitude = currentLatLng.longitude
-                Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
-
-                binding.locationName.text = "현위치"
-                binding.locationName.visibility = View.VISIBLE
-                binding.favoriteImage.visibility = View.GONE
-
-                mainViewModel.navigate(latitude, longitude)
-                mainViewModel.address(latitude, longitude)
-            } else {
-                showToast("현위치를 불러오지 못하였습니다.")
+                            mainViewModel.navigate(latitude, longitude)
+                            mainViewModel.address(latitude, longitude)
+                        }
+                    }
+                }
             }
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+            logHelper("latitude : $latitude / longitude : $longitude")
+            showToast("$latitude, $longitude")
+
+//            val builder = LocationSettingsRequest.Builder()
+//                .addLocationRequest(locationRequest!!)
+//            val client: SettingsClient = LocationServices.getSettingsClient(this)
+//            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+//
+//            task.addOnSuccessListener { locationSettingsResponse ->
+//                val latitude = locationSettingsResponse.locationSettingsStates.isLocationPresent
+//            }
+//
+//            task.addOnFailureListener { exception ->
+//                if (exception is ResolvableApiException) {
+//                    // Location settings are not satisfied, but this can be fixed
+//                    // by showing the user a dialog.
+//                    try {
+//                        // Show the dialog by calling startResolutionForResult(),
+//                        // and check the result in onActivityResult().
+//                        exception.startResolutionForResult(
+//                            this@MainActivity,
+//                            0
+//                        )
+//                    } catch (sendEx: IntentSender.SendIntentException) {
+//                        // Ignore the error.
+//                    }
+//                }
+//            }
+
+//            if (currentLatLng != null) {
+//                val latitude = currentLatLng.latitude
+//                val longitude = currentLatLng.longitude
+//                Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
+//
+//                binding.locationName.text = "현위치"
+//                binding.locationName.visibility = View.VISIBLE
+//                binding.favoriteImage.visibility = View.GONE
+//
+//                mainViewModel.navigate(latitude, longitude)
+//                mainViewModel.address(latitude, longitude)
+//            } else {
+//                showToast("현위치를 불러오지 못하였습니다.")
+//            }
         } catch (e: SecurityException) {
             Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
         }
@@ -326,6 +390,11 @@ class MainActivity : AppCompatActivity() {
         menuClose()
         getLocation()
         showToast("위치를 업데이트 했습니다.")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onBackPressed() {
