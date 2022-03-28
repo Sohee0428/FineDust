@@ -190,47 +190,6 @@ class MainActivity : AppCompatActivity() {
             )
             logHelper("latitude : $latitude / longitude : $longitude")
             showToast("$latitude, $longitude")
-
-//            val builder = LocationSettingsRequest.Builder()
-//                .addLocationRequest(locationRequest!!)
-//            val client: SettingsClient = LocationServices.getSettingsClient(this)
-//            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-//
-//            task.addOnSuccessListener { locationSettingsResponse ->
-//                val latitude = locationSettingsResponse.locationSettingsStates.isLocationPresent
-//            }
-//
-//            task.addOnFailureListener { exception ->
-//                if (exception is ResolvableApiException) {
-//                    // Location settings are not satisfied, but this can be fixed
-//                    // by showing the user a dialog.
-//                    try {
-//                        // Show the dialog by calling startResolutionForResult(),
-//                        // and check the result in onActivityResult().
-//                        exception.startResolutionForResult(
-//                            this@MainActivity,
-//                            0
-//                        )
-//                    } catch (sendEx: IntentSender.SendIntentException) {
-//                        // Ignore the error.
-//                    }
-//                }
-//            }
-
-//            if (currentLatLng != null) {
-//                val latitude = currentLatLng.latitude
-//                val longitude = currentLatLng.longitude
-//                Log.d("CheckCurrentLocation", "내 위치 $latitude, $longitude")
-//
-//                binding.locationName.text = "현위치"
-//                binding.locationName.visibility = View.VISIBLE
-//                binding.favoriteImage.visibility = View.GONE
-//
-//                mainViewModel.navigate(latitude, longitude)
-//                mainViewModel.address(latitude, longitude)
-//            } else {
-//                showToast("현위치를 불러오지 못하였습니다.")
-//            }
         } catch (e: SecurityException) {
             Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
         }
