@@ -4,18 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.databinding.ActivityLocationBinding
+import com.sohee.finedust.showToast
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class LocationActivity : AppCompatActivity() {
 
@@ -26,30 +27,17 @@ class LocationActivity : AppCompatActivity() {
             mainIntent(it)
         }
     }
-    private var searchText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_location)
-        binding.locationActivity = this
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         initContactAdapter()
-        searchText()
-        getDetailAddress()
-
-        binding.locationSearch.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_SEARCH -> {
-                    searchLocation()
-                    getDetailAddress()
-                    true
-                }
-                else -> false
-            }
-        }
+        initCollector()
+        clickKeyboardSearchBtn()
     }
 
     private fun initContactAdapter() {
@@ -58,25 +46,40 @@ class LocationActivity : AppCompatActivity() {
         binding.locationRecyclerview.layoutManager = layoutManager
     }
 
-    private fun searchLocation() {
-        Log.d("주소 검색어", searchText)
-        viewModel.location(searchText)
-    }
-
-    private fun searchText() {
-        binding.locationSearch.doOnTextChanged { text, _, _, _ ->
-            searchText = text.toString()
+    private fun initCollector() {
+        lifecycleScope.launch {
+            launch {
+                viewModel.locationUiEvent.collect {
+                    when (it) {
+                        LocationViewModel.LocationUiEvents.CloseKeyboard -> closeKeyboard()
+                        is LocationViewModel.LocationUiEvents.ShowErrorMessageToast -> showToast(it.message)
+                        is LocationViewModel.LocationUiEvents.ShowNullMessageToast -> showToast(it.message)
+                    }
+                }
+            }
+            launch {
+                viewModel.detailAddressList.collect {
+                    getDetailAddress(it)
+                }
+            }
         }
     }
 
-    private fun getDetailAddress() {
-        viewModel.detailAddressList.observe(this) {
-            adapter.addLocationList(it)
-            Log.d("주소 검색 리스트", "$it")
+    private fun clickKeyboardSearchBtn() {
+        binding.locationSearch.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    viewModel.clickSearchLocation()
+                    true
+                }
+                else -> false
+            }
         }
-        viewModel.detailAddressListNull.observe(this) {
-            Toast.makeText(this, "주소를 불러오지 못했습니다. 다시 입력해주시기 바랍니다.", Toast.LENGTH_SHORT).show()
-        }
+    }
+
+    private fun getDetailAddress(list: List<DetailAddress>) {
+        adapter.addLocationList(list)
+        Log.d("주소 검색 리스트", "$list")
     }
 
     private fun mainIntent(data: DetailAddress) {
@@ -87,14 +90,8 @@ class LocationActivity : AppCompatActivity() {
         if (!isFinishing) finish()
     }
 
-    fun clickSearchLocation(view: View) {
-        if (searchText.isBlank()) {
-            Toast.makeText(this, "주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
-        } else {
-            searchLocation()
-        }
+    private fun closeKeyboard() {
         val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.locationSearch.windowToken, 0)
-
     }
 }
