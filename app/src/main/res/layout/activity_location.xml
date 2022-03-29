@@ -8,10 +8,6 @@
         <import type="android.view.View" />
 
         <variable
-            name="locationActivity"
-            type="com.sohee.finedust.presentation.location.LocationActivity" />
-
-        <variable
             name="viewModel"
             type="com.sohee.finedust.presentation.location.LocationViewModel" />
     </data>
@@ -29,17 +25,31 @@
             android:imeOptions="actionSearch"
             android:singleLine="true"
             android:textSize="28sp"
+            android:text="@={viewModel.searchLocationTxt}"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/searchImg"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteTextImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.clickTextDelete()}"
+            android:visibility="@{viewModel.isSearchLocationTxt ? View.VISIBLE : View.GONE}"
+            tools:visibility="visible"
+            app:layout_constraintTop_toTopOf="@id/searchImg"
+            app:layout_constraintBottom_toBottomOf="@id/searchImg"
+            app:layout_constraintEnd_toStartOf="@id/searchImg"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_outline_cancel_24"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/searchImg"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/ic_baseline_search_24"
-            android:onClick="clickSearchLocation"
+            android:onClick="@{() -> viewModel.clickSearchLocation()}"
             app:layout_constraintBottom_toBottomOf="@id/locationSearch"
             app:layout_constraintLeft_toRightOf="@id/locationSearch"
             app:layout_constraintRight_toRightOf="parent"
