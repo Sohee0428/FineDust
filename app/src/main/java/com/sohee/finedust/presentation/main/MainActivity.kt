@@ -19,6 +19,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.date.LocalDate
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var appUpdateManager: AppUpdateManager
     private val adapter: FavoriteAdapter by lazy {
         FavoriteAdapter({
             mainViewModel.mainAddress = DetailAddress(it.address, it.x, it.y, true)
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.date.text = LocalDate().str_date
 
+        initAppUpdate()
         initContactFavoriteAdapter()
         initFavoriteList()
         initCollector()
@@ -72,6 +78,25 @@ class MainActivity : AppCompatActivity() {
         getLocationResult()
     }
 
+    private fun initAppUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+
+        appUpdateManager?.let {
+            it.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                ) {
+                    appUpdateManager?.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.FLEXIBLE,
+                        this,
+                        100
+                    )
+                }
+            }
+        }
+    }
 
     private fun initContactFavoriteAdapter() {
         binding.favoriteList.adapter = adapter
@@ -129,19 +154,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
+        when (ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )) {
+            PackageManager.PERMISSION_GRANTED -> {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         latitude = location.latitude
                         longitude = location.longitude
-                        Log.d(
-                            "Test", "GPS Location Latitude: $latitude" +
-                                    ", Longitude: $longitude"
-                        )
                         getLocation()
                     }
                 }
@@ -237,7 +258,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun checkFavoriteState() {
+    private fun checkFavoriteState() {
         if (mainViewModel.mainAddress.isFavorite) {
             alertToDeleteLocation(mainViewModel.mainAddress.address)
         } else {
@@ -302,7 +323,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    fun clickLocationIntent() {
+    private fun clickLocationIntent() {
         val intent = Intent(this, LocationActivity::class.java)
         getLocationResultData.launch(intent)
     }
@@ -364,8 +385,7 @@ class MainActivity : AppCompatActivity() {
                 backWait = System.currentTimeMillis()
                 showToast("종료하시려면 뒤로가기를 한번 더 눌러주세요.")
                 return
-            }
-            else if (System.currentTimeMillis() <= backWait + 2500) {
+            } else if (System.currentTimeMillis() <= backWait + 2500) {
                 finishAffinity()
             }
         }
