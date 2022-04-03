@@ -29,6 +29,7 @@ https://play.google.com/store/apps/details?id=com.sohee.finedust
 - 리스트를 나열하는 경우에는 `RecyclerView`를 이용하였습니다.
 - `DataBinding`과 `BindingAdapter` 를 이용하여 View에 데이터를 전달하였습니다.
 - `NavigationView` ,`DrawerLayout` 을 이용하여 메뉴를 추가하였습니다.
+- 'Coroutine&Flow' 비동기 프로그래밍을 사용하였습니다.
 
 ## Problem
 앱을 제작하며 맞닥뜨린 문제들을 고민하고 해결했던 과정입니다.
@@ -53,3 +54,9 @@ https://play.google.com/store/apps/details?id=com.sohee.finedust
 - 메뉴를 열고 백버튼을 누를 시 앱 종료
 
    → 메뉴를 눌렀을 경우 백버튼에 관한 코드 작성
+- 위치 정확도 및 코드 개선
+
+   → 위치 정보를 가져오는 방법 중 LocationListener를 사용하였는데, 정확도가 떨어지는 것 같아서 구글에서 지원하는 Fusedlocationproviderclient로 변경
+- 비동기 프로그래밍 적용
+
+   → 기존 코드에 적용되지 않던 비동기 프로그래밍인 Coroutine과 Flow를 적용
