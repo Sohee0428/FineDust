@@ -14,7 +14,6 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:textViewStyle">@style/fontTextView</item>
         <item name="editTextStyle">@style/fontEdit</item>
-        <item name="android:screenOrientation">landscape</item>
     </style>
 
     <style name="fontTextView" parent="Widget.AppCompat.TextView">
