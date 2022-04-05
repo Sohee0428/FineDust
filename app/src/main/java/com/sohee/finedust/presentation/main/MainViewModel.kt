@@ -1,16 +1,24 @@
 package com.sohee.finedust.presentation.main
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Looper
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.*
+import com.sohee.finedust.App
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.DetailDust
 import com.sohee.finedust.data.entity.FinedustEntity
 import com.sohee.finedust.data.repository.MainRepository
 import com.sohee.finedust.data.repository.MainRepositoryImpl
 import com.sohee.finedust.data.response.air.Item
+import com.sohee.finedust.logHelper
+import com.sohee.finedust.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,6 +34,12 @@ class MainViewModel : ViewModel() {
     lateinit var detailDate: String
     private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
+
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    lateinit var locationRequest: LocationRequest
 
     private val _mainUiEvent = MutableSharedFlow<MainUiEvents>()
     val mainUiEvent = _mainUiEvent.asSharedFlow()
@@ -46,15 +60,88 @@ class MainViewModel : ViewModel() {
     private val _pm25Grade = MutableStateFlow<String?>(null)
     val pm25Grade = _pm25Grade.asStateFlow()
 
+    fun getLocation() {
+        try {
+            fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(App.context)
+
+            locationRequest = LocationRequest.create().apply {
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
+
+            updateLocationCallback()
+            checkUpdateLocationSettings()
+
+        } catch (e: SecurityException) {
+            Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
+        }
+    }
+
+    private fun updateLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                latitude = locationResult.lastLocation.latitude
+                longitude = locationResult.lastLocation.longitude
+
+                viewModelScope.launch {
+                    _mainUiEvent.emit(MainUiEvents.CurrentLocation)
+                }
+
+                navigate(latitude, longitude)
+                address(latitude, longitude)
+            }
+        }
+    }
+
+    private fun checkUpdateLocationSettings() {
+        val locationSettingRequest = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        val settingsClient = LocationServices.getSettingsClient(App.context)
+        val task = settingsClient.checkLocationSettings(locationSettingRequest.build())
+        task.addOnSuccessListener {
+            updateLocation()
+        }.addOnFailureListener {
+            logHelper(it.toString())
+        }
+    }
+
+    private fun updateLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                App.context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            viewModelScope.launch {
+                    _mainUiEvent.emit(MainUiEvents.GPSPermissionFail)
+            }
+        } else {
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        }
+    }
+
+    private fun updateCurrentLocation() {
+        updateLocationCallback()
+        updateLocation()
+        App.context.showToast("위치를 업데이트 했습니다.")
+    }
+
     fun navigate(latitude: Double, longitude: Double) {
         viewModelScope.launch {
-            runCatching {
-                repository.getKakaoLatLon(latitude, longitude)
-            }.onSuccess {
-                nearbyObservatory(it.documents[0].x, it.documents[0].y)
-            }.onFailure {
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
-                Log.e("TMAddressResponse", "에러 발생")
+            if (latitude != 0.0 && longitude != 0.0) {
+                runCatching {
+                    repository.getKakaoLatLon(latitude, longitude)
+                }.onSuccess {
+                    nearbyObservatory(it.documents[0].x, it.documents[0].y)
+                }.onFailure {
+                    _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
+                    Log.e("TMAddressResponse", "에러 발생")
+                }
+            } else {
+                _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("위치를 불러오지 못하였습니다."))
             }
         }
     }
@@ -191,9 +278,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun clickLocationUpdate() {
-        viewModelScope.launch {
-            _mainUiEvent.emit(MainUiEvents.ClickLocationUpdate)
-        }
+        updateCurrentLocation()
     }
 
     fun checkFavoriteState() {
@@ -228,6 +313,7 @@ class MainViewModel : ViewModel() {
 
     fun clickMenuUpdateLocation() {
         viewModelScope.launch {
+            updateCurrentLocation()
             _mainUiEvent.emit(MainUiEvents.ClickMenuUpdateLocation)
         }
     }
@@ -238,12 +324,15 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun stopUpdatingLocation() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
     sealed class MainUiEvents {
-        object GPSPermissionSuccess : MainUiEvents()
         object GPSPermissionFail : MainUiEvents()
+        object CurrentLocation : MainUiEvents()
         data class ShowErrorMessageToast(val message: String) : MainUiEvents()
         data class ShowNullMessageToast(val message: String) : MainUiEvents()
-        object ClickLocationUpdate : MainUiEvents()
         object CheckFavoriteState : MainUiEvents()
         object ClickDetailIntent : MainUiEvents()
         object ClickLocationIntent : MainUiEvents()
