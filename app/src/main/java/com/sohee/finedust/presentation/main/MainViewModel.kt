@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.*
 import com.sohee.finedust.App
+import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.DetailDust
 import com.sohee.finedust.data.entity.FinedustEntity
@@ -19,8 +20,6 @@ import com.sohee.finedust.data.repository.MainRepositoryImpl
 import com.sohee.finedust.data.response.air.Item
 import com.sohee.finedust.logHelper
 import com.sohee.finedust.showToast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -73,7 +72,9 @@ class MainViewModel : ViewModel() {
             checkUpdateLocationSettings()
 
         } catch (e: SecurityException) {
-            Log.e("CheckCurrentLocationE", "현 위치 에러 발생")
+            viewModelScope.launch {
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("getLocation 에러" + App.instance.getString(R.string.fail_location)))
+            }
         }
     }
 
@@ -100,8 +101,11 @@ class MainViewModel : ViewModel() {
         val task = settingsClient.checkLocationSettings(locationSettingRequest.build())
         task.addOnSuccessListener {
             updateLocation()
-        }.addOnFailureListener {
-            logHelper(it.toString())
+        }.addOnFailureListener { exception ->
+            logHelper(exception.toString())
+            viewModelScope.launch {
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("checkUpdateLocationSettings 에러 -> $exception"))
+            }
         }
     }
 
@@ -112,7 +116,7 @@ class MainViewModel : ViewModel() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             viewModelScope.launch {
-                    _mainUiEvent.emit(MainUiEvents.GPSPermissionFail)
+                _mainUiEvent.emit(MainUiEvents.GPSPermissionFail)
             }
         } else {
             fusedLocationProviderClient.requestLocationUpdates(
@@ -126,7 +130,7 @@ class MainViewModel : ViewModel() {
     private fun updateCurrentLocation() {
         updateLocationCallback()
         updateLocation()
-        App.context.showToast("위치를 업데이트 했습니다.")
+        App.context.showToast(App.instance.getString(R.string.update_location))
     }
 
     fun navigate(latitude: Double, longitude: Double) {
@@ -141,7 +145,7 @@ class MainViewModel : ViewModel() {
                     Log.e("TMAddressResponse", "에러 발생")
                 }
             } else {
-                _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("위치를 불러오지 못하였습니다."))
+                _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("navigate 서버 오류" + App.instance.getString(R.string.fail_location)))
             }
         }
     }
@@ -156,11 +160,11 @@ class MainViewModel : ViewModel() {
                         it.documents[0].road_address?.address_name
                     it.documents[0].address != null -> _addressName.value =
                         it.documents[0].address?.address_name
-                    else -> _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("주소를 불러오지 못했습니다."))
+                    else -> _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("address 값 null" + App.instance.getString(R.string.fail_address)))
                 }
             }.onFailure {
                 Log.e("addressResponse", "에러 발생 >> ${it.message}")
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("navigate 서버 오류" + it.message.toString()))
             }
         }
     }
@@ -170,12 +174,12 @@ class MainViewModel : ViewModel() {
             runCatching {
                 repository.getObservatoryItems(xValue, yValue)
             }.onSuccess {
-                val stationName =  it.response.body.items[0].stationName
+                val stationName = it.response.body.items[0].stationName
                 detailObservatory = stationName
                 airConditioner(stationName)
             }.onFailure {
-                Log.e("observatoryReponse", "에러 발생 ")
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
+                Log.e("observatoryResponse", "에러 발생 ")
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("nearByObservatory 서버 오류" + it.message.toString()))
             }
         }
     }
@@ -185,15 +189,16 @@ class MainViewModel : ViewModel() {
             runCatching {
                 repository.getAirConditionerItems(nearbyObservatory)
             }.onSuccess {
-                if (it.response.body.items[0] != null){
+                if (it.response.body.items[0] != null) {
                     _airConditionerItems.value = it.response.body.items[0]
                     detailDate = it.response.body.items[0].dataTime
                     setAirConditionData(it.response.body.items[0])
+                } else {
+                    _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast(App.instance.getString(R.string.fail_get_finedust_data)))
                 }
-                else _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("미세먼지 정보를 불러오지 못하였습니다. 잠시후 다시 시도해주시기 바랍니다."))
             }.onFailure {
                 Log.e("airConditionResponse", "에러 발생")
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("airConditioner 서버 오류" + it.message.toString()))
             }
         }
     }
@@ -254,7 +259,7 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun getFavoriteAddressList() {
-        CoroutineScope(Main).launch {
+        viewModelScope.launch {
             _favoriteList.value = repository.getRecyclerviewList()
         }
     }

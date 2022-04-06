@@ -305,7 +305,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             if (System.currentTimeMillis() > backWait + 2500) {
                 backWait = System.currentTimeMillis()
-                showToast("종료하시려면 뒤로가기를 한번 더 눌러주세요.")
+                showToast(getString(R.string.push_backbutton_one_more_time))
                 return
             } else if (System.currentTimeMillis() <= backWait + 2500) {
                 finishAffinity()
