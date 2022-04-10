@@ -36,7 +36,7 @@ object AirConditionerCreator {
         return Interceptor {
             val request = it.request()
                 .newBuilder()
-                .addHeader("SERVICE_KEY", SERVICE_KEY)
+                .header("SERVICE_KEY", SERVICE_KEY)
                 .build()
 
             return@Interceptor it.proceed(request)
