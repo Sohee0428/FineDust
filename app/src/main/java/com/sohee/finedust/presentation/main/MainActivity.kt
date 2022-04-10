@@ -51,6 +51,14 @@ class MainActivity : AppCompatActivity() {
                 menuClose()
             })
     }
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                mainViewModel.getLocation()
+            } else {
+                showDialogToAllowPermission()
+            }
+        }
     private var backWait: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         initContactFavoriteAdapter()
         initFavoriteList()
         initCollector()
-        permission()
+        initPermission()
         getAirConditionData()
         getLocationResult()
     }
@@ -106,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             mainViewModel.mainUiEvent.collect {
                 when (it) {
-                    MainViewModel.MainUiEvents.GPSPermissionFail -> permission()
+                    MainViewModel.MainUiEvents.GPSPermissionFail -> initPermission()
                     is MainViewModel.MainUiEvents.ShowErrorMessageToast -> showToast(it.message)
                     is MainViewModel.MainUiEvents.ShowNullMessageToast -> showToast(it.message)
                     MainViewModel.MainUiEvents.CheckFavoriteState -> checkFavoriteState()
@@ -128,17 +136,7 @@ class MainActivity : AppCompatActivity() {
         binding.favoriteImage.visibility = View.GONE
     }
 
-    private fun permission() {
-        val requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-                if (isGranted) {
-                    mainViewModel.getLocation()
-                } else {
-                    finish()
-                    showToast(getString(R.string.location_permission))
-                }
-            }
-
+    private fun initPermission() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -148,6 +146,20 @@ class MainActivity : AppCompatActivity() {
         } else {
             mainViewModel.getLocation()
         }
+    }
+
+    private fun showDialogToAllowPermission() {
+        AlertDialog.Builder(this)
+            .setTitle("권한 허용")
+            .setMessage("권한 허용을 거부하시겠습니까? \n 거부를 누르면 앱이 종료됩니다.")
+            .setPositiveButton("허용") { _, _ ->
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+            .setNegativeButton("거부") { _, _ ->
+                finish()
+                showToast(getString(R.string.location_permission))
+            }
+            .show()
     }
 
     private fun getAirConditionData() {
