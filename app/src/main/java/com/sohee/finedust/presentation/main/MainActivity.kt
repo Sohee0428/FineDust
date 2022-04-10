@@ -24,6 +24,7 @@ import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.date.LocalDate
 import com.sohee.finedust.databinding.ActivityMainBinding
+import com.sohee.finedust.logHelper
 import com.sohee.finedust.presentation.AppDescriptionActivity
 import com.sohee.finedust.presentation.detail.DetailActivity
 import com.sohee.finedust.presentation.location.LocationActivity
@@ -242,8 +243,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun alertToDeleteLocation(data: String) {
-        val addLocationDust = AlertDialog.Builder(this)
-        addLocationDust.setTitle("즐겨찾기 삭제")
+        AlertDialog.Builder(this)
+            .setTitle("즐겨찾기 삭제")
             .setMessage("즐겨찾기 목록에서 장소를 삭제하시겠습니까?")
             .setPositiveButton("삭제") { _, _ ->
                 deleteFavoriteItem(data)
@@ -255,8 +256,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun alertToDeleteFavoriteList() {
-        val addLocationDust = AlertDialog.Builder(this)
-        addLocationDust.setTitle("즐겨찾기 목록 삭제")
+        AlertDialog.Builder(this)
+            .setTitle("즐겨찾기 목록 삭제")
             .setMessage("즐겨찾기 목록에 추가된 장소를 모두 삭제하시겠습니까?")
             .setPositiveButton("삭제") { _, _ ->
                 CoroutineScope(Dispatchers.IO).launch {
