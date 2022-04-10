@@ -1,5 +1,7 @@
 package com.sohee.finedust.data.network
 
+import com.google.gson.GsonBuilder
+import com.sohee.finedust.App
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,7 +18,6 @@ object KakaoCreator {
         return Retrofit.Builder()
             .baseUrl(BASE_URL_KAKAO_API)
             .client(getClient())
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(KakaoAPI::class.java)
     }
@@ -35,7 +36,7 @@ object KakaoCreator {
         return Interceptor {
             val request = it.request()
                 .newBuilder()
-                .addHeader("Authorization", "KakaoAK $REST_API_KEY")
+                .header("Authorization", "KakaoAK $REST_API_KEY")
                 .build()
 
             return@Interceptor it.proceed(request)

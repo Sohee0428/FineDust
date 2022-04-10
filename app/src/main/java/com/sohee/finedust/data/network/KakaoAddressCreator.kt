@@ -35,7 +35,7 @@ object KakaoAddressCreator {
         return Interceptor {
             val request = it.request()
                 .newBuilder()
-                .addHeader("Authorization", "KakaoAK $REST_API_KEY")
+                .header("Authorization", "KakaoAK $REST_API_KEY")
                 .build()
 
             return@Interceptor it.proceed(request)
