@@ -142,7 +142,7 @@ class MainViewModel : ViewModel() {
                     nearbyObservatory(it.documents[0].x, it.documents[0].y)
                 }.onFailure {
                     _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
-                    Log.e("TMAddressResponse", "에러 발생")
+                    Log.e("TMAddressResponse", it.message.toString())
                 }
             } else {
                 _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("navigate 서버 오류" + App.instance.getString(R.string.fail_location)))
@@ -205,12 +205,12 @@ class MainViewModel : ViewModel() {
 
     private fun setAirConditionData(airConditionData: Item) {
         _pm10Grade.value = pm10Grade(airConditionData.pm10Value)
-        _pm25Grade.value = pm10Grade(airConditionData.pm25Value)
+        _pm25Grade.value = pm25Grade(airConditionData.pm25Value)
 
         val itemList = mutableListOf(
             airConditionData.khaiValue to airConditionData.khaiGrade,
-            airConditionData.pm10Value to pm10Grade(pm10Grade.value),
-            airConditionData.pm25Value to pm25Grade(pm25Grade.value),
+            airConditionData.pm10Value to _pm10Grade.value,
+            airConditionData.pm25Value to _pm25Grade.value,
             airConditionData.o3Value to airConditionData.o3Grade,
             airConditionData.so2Value to airConditionData.so2Grade,
             airConditionData.coValue to airConditionData.coGrade,

@@ -322,7 +322,7 @@
                                         android:textColor="@color/black"
                                         android:textSize="17sp"
                                         tools:text="농도"
-                                        android:text="@{viewModel.airConditionerItems.pm25Value}"/>
+                                        android:text="@{viewModel.airConditionerItems.pm10Value}"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"

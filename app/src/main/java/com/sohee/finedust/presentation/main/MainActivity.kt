@@ -230,8 +230,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun alertToAddLocation() {
-        val addLocationDust = AlertDialog.Builder(this)
-        addLocationDust.setTitle("즐겨찾기 추가")
+        AlertDialog.Builder(this)
+            .setTitle("즐겨찾기 추가")
             .setMessage("즐겨찾기 목록에 장소를 추가하시겠습니까?")
             .setPositiveButton("추가") { _, _ ->
                 addLocation()
