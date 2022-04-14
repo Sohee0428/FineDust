@@ -138,12 +138,12 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:layout_weight="1"
-                            tools:text="위치"
                             android:text="@{viewModel.addressName}"
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             app:layout_constraintLeft_toRightOf="@id/locationUpdateImg"
-                            app:layout_constraintTop_toTopOf="@id/locationUpdateImg" />
+                            app:layout_constraintTop_toTopOf="@id/locationUpdateImg"
+                            tools:text="위치" />
 
                         <ImageView
                             android:id="@+id/favoriteImage"
@@ -225,9 +225,9 @@
                                         android:id="@+id/khaiValue"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:text="@{viewModel.airConditionerItems.khaiValue}"
                                         android:textColor="@color/black"
-                                        android:textSize="30sp"
-                                        android:text="@{viewModel.airConditionerItems.khaiValue}" />
+                                        android:textSize="30sp" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -319,10 +319,10 @@
                                         android:id="@+id/pm10Value"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:text="@{viewModel.airConditionerItems.pm10Value}"
                                         android:textColor="@color/black"
                                         android:textSize="17sp"
-                                        tools:text="농도"
-                                        android:text="@{viewModel.airConditionerItems.pm10Value}"/>
+                                        tools:text="농도" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -340,14 +340,14 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginBottom="10dp"
+                                    android:text="@{viewModel.pmGrade(viewModel.pm10Grade)}"
                                     android:textColor="@color/black"
                                     android:textSize="17sp"
                                     app:layout_constraintBottom_toBottomOf="@id/pm10StateImage"
                                     app:layout_constraintLeft_toLeftOf="@id/pm10Linear"
                                     app:layout_constraintRight_toRightOf="@id/pm10Linear"
                                     app:layout_constraintTop_toBottomOf="@id/pm10Linear"
-                                    tools:text="단계"
-                                    android:text="@{viewModel.pmGrade(viewModel.pm10Grade)}"/>
+                                    tools:text="단계" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -412,10 +412,10 @@
                                         android:id="@+id/pm25Value"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:text="@{viewModel.airConditionerItems.pm25Value}"
                                         android:textColor="@color/black"
                                         android:textSize="17sp"
-                                        tools:text="농도"
-                                        android:text="@{viewModel.airConditionerItems.pm25Value}"/>
+                                        tools:text="농도" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -433,18 +433,50 @@
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
                                     android:layout_marginBottom="10dp"
+                                    android:text="@{viewModel.pmGrade(viewModel.pm25Grade)}"
                                     android:textColor="@color/black"
                                     android:textSize="17sp"
                                     app:layout_constraintBottom_toBottomOf="@id/pm25StateImage"
                                     app:layout_constraintLeft_toLeftOf="@id/pm25Linear"
                                     app:layout_constraintRight_toRightOf="@id/pm25Linear"
                                     app:layout_constraintTop_toBottomOf="@id/pm25Linear"
-                                    tools:text="단계"
-                                    android:text="@{viewModel.pmGrade(viewModel.pm25Grade)}"/>
+                                    tools:text="단계" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:id="@+id/detailDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/finedustLayout">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="측정 시간 : " />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.detailDate}" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:text="(측정 시간은 1시간 기준으로 나타납니다.)"
+                        app:layout_constraintStart_toStartOf="@id/detailDate"
+                        app:layout_constraintTop_toBottomOf="@id/detailDate" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

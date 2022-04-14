@@ -292,11 +292,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clickDetailIntent() {
-        Log.d("detailDate2", mainViewModel.detailDate)
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("data", mainViewModel.detailDustList)
         intent.putExtra("observatory", mainViewModel.detailObservatory)
-        intent.putExtra("date", mainViewModel.detailDate)
+        intent.putExtra("date", mainViewModel.detailDate.value)
         intent.putExtra("location", binding.locationStr.text.toString())
         startActivity(intent)
     }

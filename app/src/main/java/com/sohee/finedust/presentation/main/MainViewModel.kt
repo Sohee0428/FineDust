@@ -30,7 +30,7 @@ class MainViewModel : ViewModel() {
 
     lateinit var mainAddress: DetailAddress
     lateinit var detailObservatory: String
-    lateinit var detailDate: String
+    var detailDate = MutableStateFlow("")
     private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
 
@@ -164,7 +164,7 @@ class MainViewModel : ViewModel() {
                 }
             }.onFailure {
                 Log.e("addressResponse", "에러 발생 >> ${it.message}")
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("navigate 서버 오류" + it.message.toString()))
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("address 서버 오류" + it.message.toString()))
             }
         }
     }
@@ -191,7 +191,7 @@ class MainViewModel : ViewModel() {
             }.onSuccess {
                 if (it.response.body.items[0] != null) {
                     _airConditionerItems.value = it.response.body.items[0]
-                    detailDate = it.response.body.items[0].dataTime
+                    detailDate.value = it.response.body.items[0].dataTime
                     setAirConditionData(it.response.body.items[0])
                 } else {
                     _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast(App.instance.getString(R.string.fail_get_finedust_data)))
