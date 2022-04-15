@@ -197,8 +197,8 @@ class MainViewModel : ViewModel() {
                     _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast(App.instance.getString(R.string.fail_get_finedust_data)))
                 }
             }.onFailure {
-                Log.e("airConditionResponse", "에러 발생")
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("airConditioner 서버 오류" + it.message.toString()))
+                Log.e("airConditionResponse", "에러 발생" + it.message)
+                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("airConditioner 서버 오류" + it.message))
             }
         }
     }
