@@ -56,6 +56,7 @@ class LocationViewModel : ViewModel() {
                     _detailAddressList.value = addressList
                 }
             }.onFailure {
+                _locationUiEvent.emit(LocationUiEvents.ShowErrorMessageToast("location 에러" + it.message))
                 Log.e("airConditionResponse", "에러 발생")
             }
         }
