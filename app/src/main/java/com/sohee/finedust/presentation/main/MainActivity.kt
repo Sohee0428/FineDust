@@ -171,8 +171,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeLocation() {
         val address = mainViewModel.mainAddress
-        mainViewModel.navigate(address.y.toDouble(), address.x.toDouble())
-        binding.locationStr.text = address.address
+        mainViewModel.changeLocation()
         binding.locationName.visibility = View.GONE
         binding.favoriteImage.visibility = View.VISIBLE
         isCheckFavoriteImage(address.isFavorite)

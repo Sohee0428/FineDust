@@ -333,6 +333,11 @@ class MainViewModel : ViewModel() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
+    fun changeLocation() {
+        navigate(mainAddress.x.toDouble(), mainAddress.y.toDouble())
+        _addressName.value = mainAddress.address
+    }
+
     sealed class MainUiEvents {
         object GPSPermissionFail : MainUiEvents()
         object CurrentLocation : MainUiEvents()
