@@ -465,18 +465,11 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.detailDate}" />
+                            android:paddingBottom="10dp"
+                            android:text="@{viewModel.currentDate}"
+                            android:textSize="17sp" />
 
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="10dp"
-                        android:text="(측정 시간은 1시간 기준으로 나타납니다.)"
-                        app:layout_constraintStart_toStartOf="@id/detailDate"
-                        app:layout_constraintTop_toBottomOf="@id/detailDate" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

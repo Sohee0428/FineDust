@@ -14,6 +14,7 @@ import com.sohee.finedust.App
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.data.DetailDust
+import com.sohee.finedust.data.date.LocalDate
 import com.sohee.finedust.data.entity.FinedustEntity
 import com.sohee.finedust.data.repository.MainRepository
 import com.sohee.finedust.data.repository.MainRepositoryImpl
@@ -30,7 +31,7 @@ class MainViewModel : ViewModel() {
 
     lateinit var mainAddress: DetailAddress
     lateinit var detailObservatory: String
-    var detailDate = MutableStateFlow("")
+    lateinit var detailDate: String
     private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
 
@@ -58,6 +59,9 @@ class MainViewModel : ViewModel() {
 
     private val _pm25Grade = MutableStateFlow<String?>(null)
     val pm25Grade = _pm25Grade.asStateFlow()
+
+    private val _currentDate = MutableStateFlow("")
+    val currentDate = _currentDate.asStateFlow()
 
     fun getLocation() {
         try {
@@ -147,6 +151,8 @@ class MainViewModel : ViewModel() {
             } else {
                 _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("navigate 서버 오류" + App.instance.getString(R.string.fail_location)))
             }
+
+            _currentDate.value = LocalDate().str_date_time
         }
     }
 
