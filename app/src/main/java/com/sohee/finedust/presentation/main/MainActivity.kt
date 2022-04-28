@@ -294,7 +294,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("data", mainViewModel.detailDustList)
         intent.putExtra("observatory", mainViewModel.detailObservatory)
-        intent.putExtra("date", mainViewModel.detailDate.value)
+        intent.putExtra("date", mainViewModel.detailDate)
         intent.putExtra("location", binding.locationStr.text.toString())
         startActivity(intent)
     }

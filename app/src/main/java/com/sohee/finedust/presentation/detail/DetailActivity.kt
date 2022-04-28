@@ -35,13 +35,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        val dustData = intent.getSerializableExtra("data") as List<DetailDust>
+        val dustData = intent.getSerializableExtra("data") as List<DetailDust>?
         val location = intent.getStringExtra("location")
         val observatory = intent.getStringExtra("observatory")
         val date = intent.getStringExtra("date")
 
-        binding.locationStr.text = location
-        binding.observatory.text = observatory
+        binding.locationStr.text = location ?: "위치를... 불러오지 못하였습니다. ㅠㅠ"
+        binding.observatory.text = observatory ?: " - "
         binding.date.text = date
 
         Log.d("어댑터 데이터 넘기기", "$dustData")
