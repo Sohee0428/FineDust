@@ -37,10 +37,10 @@ object BindingAdapter {
     @JvmStatic
     fun setImageForPM10Grade(view: ImageView, value: String?) {
         when (value?.toIntOrNull()) {
+            null -> view.setImageResource(R.drawable.loading)
             in 0..30 -> view.setImageResource(R.drawable.perfect_bearflower)
             in 31..50 -> view.setImageResource(R.drawable.good_bearflower)
             in 51..100 -> view.setImageResource(R.drawable.soso_bearflower)
-            null -> view.setImageResource(R.drawable.loading)
             else -> view.setImageResource(R.drawable.bad_bearflower)
         }
     }
@@ -49,10 +49,10 @@ object BindingAdapter {
     @JvmStatic
     fun setImageForPM25Grade(view: ImageView, value: String?) {
         when (value?.toIntOrNull()) {
+            null -> view.setImageResource(R.drawable.loading)
             in 0..15 -> view.setImageResource(R.drawable.perfect_bearflower)
             in 16..25 -> view.setImageResource(R.drawable.good_bearflower)
             in 26..50 -> view.setImageResource(R.drawable.soso_bearflower)
-            null -> view.setImageResource(R.drawable.loading)
             else -> view.setImageResource(R.drawable.bad_bearflower)
         }
     }
@@ -61,6 +61,7 @@ object BindingAdapter {
     @JvmStatic
     fun situationAlert(view: TextView, grade: String?) {
         when (grade) {
+            null -> view.text = "${App.instance.getString(R.string.loding_air)}"
             "1" -> view.text = "${App.instance.getString(R.string.perfect_air)}"
             "2" -> view.text = "${App.instance.getString(R.string.good_air)}"
             "3" -> view.text = "${App.instance.getString(R.string.soso_air)}"

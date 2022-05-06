@@ -19,6 +19,7 @@
     <string name="soso_air">환기 하면 안좋지만, 하고싶으면 잠깐만</string>
     <string name="bad_air">환기하면 안돼요!</string>
     <string name="waning"><![CDATA[<주의 사항>]]></string>
+    <string name="loding_air">로 딩 중 ...</string>
     <string name="null_air">정보를 불러오지 못했습니다.</string>
     <string name="location_permission">위치 권한이 거절되어 사용할 수 없습니다.\n[설정]으로 이동하여 권한을 허용해주세요.</string>
     <string name="push_backbutton_one_more_time">종료하려면 뒤로가기를 한번 더 눌러주세요.</string>

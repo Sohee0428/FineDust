@@ -34,6 +34,8 @@ class MainViewModel : ViewModel() {
     lateinit var detailDate: String
     private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
+    val isShowProgressBar = MutableStateFlow(true)
+    val isClickable = MutableStateFlow(false)
 
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -144,6 +146,7 @@ class MainViewModel : ViewModel() {
                     repository.getKakaoLatLon(latitude, longitude)
                 }.onSuccess {
                     nearbyObservatory(it.documents[0].x, it.documents[0].y)
+                    isShowProgressBar.value = false
                 }.onFailure {
                     _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast(it.message.toString()))
                     Log.e("TMAddressResponse", it.message.toString())
@@ -168,6 +171,7 @@ class MainViewModel : ViewModel() {
                         it.documents[0].address?.address_name
                     else -> _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("address 값 null" + App.instance.getString(R.string.fail_address)))
                 }
+                isShowProgressBar.value = false
             }.onFailure {
                 Log.e("addressResponse", "에러 발생 >> ${it.message}")
                 _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("address 서버 오류" + it.message.toString()))
@@ -199,6 +203,7 @@ class MainViewModel : ViewModel() {
                     _airConditionerItems.value = it.response.body.items[0]
                     detailDate.value = it.response.body.items[0].dataTime
                     setAirConditionData(it.response.body.items[0])
+                    isClickable.value = true
                 } else {
                     _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast(App.instance.getString(R.string.fail_get_finedust_data)))
                 }
@@ -253,7 +258,7 @@ class MainViewModel : ViewModel() {
             "2" -> "보통"
             "3" -> "나쁨"
             "4" -> "매우 나쁨"
-            "" -> "로딩 중"
+            null -> "로딩 중"
             else -> "오류"
         }
     }
