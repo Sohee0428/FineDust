@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.sohee.finedust.presentation.location.LocationViewModel" />
+            type="com.sohee.finedust.ui.location.LocationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

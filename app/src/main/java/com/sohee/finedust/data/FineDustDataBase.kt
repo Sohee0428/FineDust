@@ -3,9 +3,9 @@ package com.sohee.finedust.data
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sohee.finedust.App
-import com.sohee.finedust.data.dao.FinedustDao
-import com.sohee.finedust.data.entity.FinedustEntity
+import com.sohee.finedust.ui.App
+import com.sohee.finedust.repository.local.dao.FinedustDao
+import com.sohee.finedust.repository.local.entity.FinedustEntity
 
 @Database(entities = [FinedustEntity::class], version = 1, exportSchema = false)
 abstract class FineDustDataBase : RoomDatabase() {

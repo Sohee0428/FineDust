@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.sohee.finedust.data.DetailDust" />
+            type="com.sohee.finedust.data.response.aircondition.DetailDust" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

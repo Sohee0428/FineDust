@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <application
-        android:name="com.sohee.finedust.App"
+        android:name="com.sohee.finedust.ui.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,10 +16,10 @@
         android:theme="@style/Theme.FineDust"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.sohee.finedust.presentation.detail.DetailActivity"
+            android:name="com.sohee.finedust.ui.detail.DetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.sohee.finedust.presentation.SplashActivity"
+            android:name="com.sohee.finedust.ui.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.sohee.finedust.presentation.main.MainActivity"
+            android:name="com.sohee.finedust.ui.main.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.sohee.finedust.presentation.location.LocationActivity"
+            android:name="com.sohee.finedust.ui.location.LocationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.sohee.finedust.presentation.AppDescriptionActivity"
+            android:name="com.sohee.finedust.ui.AppDescriptionActivity"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -49,5 +49,4 @@
                 android:resource="@xml/widget_provider" />
         </receiver>
     </application>
-
 </manifest>
