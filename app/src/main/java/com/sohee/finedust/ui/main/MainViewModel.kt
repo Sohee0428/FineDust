@@ -21,6 +21,7 @@ import com.sohee.finedust.repository.MainRepository
 import com.sohee.finedust.repository.MainRepositoryImpl
 import com.sohee.finedust.util.showToast
 import com.sohee.finedust.util.LocalDate
+import com.sohee.finedust.util.showToast
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -79,7 +80,13 @@ class MainViewModel : ViewModel() {
 
         } catch (e: SecurityException) {
             viewModelScope.launch {
-                _mainUiEvent.emit(MainUiEvents.ShowErrorMessageToast("getLocation 에러" + App.instance.getString(R.string.fail_location)))
+                _mainUiEvent.emit(
+                    MainUiEvents.ShowErrorMessageToast(
+                        "getLocation 에러" + App.instance.getString(
+                            R.string.fail_location
+                        )
+                    )
+                )
             }
         }
     }
@@ -152,7 +159,13 @@ class MainViewModel : ViewModel() {
                     Log.e("TMAddressResponse", it.message.toString())
                 }
             } else {
-                _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("navigate 서버 오류" + App.instance.getString(R.string.fail_location)))
+                _mainUiEvent.emit(
+                    MainUiEvents.ShowNullMessageToast(
+                        "navigate 서버 오류" + App.instance.getString(
+                            R.string.fail_location
+                        )
+                    )
+                )
             }
 
             _currentDate.value = LocalDate().str_date_time
@@ -169,7 +182,13 @@ class MainViewModel : ViewModel() {
                         it.documents[0].road_address?.address_name
                     it.documents[0].address != null -> _addressName.value =
                         it.documents[0].address?.address_name
-                    else -> _mainUiEvent.emit(MainUiEvents.ShowNullMessageToast("address 값 null" + App.instance.getString(R.string.fail_address)))
+                    else -> _mainUiEvent.emit(
+                        MainUiEvents.ShowNullMessageToast(
+                            "address 값 null" + App.instance.getString(
+                                R.string.fail_address
+                            )
+                        )
+                    )
                 }
                 isShowProgressBar.value = false
             }.onFailure {
