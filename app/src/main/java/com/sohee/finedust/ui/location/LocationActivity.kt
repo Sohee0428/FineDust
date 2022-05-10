@@ -59,7 +59,7 @@ class LocationActivity : AppCompatActivity() {
             }
             launch {
                 viewModel.detailAddressList.collect {
-                    getDetailAddress(it)
+                    adapter.submitList(it)
                 }
             }
         }
@@ -75,11 +75,6 @@ class LocationActivity : AppCompatActivity() {
                 else -> false
             }
         }
-    }
-
-    private fun getDetailAddress(list: List<DetailAddress>) {
-        adapter.addLocationList(list)
-        Log.d("주소 검색 리스트", "$list")
     }
 
     private fun mainIntent(data: DetailAddress) {

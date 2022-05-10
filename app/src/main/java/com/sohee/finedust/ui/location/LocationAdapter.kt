@@ -2,14 +2,13 @@ package com.sohee.finedust.ui.location
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.databinding.LocationItemBinding
 
 class LocationAdapter(val listener: (DetailAddress) -> Unit) :
-    RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
-
-    private val detailAddressList = mutableListOf<DetailAddress>()
+   ListAdapter<DetailAddress, LocationAdapter.ViewHolder>(LocationDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -19,11 +18,7 @@ class LocationAdapter(val listener: (DetailAddress) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(detailAddressList[position])
-    }
-
-    override fun getItemCount(): Int {
-        return detailAddressList.size
+        holder.bindItem(getItem(position))
     }
 
     inner class ViewHolder(private val binding: LocationItemBinding) :
@@ -31,18 +26,12 @@ class LocationAdapter(val listener: (DetailAddress) -> Unit) :
 
         init {
             itemView.setOnClickListener {
-                listener(detailAddressList[adapterPosition])
+                listener(getItem(adapterPosition))
             }
         }
 
         fun bindItem(item: DetailAddress) {
-            binding.titleLocation.text = item.address
+            binding.item = item
         }
-    }
-
-    fun addLocationList(list: List<DetailAddress>) {
-        detailAddressList.clear()
-        detailAddressList.addAll(list)
-        notifyDataSetChanged()
     }
 }
