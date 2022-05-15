@@ -1,21 +1,24 @@
 package com.sohee.finedust.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sohee.finedust.R
-import com.sohee.finedust.data.response.aircondition.DetailDust
+import com.sohee.finedust.data.DetailIntentData
 import com.sohee.finedust.databinding.ActivityDetailBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private val detailList = arrayListOf<DetailDust>()
+    private val viewModel: DetailViewModel by viewModels()
     private val adapter: DetailAdapter by lazy {
-        DetailAdapter(this, detailList)
+        DetailAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +26,10 @@ class DetailActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         initContactAdapter()
+        initCollector()
         setData()
     }
 
@@ -32,6 +37,16 @@ class DetailActivity : AppCompatActivity() {
         binding.detailRecyclerview.adapter = adapter
         val layoutManager = LinearLayoutManager(this)
         binding.detailRecyclerview.layoutManager = layoutManager
+    }
+
+    private fun initCollector() {
+        lifecycleScope.launch {
+            viewModel.detailDustData.collect {
+                if (it != null) {
+                    adapter.submitList(viewModel.detailDustData.value!!.data)
+                }
+            }
+        }
     }
 
     private fun setData() {

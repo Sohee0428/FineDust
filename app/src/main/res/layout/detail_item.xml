@@ -25,7 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
-            android:text="미세먼지 종류"
+            android:text="@{item.dustName}"
+            tools:text="미세먼지 종류"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -69,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="19sp"
+                    android:text="@{item.value.first}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -76,6 +78,7 @@
 
                 <TextView
                     android:id="@+id/measure"
+                    android:text="@{item.measure}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -119,7 +122,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:paddingBottom="15dp"
-            android:text="설명"
+            tools:text="설명"
+            android:text="@{item.description}"
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/stateImage" />
 
