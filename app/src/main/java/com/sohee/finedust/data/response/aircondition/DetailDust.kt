@@ -5,6 +5,7 @@ import com.sohee.finedust.R
 import java.io.Serializable
 
 data class DetailDust(
+    val dataTime: String,
     val dustName: String,
     val value: Pair<String?, String?>,
     val measure: String,
@@ -36,16 +37,17 @@ data class DetailDust(
             "", "㎍/㎥", "㎍/㎥", "ppm", "ppm", "ppm", "ppm"
         )
 
-        fun getDetailDustList(item: List<Pair<String?, String?>>): List<DetailDust> {
+        fun getDetailDustList(item: List<Pair<String?, String?>>,dataTime: String?): List<DetailDust> {
             val detailDustList = mutableListOf<DetailDust>()
 
             dustNameList.forEachIndexed { index, name ->
                 detailDustList.add(
                     DetailDust(
-                        name,
-                        item[index],
-                        measureList[index],
-                        descriptionList[index]
+                        dataTime = dataTime ?: "-",
+                        dustName = name,
+                        value = item[index],
+                        measure = measureList[index],
+                        description = descriptionList[index]
                     )
                 )
             }
