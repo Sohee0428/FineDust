@@ -2,6 +2,7 @@ package com.sohee.finedust.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sohee.finedust.repository.local.entity.FinedustEntity
 import com.sohee.finedust.databinding.FavoriteItemBinding
@@ -9,9 +10,7 @@ import com.sohee.finedust.databinding.FavoriteItemBinding
 class FavoriteAdapter(
     val choiceListener: (FinedustEntity) -> Unit,
     val deleteListener: (FinedustEntity) -> Unit
-) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
-
-    private val favoriteList = mutableListOf<FinedustEntity>()
+) : ListAdapter<FinedustEntity, FavoriteAdapter.ViewHolder>(FavoriteDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -21,11 +20,7 @@ class FavoriteAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(favoriteList[position])
-    }
-
-    override fun getItemCount(): Int {
-        return favoriteList.size
+        holder.bindItem(getItem(position))
     }
 
     inner class ViewHolder(private val binding: FavoriteItemBinding) :
@@ -33,22 +28,16 @@ class FavoriteAdapter(
 
         init {
             itemView.setOnClickListener {
-                choiceListener(favoriteList[adapterPosition])
+                choiceListener(getItem(adapterPosition))
             }
 
             binding.deleteFavoriteItem.setOnClickListener {
-                deleteListener.invoke(favoriteList[adapterPosition])
+                deleteListener.invoke(getItem(adapterPosition))
             }
         }
 
         fun bindItem(item: FinedustEntity) {
-            binding.favoriteName.text = item.address
+            binding.item = item
         }
-    }
-
-    fun addList(list: List<FinedustEntity>) {
-        favoriteList.clear()
-        favoriteList.addAll(list)
-        notifyDataSetChanged()
     }
 }

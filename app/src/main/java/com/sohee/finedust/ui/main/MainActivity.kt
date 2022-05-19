@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAirConditionData() {
         mainViewModel.favoriteList.observe(this) {
-            adapter.addList(it)
+            adapter.submitList(it)
         }
     }
 
