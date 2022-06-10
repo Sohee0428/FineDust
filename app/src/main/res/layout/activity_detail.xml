@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.sohee.finedust.ui.detail.DetailViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/background"
         android:layout_width="match_parent"
@@ -36,9 +43,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="위치"
+                android:text="@{viewModel.detailDustData.location}"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:text="위치" />
 
             <ImageView
                 android:id="@+id/exit"
@@ -95,8 +103,9 @@
                         android:id="@+id/observatory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="관측소 명"
-                        android:textSize="18sp" />
+                        android:text="@{viewModel.detailDustData.observatory}"
+                        android:textSize="18sp"
+                        tools:text="관측소 명" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,8 +126,9 @@
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="측정 시간"
-                        android:textSize="18sp" />
+                        android:text="@{viewModel.detailDustData.date}"
+                        android:textSize="18sp"
+                        tools:text="측정 시간" />
 
                 </LinearLayout>
             </LinearLayout>
