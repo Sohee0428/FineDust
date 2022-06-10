@@ -3,7 +3,7 @@ package com.sohee.finedust.data
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sohee.finedust.ui.App
+import com.sohee.finedust.App
 import com.sohee.finedust.repository.local.dao.FinedustDao
 import com.sohee.finedust.repository.local.entity.FinedustEntity
 

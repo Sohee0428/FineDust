@@ -3,6 +3,7 @@ package com.sohee.finedust.ui
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.sohee.finedust.App
 import com.sohee.finedust.R
 
 object BindingAdapter {
@@ -61,12 +62,12 @@ object BindingAdapter {
     @JvmStatic
     fun situationAlert(view: TextView, grade: String?) {
         when (grade) {
-            null -> view.text = "${App.instance.getString(R.string.loding_air)}"
-            "1" -> view.text = "${App.instance.getString(R.string.perfect_air)}"
-            "2" -> view.text = "${App.instance.getString(R.string.good_air)}"
-            "3" -> view.text = "${App.instance.getString(R.string.soso_air)}"
-            "4" -> view.text = "${App.instance.getString(R.string.bad_air)}"
-            else -> view.text = "${App.instance.getString(R.string.null_air)}"
+            null -> view.text = App.instance.getString(R.string.loding_air)
+            "1" -> view.text = App.instance.getString(R.string.perfect_air)
+            "2" -> view.text = App.instance.getString(R.string.good_air)
+            "3" -> view.text = App.instance.getString(R.string.soso_air)
+            "4" -> view.text = App.instance.getString(R.string.bad_air)
+            else -> view.text = App.instance.getString(R.string.null_air)
         }
     }
 }

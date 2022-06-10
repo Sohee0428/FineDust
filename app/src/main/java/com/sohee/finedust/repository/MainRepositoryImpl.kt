@@ -1,10 +1,9 @@
 package com.sohee.finedust.repository
 
-import com.sohee.finedust.repository.local.entity.FinedustEntity
 import com.sohee.finedust.data.response.address.AddressResponse
 import com.sohee.finedust.data.response.aircondition.air.AirResponse
-import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.aircondition.observatory.Observatory
+import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.search.SearchAddressResponse
 import com.sohee.finedust.repository.local.LocalDataSource
 import com.sohee.finedust.repository.local.LocalDataSourceImpl
@@ -21,7 +20,6 @@ class MainRepositoryImpl : MainRepository {
         longitude: Double
     ): AddressResponse =
         remoteDataSource.getAddress(latitude, longitude)
-
 
     override suspend fun getKakaoLatLon(
         latitude: Double,

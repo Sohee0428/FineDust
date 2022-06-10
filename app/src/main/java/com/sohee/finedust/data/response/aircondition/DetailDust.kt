@@ -1,6 +1,6 @@
 package com.sohee.finedust.data.response.aircondition
 
-import com.sohee.finedust.ui.App
+import com.sohee.finedust.App
 import com.sohee.finedust.R
 import java.io.Serializable
 
