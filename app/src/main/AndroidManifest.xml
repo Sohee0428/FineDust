@@ -19,6 +19,7 @@
             android:name="com.sohee.finedust.ui.detail.DetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:exported="true"
             android:name="com.sohee.finedust.ui.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
