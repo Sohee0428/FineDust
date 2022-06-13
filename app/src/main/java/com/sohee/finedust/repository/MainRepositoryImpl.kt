@@ -6,14 +6,14 @@ import com.sohee.finedust.data.response.aircondition.observatory.Observatory
 import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.search.SearchAddressResponse
 import com.sohee.finedust.repository.local.LocalDataSource
-import com.sohee.finedust.repository.local.LocalDataSourceImpl
+import com.sohee.finedust.repository.local.entity.FinedustEntity
 import com.sohee.finedust.repository.remote.RemoteDataSource
-import com.sohee.finedust.repository.remote.RemoteDataSourceImpl
+import javax.inject.Inject
 
-class MainRepositoryImpl : MainRepository {
-
-    private val localDataSource: LocalDataSource = LocalDataSourceImpl()
-    private val remoteDataSource: RemoteDataSource = RemoteDataSourceImpl()
+class MainRepositoryImpl @Inject constructor(
+    private val localDataSource: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource
+) : MainRepository {
 
     override suspend fun getAddress(
         latitude: Double,

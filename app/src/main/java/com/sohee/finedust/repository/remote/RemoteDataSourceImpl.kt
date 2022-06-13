@@ -1,37 +1,33 @@
 package com.sohee.finedust.repository.remote
 
-import com.sohee.finedust.network.kakao.KakaoAddressCreator
-import com.sohee.finedust.network.kakao.KakaoCreator
-import com.sohee.finedust.network.kakao.SearchAddressCreator
-import com.sohee.finedust.network.publicdata.AirConditionerCreator
-import com.sohee.finedust.network.publicdata.NearbyObservatoryCreator
 import com.sohee.finedust.data.response.address.AddressResponse
 import com.sohee.finedust.data.response.aircondition.air.AirResponse
-import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.aircondition.observatory.Observatory
+import com.sohee.finedust.data.response.kakao.KakaoResponse
 import com.sohee.finedust.data.response.search.SearchAddressResponse
+import com.sohee.finedust.network.kakao.KakaoAPI
+import com.sohee.finedust.network.publicdata.AirConditionerAPI
+import com.sohee.finedust.network.publicdata.NearbyObservatoryAPI
+import com.sohee.finedust.network.publicdata.NearbyObservatoryCreator
+import javax.inject.Inject
 
-class RemoteDataSourceImpl : RemoteDataSource {
-
-    private val addressService = KakaoAddressCreator.create()
-    private val kakaoService = KakaoCreator.create()
-    private val nearbyObservatoryService = NearbyObservatoryCreator.create()
-    private val airConditionService = AirConditionerCreator.create()
-    private val searchAddressService = SearchAddressCreator.create()
+class RemoteDataSourceImpl @Inject constructor(
+    private val airConditionService: AirConditionerAPI,
+    private val nearbyObservatoryService: NearbyObservatoryAPI,
+    private val kakaoService: KakaoAPI
+) : RemoteDataSource {
 
     override suspend fun getAddress(
         latitude: Double,
         longitude: Double
     ): AddressResponse =
-        addressService.getAddress(longitude, latitude)
-
+        kakaoService.getAddress(longitude, latitude)
 
     override suspend fun getKakaoItems(
         latitude: Double,
         longitude: Double
     ): KakaoResponse =
         kakaoService.getNavigate(longitude, latitude)
-
 
     override suspend fun getObservatory(xValue: Double, yValue: Double): Observatory =
         nearbyObservatoryService.getObservatory(
@@ -40,7 +36,6 @@ class RemoteDataSourceImpl : RemoteDataSource {
             NearbyObservatoryCreator.SERVICE_KEY
         )
 
-
     override suspend fun getAirCondition(nearbyObservatory: String): AirResponse =
         airConditionService.getAirConditioner(
             nearbyObservatory,
@@ -48,8 +43,7 @@ class RemoteDataSourceImpl : RemoteDataSource {
         )
 
     override suspend fun getSearchLocation(query: String): SearchAddressResponse =
-        searchAddressService.getLocation(
+        kakaoService.getLocation(
             query
         )
-
 }

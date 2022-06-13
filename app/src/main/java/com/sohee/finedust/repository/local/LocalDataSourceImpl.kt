@@ -2,9 +2,9 @@ package com.sohee.finedust.repository.local
 
 import com.sohee.finedust.data.FineDustDataBase
 import com.sohee.finedust.repository.local.entity.FinedustEntity
-import com.sohee.finedust.repository.local.LocalDataSource
+import javax.inject.Inject
 
-class LocalDataSourceImpl : LocalDataSource {
+class LocalDataSourceImpl @Inject constructor(): LocalDataSource {
 
     private val db = FineDustDataBase.getInstance()
     private val finedustDao = db!!.finedustDao()
