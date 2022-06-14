@@ -220,7 +220,7 @@ class MainViewModel : ViewModel() {
             }.onSuccess {
                 if (it.response.body.items[0] != null) {
                     _airConditionerItems.value = it.response.body.items[0]
-                    detailDate.value = it.response.body.items[0].dataTime
+                    detailDate = it.response.body.items[0].dataTime
                     setAirConditionData(it.response.body.items[0])
                     isClickable.value = true
                 } else {
@@ -248,7 +248,7 @@ class MainViewModel : ViewModel() {
         )
 
         detailDustList.clear()
-        detailDustList.addAll(DetailDust.getDetailDustList(itemList))
+        detailDustList.addAll(DetailDust.getDetailDustList(itemList, airConditionData.dataTime))
     }
 
     private fun pm10Grade(str: String?): String {
@@ -324,6 +324,12 @@ class MainViewModel : ViewModel() {
 
     fun clickDetailIntent() {
         viewModelScope.launch {
+            mainIntentDetailDustData.value = DetailIntentData(
+                data = detailDustList,
+                observatory = detailObservatory,
+                date = detailDate,
+                location = addressName.value!!
+            )
             _mainUiEvent.emit(MainUiEvents.ClickDetailIntent)
         }
     }
