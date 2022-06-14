@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                     MainViewModel.MainUiEvents.CheckFavoriteState -> checkFavoriteState()
                     MainViewModel.MainUiEvents.ClickAppDescription -> clickAppDescription()
                     MainViewModel.MainUiEvents.ClickDeleteAllFavoriteList -> clickDeleteAllFavoriteImage()
-                    MainViewModel.MainUiEvents.ClickDetailIntent -> clickDetailIntent()
+                    MainViewModel.MainUiEvents.ClickDetailIntent -> moveToDetailActivity()
                     MainViewModel.MainUiEvents.ClickLocationIntent -> clickLocationIntent()
                     MainViewModel.MainUiEvents.ClickMenuIntent -> clickMenuIntent()
                     MainViewModel.MainUiEvents.ClickMenuUpdateLocation -> menuClose()
@@ -289,12 +289,9 @@ class MainActivity : AppCompatActivity() {
         menuClose()
     }
 
-    private fun clickDetailIntent() {
+    private fun moveToDetailActivity() {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("data", mainViewModel.detailDustList)
-        intent.putExtra("observatory", mainViewModel.detailObservatory)
-        intent.putExtra("date", mainViewModel.detailDate)
-        intent.putExtra("location", binding.locationStr.text.toString())
+        intent.putExtra("detailDustData", mainViewModel.mainIntentDetailDustData.value as Serializable)
         startActivity(intent)
     }
 
