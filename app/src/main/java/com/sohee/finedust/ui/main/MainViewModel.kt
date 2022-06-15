@@ -12,28 +12,30 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.*
 import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
+import com.sohee.finedust.data.DetailIntentData
 import com.sohee.finedust.data.response.aircondition.DetailDust
-import com.sohee.finedust.repository.local.entity.FinedustEntity
 import com.sohee.finedust.data.response.aircondition.air.Item
-import com.sohee.finedust.util.logHelper
-import com.sohee.finedust.ui.App
 import com.sohee.finedust.repository.MainRepository
-import com.sohee.finedust.repository.MainRepositoryImpl
-import com.sohee.finedust.util.showToast
+import com.sohee.finedust.repository.local.entity.FinedustEntity
 import com.sohee.finedust.util.LocalDate
 import com.sohee.finedust.util.showToast
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: MainRepository,
+    private val application: Application
+) : ViewModel() {
 
     lateinit var mainAddress: DetailAddress
     lateinit var detailObservatory: String
     lateinit var detailDate: String
-    private val repository: MainRepository = MainRepositoryImpl()
     val detailDustList = arrayListOf<DetailDust>()
     val isShowProgressBar = MutableStateFlow(true)
     val isClickable = MutableStateFlow(false)

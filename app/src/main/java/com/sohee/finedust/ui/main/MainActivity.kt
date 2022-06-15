@@ -16,7 +16,6 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -26,13 +25,17 @@ import com.sohee.finedust.databinding.ActivityMainBinding
 import com.sohee.finedust.ui.AppDescriptionActivity
 import com.sohee.finedust.ui.detail.DetailActivity
 import com.sohee.finedust.ui.location.LocationActivity
-import com.sohee.finedust.util.showToast
 import com.sohee.finedust.util.LocalDate
+import com.sohee.finedust.util.logHelper
+import com.sohee.finedust.util.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
