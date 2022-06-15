@@ -5,14 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.repository.MainRepository
-import com.sohee.finedust.repository.MainRepositoryImpl
-import com.sohee.finedust.util.logHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LocationViewModel : ViewModel() {
-
-    private val repository: MainRepository = MainRepositoryImpl()
+@HiltViewModel
+class LocationViewModel @Inject constructor(private val repository: MainRepository): ViewModel() {
 
     private val _locationUiEvent = MutableSharedFlow<LocationUiEvents>()
     val locationUiEvent = _locationUiEvent.asSharedFlow()
@@ -33,7 +32,6 @@ class LocationViewModel : ViewModel() {
     fun clickSearchLocation() {
         viewModelScope.launch {
             _locationUiEvent.emit(LocationUiEvents.CloseKeyboard)
-            logHelper(searchLocationTxt.value)
             if (searchLocationTxt.value.isBlank()) {
                 _locationUiEvent.emit(LocationUiEvents.ShowNullMessageToast("주소를 입력해주세요"))
             } else {

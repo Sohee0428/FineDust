@@ -3,7 +3,6 @@ package com.sohee.finedust.ui.location
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -15,9 +14,11 @@ import com.sohee.finedust.R
 import com.sohee.finedust.data.DetailAddress
 import com.sohee.finedust.databinding.ActivityLocationBinding
 import com.sohee.finedust.util.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LocationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLocationBinding
