@@ -37,6 +37,7 @@ class MainViewModel @Inject constructor(
     lateinit var detailObservatory: String
     lateinit var detailDate: String
     val detailDustList = arrayListOf<DetailDust>()
+    val mainIntentDetailDustData = MutableStateFlow<DetailIntentData?>(null)
     val isShowProgressBar = MutableStateFlow(true)
     val isClickable = MutableStateFlow(false)
 
