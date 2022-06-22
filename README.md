@@ -31,8 +31,8 @@ https://play.google.com/store/apps/details?id=com.sohee.finedust
 - `NavigationView` ,`DrawerLayout` 을 이용하여 메뉴를 추가하였습니다.
 - 'Coroutine&Flow' 비동기 프로그래밍을 사용하였습니다.
 
-## Problem
-앱을 제작하며 맞닥뜨린 문제들을 고민하고 해결했던 과정입니다.
+## process
+앱을 제작하며 맞닥뜨린 문제들을 고민하고 해결했던 과정과 발전한 부분에 관한 설명입니다.
 - Gps를 이용하여 위치를 가져올 때 사용자가 업데이트 버튼을 누를 경우 에러 발생
 
    → 실시간 업데이트가 아닌 사용자가 원할 경우에만 위치를 가져와야 하는 경우에는 getLastKnownLocation을 이용
