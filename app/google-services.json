@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "333326384198",
+    "project_id": "finedust-c0f2d",
+    "storage_bucket": "finedust-c0f2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333326384198:android:a15efb11fcbfa7757b9e47",
+        "android_client_info": {
+          "package_name": "com.sohee.finedust"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333326384198-6cm0jf08c8j2h8k3n3tsc406i5snerm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALpqb75mCJv2UqorhGi9nWZHk2grtxErQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333326384198-6cm0jf08c8j2h8k3n3tsc406i5snerm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
